@@ -1,7 +1,7 @@
 # eCommerce-Application
 
 <p align="center">
-  <img src="/eCommerce-Application/src/assets/images/logo_1.jpeg" alt="Описание изображения" width="150" height="150" style="border-radius: 50%;">
+  <img src="https://github.com/michaelsmorgon/eCommerce-Application/blob/feat/comprehensive_readme/src/assets/images/logo_1.jpeg" alt="logo" width="150" height="150" style="border-radius: 50%;">
 </p>  
 
 ## Introduction
