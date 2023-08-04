@@ -1,9 +1,5 @@
 # eCommerce-Application
 
-<p align="center">
-  <img src="https://github.com/michaelsmorgon/eCommerce-Application/blob/feat/comprehensive_readme/src/assets/images/logo_1.jpeg" alt="logo" width="150" height="150" style="border-radius: 50%;">
-</p>  
-
 ## Introduction
 Welcome to the eCommerce-Application! This project aims to develop a comprehensive eCommerce-Application that allows users to browse, search, and purchase products from various categories. The application is designed to provide a user-friendly and secure shopping experience for customers.
 
