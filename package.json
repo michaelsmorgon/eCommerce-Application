@@ -6,7 +6,8 @@
     "scripts": {
         "start": "webpack serve --open --config ./webpack.config.js --env mode=dev",
         "build": "webpack --config ./webpack.config.js --env mode=prod",
-        "lint": "eslint . --ext .ts --fix"
+        "lint": "eslint . --ext .ts --fix",
+        "prepare": "husky install"
     },
     "repository": {
         "type": "git",
@@ -29,6 +30,7 @@
         "eslint-config-prettier": "^8.10.0",
         "eslint-plugin-prettier": "^5.0.0",
         "html-webpack-plugin": "^5.5.3",
+        "husky": "^8.0.3",
         "prettier": "3.0.1",
         "style-loader": "^3.3.3",
         "ts-loader": "^9.4.4",
