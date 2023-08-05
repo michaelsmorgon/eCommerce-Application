@@ -1,4 +1,3 @@
-
-describe("example test",()=>{
-    it.todo("add tests")
-})
+describe('example test', () => {
+    it.todo('add tests');
+});
