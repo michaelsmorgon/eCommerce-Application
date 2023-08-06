@@ -28,7 +28,7 @@ The eCommerce-Application consists of the following main pages and functionaliti
 ## Technologies Used
 The eCommerce-Application is built using the following technologies:  
 __**Frontend:**__  
-  •	HTML, CSS, JavaScript  
+  •	HTML, CSS, TypeScript  
 __**Authentication Service:**__  
   •	CommerceTools API for user authentication and registration  
 
@@ -46,6 +46,26 @@ Before running the application, make sure you have the following installed:
 3.	Start the development server:  
       `npm start`  
       The application will be available at http://localhost:3000/.
+
+## Available Scripts
+
+#### ESLint  
+To run ESLint on the project, use the following command:  
+`npm run lint`  
+This will run ESLint on all `.ts` files in the project and automatically fix any issues that can be fixed.  
+
+#### Husky  
+To configure Husky, a tool that allows you to easily add Git hooks.  
+`npm run prepare`  
+
+#### Jest
+To run Jest tests on the project, use the following command:  
+`npm test`  
+This will run all Jest tests in the project and display the results.  
+
+#### Build for Production  
+To build the application for production, use the following command:  
+`npm run build`  
 
   __**Usage**__
 -	Open your web browser and navigate to http://localhost:3000/.
