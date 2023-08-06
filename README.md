@@ -49,23 +49,28 @@ Before running the application, make sure you have the following installed:
 
 ## Available Scripts
 
-#### ESLint  
-To run ESLint on the project, use the following command:  
-`npm run lint`  
-This will run ESLint on all `.ts` files in the project and automatically fix any issues that can be fixed.  
+  #### ESLint  
+  To run ESLint on the project, use the following command:  
+  `npm run lint`  
+  This will run ESLint on all `.ts` files in the project and automatically fix any issues that can be fixed.  
 
-#### Husky  
-To configure Husky, a tool that allows you to easily add Git hooks.  
-`npm run prepare`  
+  #### Prettier
+  To run Prettier on the project, use the following command:  
+  `npm run format`  
+  This will run Prettier on all files in the project and automatically format them according to the Prettier configuration.
 
-#### Jest
-To run Jest tests on the project, use the following command:  
-`npm test`  
-This will run all Jest tests in the project and display the results.  
+  #### Husky  
+  To configure Husky, a tool that allows you to easily add Git hooks.  
+  `npm run prepare`  
 
-#### Build for Production  
-To build the application for production, use the following command:  
-`npm run build`  
+  #### Jest
+  To run Jest tests on the project, use the following command:  
+  `npm test`  
+  This will run all Jest tests in the project and display the results.  
+
+  #### Build for Production  
+  To build the application for production, use the following command:  
+  `npm run build`  
 
   __**Usage**__
 -	Open your web browser and navigate to http://localhost:3000/.
