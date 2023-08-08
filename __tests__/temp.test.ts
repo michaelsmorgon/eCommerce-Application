@@ -1,3 +1,3 @@
 describe('example test', () => {
-    it.todo('add tests');
+  it.todo('add tests');
 });
