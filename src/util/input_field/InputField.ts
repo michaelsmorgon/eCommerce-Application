@@ -29,15 +29,13 @@ export class InputField extends ElementCreator {
     this.inputElement.value = value;
   }
 
-  protected setTextContent(text: string = ''): void {
-    if (text !== '' && text !== null) {
-      this.labelElement.textContent = text;
-    }
+  public setPlaceholder(placeholderText: string): void {
+    this.inputElement.placeholder = placeholderText;
   }
 
   protected setCallback(callback: ICallbackFunc | null = null): void {
     if (typeof callback === 'function') {
-      this.element.addEventListener('keyup', (event) => callback(event));
+      this.element.addEventListener('keyup', (event: Event): void => callback(event));
     }
   }
 }
