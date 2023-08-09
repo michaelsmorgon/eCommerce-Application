@@ -5,8 +5,8 @@ export interface ICallbackFunc {
 export type ElementConfig = {
   tag: string;
   classNames: string[];
-  textContent: string;
-  callback: ICallbackFunc;
+  textContent?: string | '';
+  callback?: ICallbackFunc | null;
 };
 
 export default class ElementCreator {
@@ -40,10 +40,12 @@ export default class ElementCreator {
   }
 
   protected setTextContent(text: string = ''): void {
-    this.element.textContent = text;
+    if (text !== '' && text !== null) {
+      this.element.textContent = text;
+    }
   }
 
-  protected setCallback(callback: ICallbackFunc): void {
+  protected setCallback(callback: ICallbackFunc | null = null): void {
     if (typeof callback === 'function') {
       this.element.addEventListener('click', (event: Event): void => callback(event));
     }
