@@ -5,8 +5,9 @@ export interface ICallbackFunc {
 export type ElementConfig = {
   tag: string;
   classNames: string[];
-  textContent?: string | '';
-  callback?: ICallbackFunc | null;
+  textContent: string | '';
+  placeholderText: string | '';
+  callback: ICallbackFunc | null;
 };
 
 export default class ElementCreator {

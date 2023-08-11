@@ -17,10 +17,12 @@ export class InputField extends ElementCreator {
       this.element.classList.add(className);
     });
 
-    this.setCallback(params.callback);
-    this.setTextContent(params.textContent);
     this.inputElement = document.createElement('input');
     this.labelElement = document.createElement('label');
+
+    this.setCallback(params.callback);
+    this.setTextContent(params.textContent);
+    this.setPlaceholder(params.placeholderText);
 
     this.element.append(this.labelElement, this.inputElement);
   }
