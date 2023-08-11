@@ -5,7 +5,8 @@ export interface ICallbackFunc {
 export type ElementConfig = {
   tag: string;
   classNames: string[];
-  textContent?: string | '';
+  textContent?: string;
+  placeholderText?: string;
   callback?: ICallbackFunc | null;
 };
 
