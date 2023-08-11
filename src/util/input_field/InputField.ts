@@ -35,7 +35,7 @@ export class InputField extends ElementCreator {
     this.labelElement.textContent = value;
   }
 
-  public setPlaceholder(placeholderText: string): void {
+  public setPlaceholder(placeholderText: string = ''): void {
     this.inputElement.placeholder = placeholderText;
   }
 
