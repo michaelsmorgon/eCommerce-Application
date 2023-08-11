@@ -24,6 +24,7 @@
     "homepage": "https://github.com/michaelsmorgon/eCommerce-Application#readme",
     "devDependencies": {
         "@types/jest": "^29.5.3",
+        "@types/node-fetch": "^2.5.12",
         "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "^11.0.0",
         "css-loader": "^6.8.1",
@@ -43,5 +44,10 @@
         "webpack": "^5.88.2",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^4.15.1"
+    },
+    "dependencies": {
+        "@commercetools/platform-sdk": "^5.0.0",
+        "@commercetools/sdk-client-v2": "^2.2.0",
+        "node-fetch": "^2.6.12"
     }
 }
