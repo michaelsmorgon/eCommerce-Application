@@ -4,26 +4,15 @@ function createHeaderLogo(): ElementCreator {
   const logoLink = new ElementCreator({
     tag: 'a',
     classNames: [],
-    attributes: [
-      {
-        name: 'href',
-        value: '#main',
-      },
-    ],
+    attributes: [{ name: 'href', value: '#main' }],
   });
 
   const logoImage = new ElementCreator({
     tag: 'img',
     classNames: ['logo-img'],
     attributes: [
-      {
-        name: 'src',
-        value: './assets/images/Sport-logo.png',
-      },
-      {
-        name: 'alt',
-        value: 'logo',
-      },
+      { name: 'src', value: './assets/images/Sport-logo.png' },
+      { name: 'alt', value: 'logo' },
     ],
   });
 
@@ -80,12 +69,7 @@ function createMenu(headerCenter: ElementCreator): void {
 
   const catalogLink = new ElementCreator({
     tag: 'a',
-    attributes: [
-      {
-        name: 'href',
-        value: '#catalog',
-      },
-    ],
+    attributes: [{ name: 'href', value: '#catalog' }],
     classNames: [],
     textContent: 'Catalog',
   });
@@ -151,26 +135,15 @@ function createAccountLink(): ElementCreator {
   const accountLink = new ElementCreator({
     tag: 'a',
     classNames: [],
-    attributes: [
-      {
-        name: 'href',
-        value: '#account',
-      },
-    ],
+    attributes: [{ name: 'href', value: '#account' }],
   });
 
   const accountImage = new ElementCreator({
     tag: 'img',
     classNames: ['account-icon'],
     attributes: [
-      {
-        name: 'src',
-        value: './assets/icons/my-account.png',
-      },
-      {
-        name: 'alt',
-        value: 'account-icon',
-      },
+      { name: 'src', value: './assets/icons/my-account.png' },
+      { name: 'alt', value: 'account-icon' },
     ],
   });
 
@@ -190,12 +163,7 @@ function createBasketLink(): ElementCreator {
   const basketLink = new ElementCreator({
     tag: 'a',
     classNames: [],
-    attributes: [
-      {
-        name: 'href',
-        value: '#basket',
-      },
-    ],
+    attributes: [{ name: 'href', value: '#basket' }],
   });
 
   const basketImage = new ElementCreator({
