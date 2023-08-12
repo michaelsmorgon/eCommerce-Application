@@ -1,4 +1,5 @@
-import ElementCreator, { ElementConfig, ICallbackFunc } from '../ElementCreator';
+import ElementCreator, { ElementConfig, IAttribute, ICallbackFunc } from '../ElementCreator';
+import './input_field.css';
 
 enum InputFieldCSSClasses {
   CONTAINER = 'input-field__container',
@@ -23,6 +24,7 @@ export class InputField extends ElementCreator {
     this.setCallback(params.callback);
     this.setTextContent(params.textContent);
     this.setPlaceholder(params.placeholderText);
+    this.setAttributes(params.attributes);
 
     this.element.append(this.labelElement, this.inputElement);
   }
@@ -33,6 +35,14 @@ export class InputField extends ElementCreator {
 
   public setTextContent(value: string = ''): void {
     this.labelElement.textContent = value;
+  }
+
+  public setAttributes(attributes: IAttribute[] | null = null): void {
+    if (attributes !== null) {
+      attributes.forEach((attribute: IAttribute) => {
+        this.inputElement.setAttribute(attribute.name, attribute.value);
+      });
+    }
   }
 
   public setPlaceholder(placeholderText: string = ''): void {
