@@ -2,11 +2,17 @@ export interface ICallbackFunc {
   (event: Event): void;
 }
 
+export interface IAttribute {
+  name: string;
+  value: string;
+}
+
 export type ElementConfig = {
   tag: string;
   classNames: string[];
   textContent?: string;
   placeholderText?: string;
+  attributes?: IAttribute[] | null;
   callback?: ICallbackFunc | null;
 };
 
@@ -33,6 +39,7 @@ export default class ElementCreator {
   protected create(params: ElementConfig): void {
     this.setClasses(params.classNames);
     this.setTextContent(params.textContent);
+    this.setAttributes(params.attributes);
     this.setCallback(params.callback);
   }
 
@@ -43,6 +50,14 @@ export default class ElementCreator {
   protected setTextContent(text: string = ''): void {
     if (text !== '' && text !== null) {
       this.element.textContent = text;
+    }
+  }
+
+  protected setAttributes(attributes: IAttribute[] | null = null): void {
+    if (attributes !== null) {
+      attributes.forEach((attribute: IAttribute) => {
+        this.element.setAttribute(attribute.name, attribute.value);
+      });
     }
   }
 
