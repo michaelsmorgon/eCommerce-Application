@@ -1,4 +1,5 @@
 import ElementCreator from '../../util/ElementCreator';
+import { RegistrationView } from '../registration/RegistrationView';
 
 export default class AuthButtons {
   create(): ElementCreator {
@@ -29,9 +30,7 @@ export default class AuthButtons {
       tag: 'button',
       classNames: ['registration-button'],
       textContent: 'Registration',
-      callback: (): void => {
-        //  Add Click function by pressing
-      },
+      callback: () => this.displayRegistrationHandler(),
     });
 
     headerButtons.addInnerElement(loginButton);
@@ -39,5 +38,12 @@ export default class AuthButtons {
     headerButtons.addInnerElement(registrationButton);
 
     return headerButtons;
+  }
+
+  public displayRegistrationHandler(): void {
+    const regView = new RegistrationView();
+    const main = document.querySelector('.main');
+
+    main?.appendChild(regView.getHtmlElement());
   }
 }
