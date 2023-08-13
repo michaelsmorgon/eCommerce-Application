@@ -1,5 +1,6 @@
 @import './view/normalize.css';
 @import './view/header/header.css';
+@import './view/mainPage/main.css';
 
 .body {
   font-family: 'roboto', sans-serif;
