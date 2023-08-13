@@ -52,7 +52,7 @@
   font-size: 15px;
   font-weight: bold;
   text-transform: uppercase;
- }
+}
 
 .user-panel {
   font-family: 'Raleway', sans-serif;
@@ -64,7 +64,7 @@
 }
 
 .account-icon,
- .basket-logo {
+.basket-logo {
   margin: 8px;
   width: 50px;
   border-radius: 50%;
@@ -92,6 +92,12 @@
 
 .menu > a:hover {
   color: var(--color-three); 
+}
+
+.menu a.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
 }
 
 button {
