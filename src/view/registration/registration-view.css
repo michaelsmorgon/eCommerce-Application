@@ -1,7 +1,17 @@
-.registration-form {
+.registration_container {
   margin: 0 auto;
   max-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.registration-btn {
+  width: 150px;
+  height: 30px;
+  margin: 20px auto;
+}
+
+.input-warning {
+  color: red;
 }
