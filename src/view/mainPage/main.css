@@ -47,3 +47,33 @@ color: var(--color-three);
   left: -6px;
   transform: rotate(40deg);
 }
+
+.baners {
+  max-width: 1280px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.baners__content {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background: url(../../assets/images/photo_2023-08-10_21-43-24.jpg)no-repeat;
+  background-size: 110%;
+  background-position-y: bottom;
+  background-position-x: left;
+  width: 100%;
+  height: 520px;
+  color: aliceblue;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  text-align:start;
+  justify-content:end;
+  padding: 40px;
+}
+
+.baners__content span {
+  font-size: 64px;
+  color: var(--color-five);
+  text-shadow: 3px 3px 4px #3c4144;
+  padding: 10px 0;
+}
