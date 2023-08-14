@@ -1,4 +1,4 @@
-import ElementCreator from '../../util/ElementCreator';
+import ElementCreator from '../../../util/ElementCreator';
 
 export default class SaleLink {
   create(): ElementCreator {

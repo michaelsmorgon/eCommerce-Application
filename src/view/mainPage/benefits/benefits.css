@@ -51,7 +51,7 @@
 .benefit-text {
   max-width: 150px;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .methods__container {
@@ -64,20 +64,20 @@
 .shipping,
 .payment {
   display: flex;
-  margin-bottom: 13px;
+  margin-bottom: 10px;
 }
 
 .payu,
 .master-card {
 width: 150px;
-height: 28px;
+height: 20px;
 }
 .visa,
 .fedex,
 .dhl,
 .gls {
   width: 150px;
-  height: 23px;
+  height: 15px;
 }
 
 .payu {
