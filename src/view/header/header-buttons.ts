@@ -1,4 +1,5 @@
 import ElementCreator from '../../util/ElementCreator';
+import App from '../login/loginvView';
 import { RegistrationView } from '../registration/RegistrationView';
 
 export default class AuthButtons {
@@ -13,7 +14,7 @@ export default class AuthButtons {
       classNames: ['login-button'],
       textContent: 'Login',
       callback: (): void => {
-        // Add Click function by pressing
+        this.displayLoginHandler();
       },
     });
 
@@ -21,9 +22,7 @@ export default class AuthButtons {
       tag: 'button',
       classNames: ['logout-button'],
       textContent: 'Logout',
-      callback: (): void => {
-        // Add Click function by pressing
-      },
+      callback: (): void => {},
     });
 
     const registrationButton = new ElementCreator({
@@ -45,5 +44,9 @@ export default class AuthButtons {
     const main = document.querySelector('.main');
 
     main?.appendChild(regView.getHtmlElement());
+  }
+
+  displayLoginHandler(): void {
+    App.displayLevel();
   }
 }
