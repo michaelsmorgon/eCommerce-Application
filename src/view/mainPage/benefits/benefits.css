@@ -6,7 +6,7 @@
 }
 
 .benefits-container {
-  min-width: 1280px;
+  max-width: 1280px;
   display: flex;
   justify-content: space-around;
 }
@@ -19,10 +19,9 @@
 }
 
 .benefit__icon {
-  width: 60px;
-  height: 60px;
-  margin-top: 25px;
-  margin-bottom: 10px;
+  width: 40px;
+  height: 40px;
+  margin-top: 15px;
 }
 
 .benefit:nth-child(1) .benefit__icon{
@@ -65,20 +64,20 @@
 .shipping,
 .payment {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 13px;
 }
 
 .payu,
 .master-card {
 width: 150px;
-height: 33px;
+height: 28px;
 }
 .visa,
 .fedex,
 .dhl,
 .gls {
   width: 150px;
-  height: 30px;
+  height: 23px;
 }
 
 .payu {

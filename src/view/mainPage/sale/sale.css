@@ -1,0 +1,10 @@
+@import '../../color.css';
+
+.sale-icon {
+  position: relative;
+  width: 30px;
+  height:15px;
+  top: -3px;
+  left: -6px;
+  transform: rotate(40deg);
+}
