@@ -1,5 +1,5 @@
-import ElementCreator from '../../util/ElementCreator';
-import SaleLink from './sale-link';
+import ElementCreator from '../../../util/ElementCreator';
+import SaleLink from '../sale-link';
 import { categoryConfig } from './produkt-categories-config';
 
 export default class ProductCategories {

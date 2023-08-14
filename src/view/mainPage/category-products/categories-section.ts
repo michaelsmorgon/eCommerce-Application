@@ -1,4 +1,4 @@
-import ElementCreator from '../../util/ElementCreator';
+import ElementCreator from '../../../util/ElementCreator';
 import { categoryConfig } from './produkt-categories-config';
 
 export default class CategoriesMainSektion {
