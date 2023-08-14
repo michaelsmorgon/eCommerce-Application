@@ -1,6 +1,7 @@
 import ElementCreator from '../../util/ElementCreator';
 import ProductCategories from './produkt-categories';
 import MainBanner from './main-banner';
+import CategoriesMainSektion from './categories-section';
 
 export default class Main {
   create(): ElementCreator {
@@ -15,11 +16,13 @@ export default class Main {
       classNames: ['main-page'],
     });
 
-    const productCategories = new ProductCategories().create();
     const mainBanner = new MainBanner();
+    const productCategories = new ProductCategories().create();
+    const categoriesSektion = new CategoriesMainSektion().create();
 
     section.addInnerElement(productCategories);
     section.addInnerElement(mainBanner);
+    section.addInnerElement(categoriesSektion);
 
     main.addInnerElement(section);
     parentElement.appendChild(main.getElement());
