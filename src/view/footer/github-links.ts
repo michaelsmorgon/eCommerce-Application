@@ -7,7 +7,7 @@ export default class GitHubLinksCreator {
         tag: 'a',
         classNames: ['footer__github'],
         attributes: [
-          { name: 'href', value: 'https://github.com/AndreWAr85' },
+          { name: 'href', value: 'https://github.com/michaelsmorgon' },
           { name: 'target', value: '_blank' },
         ],
       },
@@ -15,7 +15,7 @@ export default class GitHubLinksCreator {
         tag: 'a',
         classNames: ['footer__github'],
         attributes: [
-          { name: 'href', value: 'https://github.com/AndreWAr85' },
+          { name: 'href', value: 'https://github.com/dumik121' },
           { name: 'target', value: '_blank' },
         ],
       },
