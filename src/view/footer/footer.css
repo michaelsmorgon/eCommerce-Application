@@ -10,7 +10,6 @@
 .footer__github a {
   width: 35px;
   height: 35px;
-  background-color: #fed000;
 }
 
 .footer__container {
@@ -37,6 +36,7 @@
   height: 35px;
   border-radius: 50%;
   border: 3px solid #ffffff;
+  transition: 0.3s ease;
 }
 
 .git-container {
@@ -71,6 +71,7 @@
 .footer__rss:hover,
 .footer__github:hover {
   box-shadow:#ffffff 0 0 10px;
+  transition: 0.3s ease;
 }
 
 .footer__rss:active,
