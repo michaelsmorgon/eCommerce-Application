@@ -1,0 +1,79 @@
+@import '../color.css';
+
+.footer {
+  background: linear-gradient(90deg, rgba(61,120,196,1) 72%, rgba(255,255,255,1) 100%);
+  width: 100%;
+  height: 50px;
+  color: #edeef0;
+}
+
+.footer__github a {
+  width: 35px;
+  height: 35px;
+  background-color: #fed000;
+}
+
+.footer__container {
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+}
+
+.footer__year {
+  padding: 0 15px;
+  font-size: 24px;
+  margin-right: 60px;
+}
+
+.footer__rss,
+.footer__github {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+}
+
+.git-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 140px;
+  margin-left: 30px;
+}
+
+.rss-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 35px;
+  margin-right: 30px;
+}
+
+.footer__github {
+  background: url(/src/assets/icons/GitHub-Mark.png) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+  margin-right: 8%;
+}
+
+.footer__rss {
+  background: url(/src/assets/icons/rs-logo.jpg) no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.footer__rss:hover,
+.footer__github:hover {
+  box-shadow:#ffffff 0 0 10px;
+}
+
+.footer__rss:active,
+.footer__github:active {
+  box-shadow: var(--color-three) 0 0 10px;
+}
