@@ -35,7 +35,7 @@ export const fields: ElementConfig[] = [
     textContent: 'Password: ',
     attributes: [
       { name: 'type', value: 'password' },
-      { name: 'pattern', value: '(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,}' },
+      { name: 'pattern', value: '(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}' },
       { name: 'required', value: '' },
       { name: 'name', value: RegInputClasses.REG_PASS },
       { name: 'class', value: RegInputClasses.REG_INPUT },
