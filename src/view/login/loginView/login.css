@@ -1,3 +1,5 @@
+@import '../../registration/registration-view.css';
+
 .main-login-view {
   width: 100%;
   margin-top: 130px;
@@ -6,21 +8,29 @@
   align-items: center;
 }
 .login-content {
+  min-width: 320px;
   width: 30%;
   height: 370px;
-  border: 1px solid black;
-  border-radius: 30px;
+  margin: calc((100vh - 150px - 375px)/2);
+  background: #fee772;;
+  border: 1px solid #fee772;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  justify-content: space-around;
 }
 .login-content-text {
   margin-top: 20px;
   text-align: center;
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px;
+  color: var(--color-two);
 }
 .input-field__container.input-field {
+  max-width: 300px;
+  width: 98%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,16 +40,40 @@
   width: 100%;
   height: 35px;
   border-radius: 5px;
-  font-size: 20px;
+
 }
-.login-content-loginSignup,.login-content-TextSignup{
+.login-content-loginSignup,
+.login-content-TextSignup{
   text-align: center;
 }
+
+.login-content-TextSignup{
+  color: var(--color-two);
+  font-weight: bold;
+}
+
+.login-content-loginSignup {
+  color: var(--color-four);
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px var(--color-one);
+  transition: color 0.3s ease;
+}
+
+.login-content-loginSignup:hover {
+  color: var(--color-three);
+}
+
+.login-content-loginSignup:active {
+  color: var(--color-six);
+}
+
 .login-content-button{
-  width: 50%;
+  width: 150px;
+  height: 30px;
+  margin: 5px auto 20px auto;
 }
 #login-content-Error{
   color: red;
+  font-weight: bold;
 }
-
-
