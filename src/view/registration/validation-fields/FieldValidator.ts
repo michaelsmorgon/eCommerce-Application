@@ -17,7 +17,7 @@ export enum WarningMessage {
 export class FieldValidator {
   private PATH_MIN_LENGTH = 8;
 
-  public validateFields(event: Event): void {
+  public validateFields(): boolean {
     let isCorrect = true;
     isCorrect = this.validateEmail() && isCorrect;
     isCorrect = this.validatePass() && isCorrect;
@@ -29,9 +29,7 @@ export class FieldValidator {
     isCorrect = this.validateOnlyCharacters(RegInputClasses.REG_CITY) && isCorrect;
     isCorrect = this.validatePostalCode() && isCorrect;
 
-    if (!isCorrect) {
-      event.preventDefault();
-    }
+    return isCorrect;
   }
 
   private validateEmail(): boolean {

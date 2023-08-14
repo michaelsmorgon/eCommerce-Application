@@ -1,22 +1,26 @@
 import fetch from 'node-fetch';
 import { ClientBuilder, type AuthMiddlewareOptions, type HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
 
-const projectKey = 'dumians';
-const scopes = ['manage_project:dumians'];
+export const projectKey = 'dumians';
+export const clientId = '1EEBfc2osjuVPo194rHCi6rY';
+export const clientSecret = 'sbfW9xCogruktmY9mBRuUGBewCpLP4kD';
+export const scopes = ['manage_project:dumians'];
+export const apiURL = 'https://api.europe-west1.gcp.commercetools.com';
+export const authURL = 'https://auth.europe-west1.gcp.commercetools.com';
 
 const authMiddlewareOptions: AuthMiddlewareOptions = {
-  host: 'https://auth.europe-west1.gcp.commercetools.com',
+  host: authURL,
   projectKey,
   credentials: {
-    clientId: '1EEBfc2osjuVPo194rHCi6rY',
-    clientSecret: 'sbfW9xCogruktmY9mBRuUGBewCpLP4kD',
+    clientId,
+    clientSecret,
   },
   scopes,
   fetch,
 };
 
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
-  host: 'https://api.europe-west1.gcp.commercetools.com',
+  host: apiURL,
   fetch,
 };
 
