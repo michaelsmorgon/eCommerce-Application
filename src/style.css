@@ -2,6 +2,7 @@
 @import './view/header/header.css';
 @import './view/mainPage/main.css';
 @import './view/footer/footer.css';
+@import './view/media.css';
 
 .body {
   font-family: 'roboto', sans-serif;
