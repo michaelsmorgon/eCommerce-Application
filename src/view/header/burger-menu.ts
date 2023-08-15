@@ -1,5 +1,6 @@
 export default class BurgerMenu {
   private burgerIcon: HTMLElement;
+
   private mainMenu: HTMLElement;
 
   constructor(burgerIconSelector: string, mainMenuSelector: string) {

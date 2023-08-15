@@ -4,11 +4,14 @@ import UserPanel from './user-panel';
 import BurgerMenu from './burger-menu';
 
 export default class Header {
+  burgerMenu!: BurgerMenu;
+
   create(): void {
     const headerContainer = new HeaderContainer();
     const { headerCenter, headerUser } = headerContainer.create();
     new Menu().create(headerCenter);
     new UserPanel().create(headerUser);
-    new BurgerMenu('.burger-menu', '.header__center');
+
+    this.burgerMenu = new BurgerMenu('.burger-menu', '.header__center');
   }
 }
