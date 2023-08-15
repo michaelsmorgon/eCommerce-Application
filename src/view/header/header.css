@@ -1,4 +1,5 @@
 @import '../color.css';
+@import './burger-menu.css';
 
 .header {
   width: 100%;
@@ -26,7 +27,7 @@
 .header__logo {
   display: inline-flex;
   align-items: center;
-  width: 20%;
+  width: 25%;
   height: 65px;
 }
 
@@ -36,23 +37,28 @@
 }
 
 .header__center {
-  width: 50%;
+  width: 60%;
   height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
 
 .menu {
   display: flex;
-  width: 100%;
+  width: 70%;
   height: 100%;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   font-size: 15px;
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.auth-buttons {
+  width: 30%;
+  display: flex;
+  justify-content: end;
 }
 
 .user-panel {
@@ -60,8 +66,12 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 20%;
+  width: 15%;
   min-width: max-content;
+}
+
+.burger-menu {
+  display: none;
 }
 
 .account-icon,
@@ -90,6 +100,7 @@
 }
 
 .menu > a {
+  padding: 0 20px;
   color: var(--color-four);
   transition: 0.3s ease;
 }

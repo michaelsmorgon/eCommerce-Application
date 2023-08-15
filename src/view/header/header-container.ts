@@ -29,6 +29,7 @@ export default class HeaderContainer {
     headerContainer.addInnerElement(headerLogo);
     headerContainer.addInnerElement(headerCenter);
     headerContainer.addInnerElement(headerUser);
+
     header.addInnerElement(headerContainer);
     parentElement.classList.add('body');
     parentElement.appendChild(header.getElement());
