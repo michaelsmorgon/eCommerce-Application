@@ -36,6 +36,7 @@
 }
 
 .header__center {
+  width: 50%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -45,9 +46,9 @@
 
 .menu {
   display: flex;
-  width: 350px;
+  width: 100%;
   height: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   font-size: 15px;
   font-weight: bold;

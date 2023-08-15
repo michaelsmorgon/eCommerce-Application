@@ -1,0 +1,284 @@
+@media (max-width: 1024px) {
+  .baners {
+    height: 250px;
+    margin-bottom: 10px;
+  }
+
+  .baners__content {
+    height: 260px;
+    padding: 10px;
+  }
+
+  .baners__content span {
+    font-size: 36px;
+    padding: 7px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    height: 60px;
+    background: linear-gradient(50deg, rgba(254,208,0,1) 57%, rgba(255,255,255,1) 100%);
+  }
+
+  .header__logo {
+    height: 60px;
+  }
+  
+  .logo-img {
+    margin: 5px 0 0 30px;
+    height: 100px;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .registration-button, 
+  .login-button {
+    display: none;
+  }
+
+  .basket-logo {
+    width: 45px;
+    height: 45px;
+  }
+
+  .product-categories {
+      height: 0;
+  }
+
+  .product-categories__container {
+    display: none;
+  }
+
+  .baners {
+    height: 160px;
+    margin-bottom: 10px;
+  }
+
+  .baners__content {
+    height: 160px;
+    padding: 10px;
+  }
+
+  .baners__content span {
+    font-size: 20px;
+    padding: 6px;
+  }
+
+  .product-section__container {
+    flex-wrap: wrap;
+  }
+
+  .product-cards {
+    width: 45%;
+    margin: 10px 5px;
+  }
+
+  .card-link {
+    font-size: 12px;
+  }
+
+  .img-cards {
+    margin-bottom: 5px;
+  }
+
+  .sale-section {
+    height: auto;
+  }
+
+  .sale-section__header {
+    text-align: center;
+    font-size: 18px;
+    color: #fe7b5a;
+    padding: 10px 0;
+    background-color: var(--color-five);
+    margin: 10px 0;
+  }
+
+  .sale-section__container {
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .sale-section__product {
+    width: 30%;
+    padding: 0;
+  }
+
+  .sale-section__name-produkt {
+    font-size: 12px;
+    height: 30px;
+    padding-top: 0px;
+    text-align: center;
+    color: var(--color-four);
+    transition: 0.3s ease;
+  }
+
+  .discount {
+    top: -92px;
+  }
+
+  .benefit {
+    width: 24%;
+  }
+
+  .benefit:last-child {
+    margin-bottom: 15px;
+  }
+
+  .benefit-text {
+    font-size: 12px;
+    margin: 6px 0 10px 0;
+  }
+
+  .payu,
+  .master-card {
+    width: 100%;
+    height: 15px;
+  }
+  .visa,
+  .fedex,
+  .dhl,
+  .gls {
+    width: 150px;
+    height: 10px;
+  }
+
+  .footer {
+    height: 40px;
+  }
+  .footer__container {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .git-container {
+    width: 100px;
+    margin-left: 5px;
+  }
+
+  .rss-container {
+    justify-content: center;
+    width: 100px;
+    margin-right: 0px;
+  }
+
+  .footer__autor {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer__year {
+    padding: 0;
+    font-size: 20px;
+    margin-right: 0px;
+  }
+
+  .footer__github a,
+  .footer__rss,
+  .footer__github {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+@media (max-width: 550px) {
+  .benefit {
+    width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    height: 50px;
+    background: linear-gradient(50deg, rgba(254,208,0,1) 57%, rgba(255,255,255,1) 100%);
+  }
+
+  .header__logo {
+    height: 50px;
+  }
+  
+  .logo-img {
+    margin: 5px 0 0 30px;
+    height: 90px;
+  }
+
+  .basket-logo {
+    width: 35px;
+    height: 35px;
+  }
+
+  .baners {
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .baners__content {
+    height: 100px;
+    padding: 10px;
+  }
+
+  .baners__content span {
+    font-size: 16px;
+    padding: 2px;
+  }
+
+  .product-cards {
+    width: 42%;
+    margin: 10px 5px;
+  }
+
+  .card-link {
+    font-size: 11px;
+  }
+
+  .sale-section__header {
+    font-size: 16px;
+  }
+
+  .sale-section__product {
+    width: 45%;
+    padding: 0;
+  }
+
+  .sale-section__name-produkt {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 320px) {
+  .header {
+    height: 40px;
+    background: linear-gradient(50deg, rgba(254,208,0,1) 57%, rgba(255,255,255,1) 100%);
+  }
+
+  .header__logo {
+    height: 40px;
+  }
+  
+  .logo-img {
+    margin: 5px 0 0 30px;
+    height: 70px;
+  }
+
+  .basket-logo {
+    width: 25px;
+    height: 25px;
+  }
+
+  .baners {
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .baners__content {
+    height: 100px;
+    padding: 10px;
+  }
+
+  .baners__content span {
+    font-size: 16px;
+    padding: 0;
+  }
+}
