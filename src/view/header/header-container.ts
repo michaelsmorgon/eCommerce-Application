@@ -26,9 +26,15 @@ export default class HeaderContainer {
       classNames: ['user-panel'],
     });
 
+    const overlay = new ElementCreator({
+      tag: 'div',
+      classNames: ['overlay'],
+    });
+
     headerContainer.addInnerElement(headerLogo);
     headerContainer.addInnerElement(headerCenter);
     headerContainer.addInnerElement(headerUser);
+    headerContainer.addInnerElement(overlay);
 
     header.addInnerElement(headerContainer);
     parentElement.classList.add('body');

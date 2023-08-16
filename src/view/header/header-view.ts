@@ -12,6 +12,6 @@ export default class Header {
     new Menu().create(headerCenter);
     new UserPanel().create(headerUser);
 
-    this.burgerMenu = new BurgerMenu('.burger-menu', '.header__center');
+    this.burgerMenu = new BurgerMenu('.burger-menu', '.header__center', '.overlay');
   }
 }
