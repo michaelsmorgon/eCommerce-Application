@@ -10,7 +10,7 @@
 .login-content {
   min-width: 320px;
   width: 30%;
-  height: 370px;
+  height: 390px;
   margin: calc((100vh - 150px - 375px)/2);
   background: #fee772;;
   border: 1px solid #fee772;
@@ -73,7 +73,16 @@
   height: 30px;
   margin: 5px auto 20px auto;
 }
-#login-content-Error{
+#login-content-Error {
   color: red;
   font-weight: bold;
+  text-align: center;
+}
+
+.icono-eye {
+  color: black;
+
+}
+.icono-eye.active{
+  opacity: 0.2;
 }

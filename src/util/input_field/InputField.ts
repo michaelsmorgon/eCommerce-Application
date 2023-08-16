@@ -51,7 +51,9 @@ export class InputField extends ElementCreator {
 
   protected setCallback(callback: ICallbackFunc | null = null): void {
     if (typeof callback === 'function') {
-      this.element.addEventListener('keyup', (event: Event): void => callback(event));
+      this.element.addEventListener('keyup', (event: Event): void => {
+        callback(event);
+      });
     }
   }
 }
