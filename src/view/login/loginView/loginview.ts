@@ -3,15 +3,20 @@ import { ctpClient } from '../../../api/BuilderClient';
 import './login.css';
 import ElementCreator, { ElementConfig } from '../../../util/ElementCreator';
 import { InputField } from '../../../util/input_field/InputField';
+import { LoginFieldValidator } from './LoginFieldsValidation';
 
 export default class LoginView extends ElementCreator {
+  fieldChecker: LoginFieldValidator;
+
   constructor() {
     const params = {
-      tag: 'main',
+      tag: 'section',
       classNames: ['main-login-view'],
     };
     super(params);
     this.configureView();
+
+    this.fieldChecker = new LoginFieldValidator();
   }
 
   async checkCustomerExists(email: string, password: string): Promise<ClientResponse<CustomerSignInResult> | null> {
@@ -29,13 +34,16 @@ export default class LoginView extends ElementCreator {
     }
   }
 
-  configureFields(): ElementConfig[] {
+  configureInputFields(): ElementConfig[] {
     return [
       {
         tag: 'input',
         classNames: ['input-field'],
         placeholderText: 'Enter your email',
         attributes: [{ name: 'id', value: 'loginEmail' }],
+        callback: (): void => {
+          this.handleEmailInputValidation();
+        },
       },
       {
         tag: 'input',
@@ -45,6 +53,19 @@ export default class LoginView extends ElementCreator {
           { name: 'id', value: 'loginPassword' },
           { name: 'type', value: 'password' },
         ],
+        callback: (): void => {
+          this.handlePasswordInputValidation();
+        },
+      },
+    ];
+  }
+
+  configureOtherFields(): ElementConfig[] {
+    return [
+      {
+        tag: 'div',
+        classNames: ['icono-eye'],
+        callback: this.toggler.bind(this),
       },
       {
         tag: 'span',
@@ -66,6 +87,10 @@ export default class LoginView extends ElementCreator {
         ],
       },
     ];
+  }
+
+  configureFields(): ElementConfig[] {
+    return [...this.configureInputFields(), ...this.configureOtherFields()];
   }
 
   configureView(): void {
@@ -107,6 +132,21 @@ export default class LoginView extends ElementCreator {
     creatorLabel.addInnerElement(creatorLogButton.getElement());
   }
 
+  toggler(): void {
+    const passwordInput = document.getElementById('loginPassword') as HTMLInputElement;
+    const eyeIco = document.querySelector('.icono-eye');
+
+    if (passwordInput && eyeIco) {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIco.classList.add('active');
+      } else {
+        passwordInput.type = 'password';
+        eyeIco.classList.remove('active');
+      }
+    }
+  }
+
   async loginButtonCallback(): Promise<void> {
     const emailInput = document.getElementById('loginEmail') as HTMLInputElement;
     const passwordInput = document.getElementById('loginPassword') as HTMLInputElement;
@@ -131,6 +171,32 @@ export default class LoginView extends ElementCreator {
         emailInput.style.border = 'none';
         passwordInput.style.border = 'none';
       });
+    }
+  }
+
+  private handlePasswordInputValidation(): void {
+    const passInput = document.getElementById('loginPassword') as HTMLInputElement;
+    const errorMessageSpan = document.getElementById('login-content-Error') as HTMLInputElement;
+    if (passInput) {
+      if (!this.fieldChecker.validatePass(passInput.value)) {
+        errorMessageSpan.textContent =
+          'Password should contain a combination of uppercase and lowercase letter and number, Password length also must be at least 8 characters!';
+      } else {
+        errorMessageSpan.textContent = '';
+      }
+    }
+  }
+
+  private handleEmailInputValidation(): void {
+    const emailInput = document.getElementById('loginEmail') as HTMLInputElement;
+
+    const errorMessageSpan = document.getElementById('login-content-Error') as HTMLInputElement;
+    if (emailInput) {
+      if (!this.fieldChecker.validateEmail(emailInput.value.trim())) {
+        errorMessageSpan.textContent = 'Enter a valid email address!';
+      } else {
+        errorMessageSpan.textContent = '';
+      }
     }
   }
 }
