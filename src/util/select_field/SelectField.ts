@@ -23,9 +23,20 @@ export class SelectField extends ElementCreator {
     this.labelElement = document.createElement('label');
     this.selectElement = document.createElement('select');
 
+    this.setDisabledSelect(params);
+
     this.setCallback(params.callback);
     this.setTextContent(params.textContent);
     this.setAttributes(params.attributes);
+
+    const optionParamsDef: ElementConfig = {
+      tag: 'option',
+      classNames: [SelectFieldCSSClasses.OPTION],
+      textContent: `-- Not Selected --`,
+      attributes: [{ name: 'value', value: '-1' }],
+    };
+    const optionDef = new ElementCreator(optionParamsDef);
+    this.selectElement.append(optionDef.getElement());
 
     countriesInfo.forEach((countryInfo: ICountryInfo) => {
       const optionParams: ElementConfig = {
@@ -42,5 +53,13 @@ export class SelectField extends ElementCreator {
 
   public setTextContent(value: string = ''): void {
     this.labelElement.textContent = value;
+  }
+
+  private setDisabledSelect(params: ElementConfig): void {
+    params.attributes?.forEach((attribute: { name: string; value: string }) => {
+      if (attribute.name === 'disabled') {
+        this.selectElement.setAttribute('disabled', '');
+      }
+    });
   }
 }
