@@ -1,4 +1,33 @@
 .input-field__container {
   display: flex;
   flex-direction: column;
+  padding-bottom: 10px;
+}
+
+label {
+  color: var(--color-four);
+  display: block;
+  font-weight: bold;
+  padding: 5px;
+  padding-left: 15px;
+}
+
+input {
+  font-size: 14px;
+  color: var(--color-four);
+  background-color: aliceblue;
+  width: 98%;
+  min-height: 25px;
+  margin: 0 1%;
+  padding: 5px;
+  border: 1px solid var(--color-three);
+  border-radius: 4px;
+}
+
+input:disabled {
+  opacity: 0.7;
+}
+
+input:focus {
+background-color: #c7e1fc;
 }

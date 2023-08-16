@@ -1,8 +1,7 @@
 @import '../color.css';
 
-.registration_container {
+.registration__container {
   margin: 10px auto;
-  max-width: 320px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -15,50 +14,6 @@
   width: 150px;
   height: 30px;
   margin: 10px auto 15px auto;
-}
-
-.input-warning {
-  color: red;
-  font-weight: 600;
-  font-size: 11px;
-  padding: 3px;
-}
-
-.input-field__container {
-  height: 62px;
-}
-
-label {
-  color: var(--color-four);
-  display: block;
-  font-weight: bold;
-  padding: 5px;
-}
-
-input {
-  font-size: 14px;
-  color: var(--color-four);
-  background-color: aliceblue;
-  width: 98%;
-  min-height: 25px;
-  margin: 0 auto;
-  padding: 5px;
-  border: 1px solid var(--color-three);
-  border-radius: 4px;
-}
-
-input:focus {
-background-color: #c7e1fc;
-}
-
-.select-field__container select {
-  color: var(--color-four);
-  width: 98%;
-  min-height: 25px;
-  margin: 0 3px;
-  padding: 5px;
-  border: 1px solid var(--color-three);
-  border-radius: 4px;
 }
 
 .reg-input:invalid {
