@@ -1,4 +1,5 @@
 import ElementCreator, { ElementConfig } from '../../../util/ElementCreator';
+import './warning.css';
 
 export class Warning {
   public static REG_INPUT_INVALID = 'input-invalid';
