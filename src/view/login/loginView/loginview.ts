@@ -57,44 +57,41 @@ export default class LoginView extends ElementCreator {
           this.handlePasswordInputValidation();
         },
       },
-    ]
+    ];
   }
-  
-configureOtherFields(): ElementConfig[] {
-  return [
-      {
-          tag: 'div',
-          classNames: ['icono-eye'],
-          callback: this.toggler.bind(this),
-      },
-      {
-          tag: 'span',
-          classNames: ['login-content-Error'],
-          attributes: [{ name: 'id', value: 'login-content-Error' }],
-      },
-      {
-          tag: 'span',
-          classNames: ['login-content-TextSignup'],
-          textContent: "Don't have an account yet?",
-      },
-      {
-          tag: 'a',
-          classNames: ['login-content-loginSignup'],
-          textContent: 'Sign up',
-          attributes: [
-              { name: 'target', value: '_blank' },
-              { name: 'href', value: 'http://www.cnn.com/' },
-          ],
-      },
-  ];
-}
 
-configureFields(): ElementConfig[] {
-  return [
-      ...this.configureInputFields(),
-      ...this.configureOtherFields(),
-  ];
-}
+  configureOtherFields(): ElementConfig[] {
+    return [
+      {
+        tag: 'div',
+        classNames: ['icono-eye'],
+        callback: this.toggler.bind(this),
+      },
+      {
+        tag: 'span',
+        classNames: ['login-content-Error'],
+        attributes: [{ name: 'id', value: 'login-content-Error' }],
+      },
+      {
+        tag: 'span',
+        classNames: ['login-content-TextSignup'],
+        textContent: "Don't have an account yet?",
+      },
+      {
+        tag: 'a',
+        classNames: ['login-content-loginSignup'],
+        textContent: 'Sign up',
+        attributes: [
+          { name: 'target', value: '_blank' },
+          { name: 'href', value: 'http://www.cnn.com/' },
+        ],
+      },
+    ];
+  }
+
+  configureFields(): ElementConfig[] {
+    return [...this.configureInputFields(), ...this.configureOtherFields()];
+  }
 
   configureView(): void {
     const loginContent = {
