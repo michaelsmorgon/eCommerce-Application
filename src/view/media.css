@@ -1,4 +1,4 @@
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .baners {
     height: 250px;
     margin-bottom: 10px;
@@ -15,12 +15,16 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .header {
     height: 60px;
     background: linear-gradient(50deg, rgba(254,208,0,1) 57%, rgba(255,255,255,1) 100%);
   }
 
+  .overlay.active {
+    display: block;
+  }
+  
   .header__logo {
     height: 60px;
   }
@@ -30,13 +34,55 @@
     height: 100px;
   }
 
-  .menu {
+  .header__center {
+    position: absolute;
+    transition: all 0.3s ease 0s;
+    width: 100vw;
+    max-width: 0px;
+    top: 0px;
+    right: -360px;
+    height: 100vh;
+    background-color: var(--color-one);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .header__center.active {
+    max-width: 320px;
+    transition: all 0.3s ease 0s;
+    z-index: 4;
+    right: 0;
+  }
+
+  .menu,
+  .auth-buttons {
     display: none;
   }
 
-  .registration-button, 
-  .login-button {
-    display: none;
+  .header__center.active .menu {
+    display: flex;
+    flex-direction: column;
+    height: 120px;
+    justify-content: space-around;
+  }
+
+  .menu a {
+    font-size: 18px;
+  }
+  
+  .header__center.active .auth-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 40%;
+    height: 80px;
+    margin-bottom: 130px;
+  }
+
+  .auth-buttons button {
+    height: 30px;
   }
 
   .basket-logo {
@@ -44,26 +90,26 @@
     height: 45px;
   }
 
-  .product-categories {
-      height: 0;
+  .burger-menu {
+    display: block;
   }
 
-  .product-categories__container {
+  .product-categories {
     display: none;
   }
 
   .baners {
-    height: 160px;
+    height: 185px;
     margin-bottom: 10px;
   }
 
   .baners__content {
-    height: 160px;
+    height: 185px;
     padding: 10px;
   }
 
   .baners__content span {
-    font-size: 20px;
+    font-size: 32px;
     padding: 6px;
   }
 
@@ -184,8 +230,34 @@
 }
 
 @media (max-width: 550px) {
+  .baners {
+    height: 160px;
+    margin-bottom: 10px;
+  }
+
+  .baners__content {
+    height: 160px;
+    padding: 10px;
+  }
+
+  .baners__content span {
+    font-size: 24px;
+    padding: 4px;
+  }
+
+
   .benefit {
     width: 50%;
+  }
+  .burger-menu {
+    width: 22px;
+    height: 18px;
+  }
+
+  .burger-menu span,
+  .burger-menu::before,
+  .burger-menu::after {
+    height: 10%;
   }
 }
 
@@ -263,8 +335,8 @@
   }
 
   .basket-logo {
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
   }
 
   .baners {
@@ -280,5 +352,16 @@
   .baners__content span {
     font-size: 16px;
     padding: 0;
+  }
+
+  .burger-menu {
+    width: 22px;
+    height: 16px;
+  }
+
+  .burger-menu span,
+  .burger-menu::before,
+  .burger-menu::after {
+    height: 10%;
   }
 }

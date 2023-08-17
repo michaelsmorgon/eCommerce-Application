@@ -1,4 +1,5 @@
 import ElementCreator from '../../util/ElementCreator';
+import AuthButtons from './header-buttons';
 
 function handleLinkClick(clickedLink: HTMLElement | null): void {
   const menuLinks = document.querySelectorAll('.menu a');
@@ -53,6 +54,8 @@ export default class Menu {
       }
     });
 
+    const headerButtons = new AuthButtons().create();
     headerCenter.addInnerElement(headerMenu);
+    headerCenter.addInnerElement(headerButtons);
   }
 }

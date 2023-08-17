@@ -34,6 +34,7 @@ export default class Main {
     section.addInnerElement(benefitsSectionCreator);
 
     main.addInnerElement(section);
+
     parentElement.appendChild(main.getElement());
 
     return main;
