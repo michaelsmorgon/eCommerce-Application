@@ -20,16 +20,17 @@ const AddressCaptions = {
 };
 
 export class RegistrationView extends View {
+
   constructor() {
     const params: ViewParams = {
       tag: 'form',
       classNames: [CssClassesForm.REGISTRATION_CONTAINER],
     };
     super(params);
-    this.configureView();
+     this.create();
   }
 
-  private configureView(): void {
+  create(): void {
     this.addCaption(AddressCaptions.COMMON_CAPTION);
     const userInfoView = new UserInfoView().getHtmlElement();
     this.viewElementCreator.addInnerElement(userInfoView);

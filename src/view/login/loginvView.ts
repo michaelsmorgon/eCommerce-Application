@@ -1,9 +1,13 @@
 import LoginView from './loginView/loginview';
 
-export default class App {
-  static displayLevel(): void {
+export default class LoginApp {
+  static create(): void {
     const view = new LoginView();
-    const main = document.querySelector('.main');
-    main?.appendChild(view.getElement());
+    const main = document.querySelector('.mainView');
+    if (!main) {
+      console.log();
+      return;
+    }
+    main.innerHTML = view.getElement().outerHTML;
   }
 }

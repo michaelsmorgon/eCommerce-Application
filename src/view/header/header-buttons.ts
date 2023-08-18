@@ -1,6 +1,4 @@
 import ElementCreator from '../../util/ElementCreator';
-import App from '../login/loginvView';
-import { RegistrationView } from '../registration/RegistrationView';
 
 export default class AuthButtons {
   create(): ElementCreator {
@@ -10,11 +8,13 @@ export default class AuthButtons {
     });
 
     const loginButton = new ElementCreator({
-      tag: 'button',
+      tag: 'a',
       classNames: ['login-button'],
       textContent: 'Login',
-      callback: (): void => {
-        this.displayLoginHandler();
+      attributes: [{ name: 'href', value: '/login' }],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        this.route(mouseEvent);
       },
     });
 
@@ -26,10 +26,16 @@ export default class AuthButtons {
     });
 
     const registrationButton = new ElementCreator({
-      tag: 'button',
+      tag: 'a',
       classNames: ['registration-button'],
       textContent: 'Registration',
-      callback: () => this.displayRegistrationHandler(),
+      attributes: [
+        { name: 'href', value: '/registration' },
+      ],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        this.route(mouseEvent);
+      },
     });
 
     headerButtons.addInnerElement(loginButton);
@@ -38,15 +44,12 @@ export default class AuthButtons {
 
     return headerButtons;
   }
+  route(event: MouseEvent): void {
+    const target = event.target as HTMLAnchorElement;
+    if (!target || !target.href) {
+      return;
+    }
 
-  public displayRegistrationHandler(): void {
-    const regView = new RegistrationView();
-    const main = document.querySelector('.main');
-
-    main?.appendChild(regView.getHtmlElement());
-  }
-
-  displayLoginHandler(): void {
-    App.displayLevel();
+    window.history.pushState({}, '', target.href);
   }
 }
