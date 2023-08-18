@@ -20,14 +20,13 @@ const AddressCaptions = {
 };
 
 export class RegistrationView extends View {
-
   constructor() {
     const params: ViewParams = {
       tag: 'form',
       classNames: [CssClassesForm.REGISTRATION_CONTAINER],
     };
     super(params);
-     this.create();
+    this.create();
   }
 
   create(): void {

@@ -11,6 +11,3 @@ export default class RegistrationApp {
     main.innerHTML = view.getHtmlElement().outerHTML;
   }
 }
-
-
-

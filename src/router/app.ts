@@ -8,22 +8,24 @@ import RegistrationApp from '../view/registration/displayRegistration';
 
 export class App {
   footer: Footer;
-  main: typeof Main; 
+
+  main: typeof Main;
+
   header: Header;
 
   constructor() {
     this.header = new Header();
-    this.main = this.getBody(); 
+    this.main = this.getBody();
     this.footer = new Footer();
     console.log(window.location.pathname);
   }
 
-  urlChange() {
+  urlChange(): void {
     this.main = this.getBody();
-    this.main.create(); 
+    this.main.create();
   }
 
-  getBody() {
+  getBody(): typeof Main | typeof LoginApp | typeof RegistrationApp {
     switch (document.location.pathname) {
       case '/':
         return Main;
@@ -44,14 +46,13 @@ export class App {
     };
     const main = new ElementCreator(params);
     document.body.appendChild(main.getElement());
-    this.main.create(); 
+    this.main.create();
     this.footer.create();
 
-    window.onpopstate = (e) => {
+    window.onpopstate = (e): void => {
       e.preventDefault();
       console.log(window.location.pathname);
       this.urlChange();
     };
   }
 }
-

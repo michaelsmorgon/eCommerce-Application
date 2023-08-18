@@ -5,7 +5,7 @@ export default class HeaderLogo {
     const logoLink = new ElementCreator({
       tag: 'a',
       classNames: [],
-      attributes: [{ name: 'href', value: '/' },],
+      attributes: [{ name: 'href', value: '/' }],
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
         this.route(mouseEvent);

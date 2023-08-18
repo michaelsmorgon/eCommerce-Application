@@ -29,21 +29,18 @@ export default class AuthButtons {
       tag: 'a',
       classNames: ['registration-button'],
       textContent: 'Registration',
-      attributes: [
-        { name: 'href', value: '/registration' },
-      ],
+      attributes: [{ name: 'href', value: '/registration' }],
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
         this.route(mouseEvent);
       },
     });
-
     headerButtons.addInnerElement(loginButton);
     headerButtons.addInnerElement(logoutButton);
     headerButtons.addInnerElement(registrationButton);
-
     return headerButtons;
   }
+
   route(event: MouseEvent): void {
     const target = event.target as HTMLAnchorElement;
     if (!target || !target.href) {

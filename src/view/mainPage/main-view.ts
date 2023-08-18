@@ -40,6 +40,5 @@ export default class Main {
       return;
     }
     mainView.innerHTML = main.getElement().outerHTML;
-    
   }
 }
