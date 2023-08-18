@@ -2,8 +2,10 @@
 @import '../mainPage/category-products/category.css';
 @import '../mainPage/benefits/benefits.css';
 @import '../mainPage/sale/sale.css';
+@import '../page-404/page404.css';
 
-.main {
+.not-found-container,
+.mainView {
   min-height: calc(100vh - 115px);
 }
 
