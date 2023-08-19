@@ -8,6 +8,9 @@ export default class RegistrationApp {
       console.log();
       return;
     }
-    main.innerHTML = view.getHtmlElement().outerHTML;
+    // main.innerHTML = view.getHtmlElement().outerHTML;
+
+    main.innerHTML = '';
+    main.appendChild(view.getHtmlElement());
   }
 }

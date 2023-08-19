@@ -8,6 +8,8 @@ export default class LoginApp {
       console.log();
       return;
     }
-    main.innerHTML = view.getElement().outerHTML;
+    main.innerHTML = '';
+    // main.innerHTML = view.getElement().outerHTML;
+    main.appendChild(view.getElement());
   }
 }
