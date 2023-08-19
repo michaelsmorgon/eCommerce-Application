@@ -1,3 +1,4 @@
+import { route } from '../../router/router';
 import ElementCreator from '../../util/ElementCreator';
 
 export default class AccountLink {
@@ -5,7 +6,11 @@ export default class AccountLink {
     const accountLink = new ElementCreator({
       tag: 'a',
       classNames: [],
-      attributes: [{ name: 'href', value: '#account' }],
+      attributes: [{ name: 'href', value: '/account' }],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        route(mouseEvent);
+      },
     });
 
     const accountImage = new ElementCreator({

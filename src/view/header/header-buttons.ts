@@ -1,4 +1,5 @@
 import ElementCreator from '../../util/ElementCreator';
+import { route } from '../../router/router';
 
 export default class AuthButtons {
   create(): ElementCreator {
@@ -14,7 +15,7 @@ export default class AuthButtons {
       attributes: [{ name: 'href', value: '/login' }],
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
-        this.route(mouseEvent);
+        route(mouseEvent);
       },
     });
 
@@ -32,21 +33,12 @@ export default class AuthButtons {
       attributes: [{ name: 'href', value: '/registration' }],
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
-        this.route(mouseEvent);
+        route(mouseEvent);
       },
     });
     headerButtons.addInnerElement(loginButton);
     headerButtons.addInnerElement(logoutButton);
     headerButtons.addInnerElement(registrationButton);
     return headerButtons;
-  }
-
-  route(event: MouseEvent): void {
-    const target = event.target as HTMLAnchorElement;
-    if (!target || !target.href) {
-      return;
-    }
-
-    window.history.pushState({}, '', target.href);
   }
 }

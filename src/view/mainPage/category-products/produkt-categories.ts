@@ -1,3 +1,4 @@
+import { route } from '../../../router/router';
 import ElementCreator from '../../../util/ElementCreator';
 import SaleLink from '../sale/sale-link';
 import { categoryConfig } from './produkt-categories-config';
@@ -19,9 +20,13 @@ export default class ProductCategories {
         tag: 'a',
         classNames: [],
         attributes: [
-          { name: 'href', value: `#${category.name}` },
+          { name: 'href', value: `/${category.name}` },
           { name: 'index', value: `${index + 1}` },
         ],
+        callback: (event: Event): void => {
+          const mouseEvent = event as MouseEvent;
+          route(mouseEvent);
+        },
         textContent: category.name,
       });
       productCategoriesContainer.addInnerElement(link);

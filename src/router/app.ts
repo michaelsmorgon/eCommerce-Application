@@ -4,6 +4,7 @@ import Footer from '../view/footer/footer-view';
 import Header from '../view/header/header-view';
 import LoginApp from '../view/login/loginvView';
 import Main from '../view/mainPage/main-view';
+import NotFoundPageApp from '../view/page-404/page404View';
 import RegistrationApp from '../view/registration/displayRegistration';
 
 export class App {
@@ -34,7 +35,7 @@ export class App {
       case '/registration':
         return RegistrationApp;
       default:
-        return Main;
+        return NotFoundPageApp;
     }
   }
 
@@ -49,8 +50,7 @@ export class App {
     this.main.create();
     this.footer.create();
 
-    window.onpopstate = (e): void => {
-      e.preventDefault();
+    window.onpopstate = (): void => {
       console.log(window.location.pathname);
       this.urlChange();
     };

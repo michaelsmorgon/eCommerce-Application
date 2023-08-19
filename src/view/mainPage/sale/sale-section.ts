@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import { route } from '../../../router/router';
 import ElementCreator from '../../../util/ElementCreator';
 import { saleConfig } from './sale-config';
 
@@ -27,9 +28,13 @@ export default class SaleMainSektion {
         tag: 'a',
         classNames: ['sale-section__sele-link'],
         attributes: [
-          { name: 'href', value: `#${category.name}` },
+          { name: 'href', value: `/${category.name}` },
           { name: 'index', value: `${index + 1}` },
         ],
+        callback: (event: Event): void => {
+          const mouseEvent = event as MouseEvent;
+          route(mouseEvent);
+        },
       });
 
       const saleImg = new ElementCreator({

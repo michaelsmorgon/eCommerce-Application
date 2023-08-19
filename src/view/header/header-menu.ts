@@ -1,3 +1,4 @@
+import { route } from '../../router/router';
 import ElementCreator from '../../util/ElementCreator';
 import AuthButtons from './header-buttons';
 
@@ -24,28 +25,27 @@ export default class Menu {
       tag: 'nav',
       classNames: ['menu'],
     });
-
     const menuLinks = [
-      { text: 'Catalog', href: '#catalog' },
-      { text: 'About Us', href: '#about_as' },
+      { text: 'Catalog', href: '/catalog' },
+      { text: 'About Us', href: '/about_as' },
     ];
-
     menuLinks.forEach((linkInfo) => {
       const link = new ElementCreator({
         tag: 'a',
         attributes: [{ name: 'href', value: linkInfo.href }],
         classNames: [],
         textContent: linkInfo.text,
+        callback: (event: Event): void => {
+          const mouseEvent = event as MouseEvent;
+          route(mouseEvent);
+        },
       });
-
-      link.getElement().addEventListener('click', (event) => {
-        event.preventDefault();
+      link.getElement().addEventListener('click', () => {
         handleLinkClick(link.getElement());
       });
 
       headerMenu.addInnerElement(link);
     });
-
     document.addEventListener('click', (event) => {
       const clickedElement = event.target as HTMLElement;
 

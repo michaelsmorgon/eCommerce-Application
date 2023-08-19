@@ -4,6 +4,7 @@ import './login.css';
 import ElementCreator, { ElementConfig } from '../../../util/ElementCreator';
 import { InputField } from '../../../util/input_field/InputField';
 import { LoginFieldValidator } from './LoginFieldsValidation';
+import { route } from '../../../router/router';
 
 export default class LoginView extends ElementCreator {
   fieldChecker: LoginFieldValidator;
@@ -81,10 +82,11 @@ export default class LoginView extends ElementCreator {
         tag: 'a',
         classNames: ['login-content-loginSignup'],
         textContent: 'Sign up',
-        attributes: [
-          { name: 'target', value: '_blank' },
-          { name: 'href', value: 'http://www.cnn.com/' },
-        ],
+        attributes: [{ name: 'href', value: '/registration' }],
+        callback: (event: Event): void => {
+          const mouseEvent = event as MouseEvent;
+          route(mouseEvent);
+        },
       },
     ];
   }
