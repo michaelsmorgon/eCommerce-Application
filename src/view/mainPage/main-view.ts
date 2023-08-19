@@ -7,10 +7,9 @@ import MetodsSectionCreator from './benefits/metods-creator';
 import SaleMainSektion from './sale/sale-section';
 
 export default class Main {
-  create(): ElementCreator {
-    const parentElement = document.body;
+  static create(): void {
     const main = new ElementCreator({
-      tag: 'main',
+      tag: 'section',
       classNames: ['main'],
     });
 
@@ -35,8 +34,11 @@ export default class Main {
 
     main.addInnerElement(section);
 
-    parentElement.appendChild(main.getElement());
-
-    return main;
+    const mainView = document.querySelector('.mainView');
+    if (!mainView) {
+      console.log();
+      return;
+    }
+    mainView.innerHTML = main.getElement().outerHTML;
   }
 }

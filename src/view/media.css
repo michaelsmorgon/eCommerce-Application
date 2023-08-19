@@ -21,6 +21,12 @@
     background: linear-gradient(50deg, rgba(254,208,0,1) 57%, rgba(255,255,255,1) 100%);
   }
 
+  .not-found-container,
+  .mainView,
+  .main-login-view {
+    min-height: calc(100vh - 100px);
+  }
+
   .overlay.active {
     display: block;
   }
@@ -245,7 +251,6 @@
     padding: 4px;
   }
 
-
   .benefit {
     width: 50%;
   }
@@ -258,6 +263,14 @@
   .burger-menu::before,
   .burger-menu::after {
     height: 10%;
+  }
+
+  .not-found-title {
+    font-size: 22px;
+  }
+  
+  .not-found-message {
+    font-size: 22px;
   }
 }
 
@@ -279,6 +292,12 @@
   .basket-logo {
     width: 35px;
     height: 35px;
+  }
+
+  .not-found-container,
+  .mainView,
+  .main-login-view {
+    min-height: calc(100vh - 90px);
   }
 
   .baners {
@@ -337,6 +356,12 @@
   .basket-logo {
     width: 28px;
     height: 28px;
+  }
+
+  .not-found-container,
+  .mainView,
+  .main-login-view {
+    min-height: calc(100vh - 80px);
   }
 
   .baners {
