@@ -135,3 +135,25 @@ button:active {
   background-color: var(--color-three);
   border: var(--color-three) 1px solid;
 }
+
+.auth-buttons a {
+  margin-left: 5px;
+  padding: 3px 5px;
+  border-radius: 3px;
+  text-align: center;
+  color: var(--color-one);
+  font-weight: bold;
+  border: var(--color-two)  1px solid;
+  background-color: var(--color-two);
+  transition: 0.3s ease;
+}
+
+.auth-buttons a:hover {
+  color: #ffffff;
+  transition: 0.3s ease;
+}
+
+.auth-buttons a:active {
+  background-color: var(--color-three);
+  border: var(--color-three) 1px solid;
+}
