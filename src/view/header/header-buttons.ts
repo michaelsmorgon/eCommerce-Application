@@ -3,42 +3,56 @@ import { route } from '../../router/router';
 
 export default class AuthButtons {
   create(): ElementCreator {
-    const headerButtons = new ElementCreator({
-      tag: 'div',
-      classNames: ['auth-buttons'],
-    });
+    const headerButtons = this.createHeaderButtons();
+    const loginButton = this.createButton('Login', '/login', 'login', './assets/icons/login-icon.png');
+    const logoutButton = this.createButton('Logout', '/logout', 'logout', './assets/icons/logout-icon.png');
+    const registrationButton = this.createButton(
+      'Registration',
+      '/registration',
+      'registration',
+      './assets/icons/registration-1.png'
+    );
 
-    const loginButton = new ElementCreator({
-      tag: 'a',
-      classNames: ['login-button'],
-      textContent: 'Login',
-      attributes: [{ name: 'href', value: '/login' }],
-      callback: (event: Event): void => {
-        const mouseEvent = event as MouseEvent;
-        route(mouseEvent);
-      },
-    });
-
-    const logoutButton = new ElementCreator({
-      tag: 'button',
-      classNames: ['logout-button'],
-      textContent: 'Logout',
-      callback: (): void => {},
-    });
-
-    const registrationButton = new ElementCreator({
-      tag: 'a',
-      classNames: ['registration-button'],
-      textContent: 'Registration',
-      attributes: [{ name: 'href', value: '/registration' }],
-      callback: (event: Event): void => {
-        const mouseEvent = event as MouseEvent;
-        route(mouseEvent);
-      },
-    });
     headerButtons.addInnerElement(loginButton);
     headerButtons.addInnerElement(logoutButton);
     headerButtons.addInnerElement(registrationButton);
+
     return headerButtons;
+  }
+
+  private createHeaderButtons(): ElementCreator {
+    return new ElementCreator({
+      tag: 'div',
+      classNames: ['auth-buttons'],
+    });
+  }
+
+  private createButton(text: string, href: string, iconClass: string, iconSrc: string): ElementCreator {
+    const button = new ElementCreator({
+      tag: 'a',
+      classNames: [`${iconClass}-button`],
+      textContent: text,
+      attributes: [{ name: 'href', value: href }],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        route(mouseEvent);
+      },
+    });
+
+    const icon = new ElementCreator({
+      tag: 'div',
+      classNames: [iconClass],
+    });
+
+    const img = new ElementCreator({
+      tag: 'img',
+      classNames: ['icon'],
+      attributes: [{ name: 'src', value: iconSrc }],
+    });
+
+    icon.addInnerElement(img);
+    button.addInnerElement(icon);
+
+    return button;
   }
 }
