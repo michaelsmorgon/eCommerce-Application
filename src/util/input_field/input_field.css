@@ -32,7 +32,7 @@ input:focus {
 background-color: #c7e1fc;
 }
 
-.input-field__container > label::before {
+.registration__container .input-field__container > label::before {
   content: '* ';
   color: var(--color-eight);
 }
