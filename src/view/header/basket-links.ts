@@ -1,3 +1,4 @@
+import { route } from '../../router/router';
 import ElementCreator from '../../util/ElementCreator';
 
 export default class BasketLink {
@@ -5,7 +6,11 @@ export default class BasketLink {
     const basketLink = new ElementCreator({
       tag: 'a',
       classNames: [],
-      attributes: [{ name: 'href', value: '#basket' }],
+      attributes: [{ name: 'href', value: '/basket' }],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        route(mouseEvent);
+      },
     });
 
     const basketImage = new ElementCreator({

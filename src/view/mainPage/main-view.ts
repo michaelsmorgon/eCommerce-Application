@@ -39,6 +39,8 @@ export default class Main {
       console.log();
       return;
     }
-    mainView.innerHTML = main.getElement().outerHTML;
+    // mainView.innerHTML = main.getElement().outerHTML;
+    mainView.innerHTML = '';
+    mainView.appendChild(main.getElement());
   }
 }

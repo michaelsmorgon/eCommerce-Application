@@ -1,4 +1,5 @@
 import ElementCreator from '../../util/ElementCreator';
+import { route } from '../../router/router';
 
 export default class HeaderLogo {
   create(): ElementCreator {
@@ -7,8 +8,9 @@ export default class HeaderLogo {
       classNames: [],
       attributes: [{ name: 'href', value: '/' }],
       callback: (event: Event): void => {
+        event.preventDefault();
         const mouseEvent = event as MouseEvent;
-        this.route(mouseEvent);
+        route(mouseEvent);
       },
     });
     const logoImage = new ElementCreator({
@@ -19,7 +21,6 @@ export default class HeaderLogo {
         { name: 'alt', value: 'logo' },
       ],
     });
-
     logoLink.addInnerElement(logoImage);
 
     const headerLogo = new ElementCreator({
@@ -29,14 +30,5 @@ export default class HeaderLogo {
     headerLogo.addInnerElement(logoLink);
 
     return headerLogo;
-  }
-
-  route(event: MouseEvent): void {
-    const target = event.target as HTMLAnchorElement;
-    if (!target || !target.href) {
-      return;
-    }
-
-    window.history.pushState({}, '', target.href);
   }
 }
