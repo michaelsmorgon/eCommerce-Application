@@ -23,19 +23,13 @@ export const userInfoFields: ElementConfig[] = [
     tag: 'input',
     classNames: [RegInputClasses.REG_FIRST_NAME],
     textContent: 'First name: ',
-    attributes: [
-      { name: 'pattern', value: '^([a-zA-Z]){1,}$' },
-      { name: 'name', value: RegInputClasses.REG_FIRST_NAME },
-    ],
+    attributes: [{ name: 'name', value: RegInputClasses.REG_FIRST_NAME }],
   },
   {
     tag: 'input',
     classNames: [RegInputClasses.REG_LAST_NAME],
     textContent: 'Last name: ',
-    attributes: [
-      { name: 'pattern', value: '^([a-zA-Z]){1,}$' },
-      { name: 'name', value: RegInputClasses.REG_LAST_NAME },
-    ],
+    attributes: [{ name: 'name', value: RegInputClasses.REG_LAST_NAME }],
   },
   {
     tag: 'input',
@@ -43,7 +37,6 @@ export const userInfoFields: ElementConfig[] = [
     textContent: 'Date of birth: ',
     attributes: [
       { name: 'type', value: 'date' },
-      { name: 'min', value: '1900-01-01' },
       { name: 'name', value: RegInputClasses.REG_DATE_OF_BIRTH },
     ],
   },
@@ -54,7 +47,6 @@ export const userInfoFields: ElementConfig[] = [
     placeholderText: 'example@email.com',
     attributes: [
       { name: 'type', value: 'email' },
-      { name: 'pattern', value: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" },
       { name: 'name', value: RegInputClasses.REG_EMAIL },
       { name: 'class', value: RegInputClasses.REG_INPUT },
     ],
@@ -65,7 +57,6 @@ export const userInfoFields: ElementConfig[] = [
     textContent: 'Password: ',
     attributes: [
       { name: 'type', value: 'password' },
-      { name: 'pattern', value: '(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}' },
       { name: 'name', value: RegInputClasses.REG_PASS },
       { name: 'class', value: RegInputClasses.REG_INPUT },
     ],
