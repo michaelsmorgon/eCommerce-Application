@@ -69,16 +69,11 @@ export default class Main {
       textContent: 'About Us',
     });
     section.addInnerElement(aboutUsLink);
-    const loginButton = this.createButton('Login', '/login', 'login', './assets/icons/login-icon.png');
+    const loginButton = this.createButton('Login', '/login', 'login');
     section.addInnerElement(loginButton);
-    const logoutButton = this.createButton('Logout', '/logout', 'logout', './assets/icons/logout-icon.png');
+    const logoutButton = this.createButton('Logout', '/logout', 'logout');
     section.addInnerElement(logoutButton);
-    const registrationButton = this.createButton(
-      'Registration',
-      '/registration',
-      'registration',
-      './assets/icons/registration-1.png'
-    );
+    const registrationButton = this.createButton('Registration', '/registration', 'registration');
     section.addInnerElement(registrationButton);
 
     const mainView = document.querySelector('.mainView');
@@ -89,7 +84,7 @@ export default class Main {
     mainView.appendChild(section.getElement());
   }
 
-  private static createButton(text: string, href: string, iconClass: string, iconSrc: string): ElementCreator {
+  private static createButton(text: string, href: string, iconClass: string): ElementCreator {
     const button = new ElementCreator({
       tag: 'a',
       classNames: [`${iconClass}-button`],
@@ -104,12 +99,6 @@ export default class Main {
       tag: 'div',
       classNames: [iconClass],
     });
-    const img = new ElementCreator({
-      tag: 'img',
-      classNames: ['icon'],
-      attributes: [{ name: 'src', value: iconSrc }],
-    });
-    icon.addInnerElement(img);
     button.addInnerElement(icon);
 
     return button;

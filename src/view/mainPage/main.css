@@ -74,3 +74,21 @@
   background-color: var(--color-three);
   border: var(--color-three) 1px solid;
 }
+
+.login {
+  background: url(/src/assets/icons/login-icon.png);
+  background-position: center;
+  background-size: contain;
+}
+
+.logout {
+  background: url(/src/assets/icons/logout-icon.png);
+  background-position: center;
+  background-size: contain;
+}
+
+.registration {
+  background: url(/src/assets/icons/registration-1.png);
+  background-position: center;
+  background-size: contain;
+}
