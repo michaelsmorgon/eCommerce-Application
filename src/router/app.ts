@@ -18,7 +18,6 @@ export class App {
     this.header = new Header();
     this.main = this.getBody();
     this.footer = new Footer();
-    console.log(window.location.pathname);
   }
 
   urlChange(): void {
@@ -51,7 +50,6 @@ export class App {
     this.footer.create();
 
     window.onpopstate = (): void => {
-      console.log(window.location.pathname);
       this.urlChange();
     };
   }
