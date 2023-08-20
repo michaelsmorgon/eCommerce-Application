@@ -37,3 +37,40 @@
   text-shadow: 3px 3px 4px #3c4144;
   padding: 10px 0;
 }
+
+.main-page {
+  width: 120px;
+  margin: 0px auto;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 260px;
+ }
+
+
+.main-page a {
+  width: 120px;
+  height: 30px;
+  margin: 5px 5px;
+  border-radius: 3px;
+  text-align: center;
+  color: var(--color-one);
+  font-weight: bold;
+  border: var(--color-two)  1px solid;
+  background-color: var(--color-two);
+  transition: 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.main-page a:hover {
+  color: #ffffff;
+  transition: 0.3s ease;
+}
+
+.main-page a:active {
+  background-color: var(--color-three);
+  border: var(--color-three) 1px solid;
+}
