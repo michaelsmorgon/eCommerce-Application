@@ -31,3 +31,8 @@ input:disabled {
 input:focus {
 background-color: #c7e1fc;
 }
+
+.input-field__container > label::before {
+  content: '* ';
+  color: var(--color-eight);
+}

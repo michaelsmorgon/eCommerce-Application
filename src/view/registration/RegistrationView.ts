@@ -7,6 +7,7 @@ import './registration-view.css';
 import { Customer } from '../../api/Customer';
 import { UserInfoView } from './user-view/UserInfoView';
 import { UserAddressView } from './user-view/UserAddressView';
+import { route } from '../../router/router';
 
 const CssClassesForm = {
   REGISTRATION_CONTAINER: 'registration__container',
@@ -36,6 +37,7 @@ export class RegistrationView extends View {
     const userAddressView = new UserAddressView().getHtmlElement();
     this.viewElementCreator.addInnerElement(userAddressView);
     this.addSubmitBtn();
+    this.addLoginBtn();
   }
 
   private addCaption(caption: string): void {
@@ -52,13 +54,36 @@ export class RegistrationView extends View {
     const params: ElementConfig = {
       tag: 'button',
       classNames: [CssClassesForm.REGISTRATION_BTN],
-      textContent: 'Continue',
+      textContent: 'Sign Up',
       attributes: [{ name: 'type', value: 'submit' }],
       callback: async (event: Event) => this.submitBtnHandler(event),
     };
     const submitBtn = new ElementCreator(params);
     const submitBtnElement = submitBtn.getElement();
     this.viewElementCreator.addInnerElement(submitBtnElement);
+  }
+
+  private addLoginBtn(): void {
+    const spanParams: ElementConfig = {
+      tag: 'span',
+      classNames: ['login-content-TextSignup'],
+      textContent: 'Already have an account?',
+    };
+    const spanText = new ElementCreator(spanParams);
+    this.viewElementCreator.addInnerElement(spanText.getElement());
+
+    const params: ElementConfig = {
+      tag: 'a',
+      classNames: ['login-content-loginSignup'],
+      textContent: 'Login',
+      attributes: [{ name: 'href', value: '/login' }],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        route(mouseEvent);
+      },
+    };
+    const loginBtn = new ElementCreator(params);
+    this.viewElementCreator.addInnerElement(loginBtn.getElement());
   }
 
   private async submitBtnHandler(event: Event): Promise<void> {
