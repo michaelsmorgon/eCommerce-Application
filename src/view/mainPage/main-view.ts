@@ -71,7 +71,7 @@ export default class Main {
     section.addInnerElement(aboutUsLink);
     const loginButton = this.createButton('Login', '/login', 'login');
     section.addInnerElement(loginButton);
-    const logoutButton = this.createButton('Logout', '/logout', 'logout');
+    const logoutButton = this.createButton('Logout', '/', 'logout');
     section.addInnerElement(logoutButton);
     const registrationButton = this.createButton('Registration', '/registration', 'registration');
     section.addInnerElement(registrationButton);
