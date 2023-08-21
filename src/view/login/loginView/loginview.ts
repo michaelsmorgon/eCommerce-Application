@@ -184,7 +184,9 @@ export default class LoginView extends ElementCreator {
     const passInput = document.getElementById('loginPassword') as HTMLInputElement;
     const errorMessageSpan = document.getElementById('login-content-Error') as HTMLInputElement;
     if (passInput) {
-      if (!this.fieldChecker.validatePass(passInput.value)) {
+      if (passInput.value.includes(' ')) {
+        errorMessageSpan.textContent = 'Password address cannot contain spaces!';
+      } else if (!this.fieldChecker.validatePass(passInput.value)) {
         errorMessageSpan.textContent =
           'Password should contain a combination of uppercase and lowercase letter and number, Password length also must be at least 8 characters!';
       } else {
@@ -195,10 +197,12 @@ export default class LoginView extends ElementCreator {
 
   private handleEmailInputValidation(): void {
     const emailInput = document.getElementById('loginEmail') as HTMLInputElement;
+    const errorMessageSpan = document.getElementById('login-content-Error') as HTMLSpanElement;
 
-    const errorMessageSpan = document.getElementById('login-content-Error') as HTMLInputElement;
     if (emailInput) {
-      if (!this.fieldChecker.validateEmail(emailInput.value.trim())) {
+      if (emailInput.value.includes(' ')) {
+        errorMessageSpan.textContent = 'Email address cannot contain spaces!';
+      } else if (!this.fieldChecker.validateEmail(emailInput.value.trim())) {
         errorMessageSpan.textContent = 'Enter a valid email address!';
       } else {
         errorMessageSpan.textContent = '';
