@@ -10,7 +10,7 @@ import RegistrationApp from '../view/registration/displayRegistration';
 export class App {
   footer: Footer;
 
-  main: typeof Main;
+  main: typeof Main | typeof LoginApp | typeof RegistrationApp;
 
   header: Header;
 
