@@ -4,10 +4,6 @@ export class LoginFieldValidator {
   public validateEmail(email: string): boolean {
     const regEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    if (email.trim() === '') {
-      return false;
-    }
-
     if (email.match(regEmail)) {
       return true;
     }
@@ -21,7 +17,6 @@ export class LoginFieldValidator {
     const numbers = /[0-9]/g;
 
     if (
-      password.trim() === '' ||
       !password.match(lowerCaseLetters) ||
       !password.match(upperCaseLetters) ||
       !password.match(numbers) ||
