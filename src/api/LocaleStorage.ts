@@ -5,7 +5,7 @@ export class LocaleStorage {
     localStorage.setItem(name, value);
   }
 
-  public static clearLocalStorage(name: string): string | null {
-    return localStorage.getItem(name);
+  public static clearLocalStorage(name: string): void {
+    localStorage.removeItem(name);
   }
 }
