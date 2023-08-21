@@ -2,6 +2,7 @@
 
 .registration__container {
   margin: 10px auto;
+  padding: 10px 10px 10px 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;

@@ -17,3 +17,8 @@
 .select-field__container select:disabled {
   opacity: 0.7;
 }
+
+.registration__container .select-field__container > label::before {
+  content: '* ';
+  color: var(--color-eight);
+}
