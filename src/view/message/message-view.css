@@ -1,0 +1,43 @@
+.message-container {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  width: 275px;
+  height: 75px;
+  background: var(--color-two);
+  color: var(--color-one);
+  border-radius: 5px;
+  bottom: 70px;
+  right: 40px;
+  visibility: hidden;
+}
+
+.message-header {
+  padding: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  margin: auto;
+}
+
+.message-body {
+  padding: 5px 10px;
+  margin: auto;
+}
+
+.mainView .show {
+  visibility: visible;
+  animation: fadeIn 1s;
+}
+
+.message-correct {
+  color: var(--color-nine);
+}
+
+.message-wrong {
+  color: var(--color-eight);
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
