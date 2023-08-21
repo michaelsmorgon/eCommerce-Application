@@ -8,6 +8,8 @@ import { Customer } from '../../api/Customer';
 import { UserInfoView } from './user-view/UserInfoView';
 import { UserAddressView } from './user-view/UserAddressView';
 import { route } from '../../router/router';
+import { LocaleStorage } from '../../api/LocaleStorage';
+import { tokenCacheStore } from '../../api/BuilderClient';
 
 const CssClassesForm = {
   REGISTRATION_CONTAINER: 'registration__container',
@@ -55,8 +57,13 @@ export class RegistrationView extends View {
       tag: 'button',
       classNames: [CssClassesForm.REGISTRATION_BTN],
       textContent: 'Sign Up',
-      attributes: [{ name: 'type', value: 'submit' }],
-      callback: async (event: Event) => this.submitBtnHandler(event),
+      attributes: [
+        { name: 'type', value: 'submit' },
+        { name: 'href', value: '/' },
+      ],
+      callback: async (event: Event) => {
+        this.submitBtnHandler(event);
+      },
     };
     const submitBtn = new ElementCreator(params);
     const submitBtnElement = submitBtn.getElement();
@@ -96,11 +103,13 @@ export class RegistrationView extends View {
       const customer = new Customer();
       customer
         .createCustomer(params)
-        .then((response) => {
-          console.log(response);
-          // todo need to redirect user to main page (routes)
+        .then(() => {
+          setTimeout(() => {
+            LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
+            route(event as MouseEvent);
+          }, 1000);
         })
-        .catch(console.error);
+        .catch(() => {});
     }
   }
 
