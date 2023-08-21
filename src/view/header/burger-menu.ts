@@ -18,7 +18,7 @@ export default class BurgerMenu {
     this.headerCenter = document.querySelector(headerCenterSelector) as HTMLElement;
     this.overlay = document.querySelector(overlaySelector) as HTMLElement;
     this.menuLinks = document.querySelectorAll('.menu a');
-    this.menuButtons = document.querySelectorAll('.auth-buttons button');
+    this.menuButtons = document.querySelectorAll('.auth-buttons a');
     this.scrollManager = new ScrollManager();
 
     this.burgerIcon.addEventListener('click', () => this.toggleMenu());
@@ -27,8 +27,8 @@ export default class BurgerMenu {
       link.addEventListener('click', () => this.closeMenu());
     });
 
-    this.menuButtons.forEach((button) => {
-      button.addEventListener('click', () => this.closeMenu());
+    this.menuButtons.forEach((link) => {
+      link.addEventListener('click', () => this.closeMenu());
     });
   }
 

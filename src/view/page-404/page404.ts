@@ -8,12 +8,8 @@ export default class NotFoundPage {
     this.container.classList.add('not-found-container');
 
     const iconConfig: ElementConfig = {
-      tag: 'img',
+      tag: 'div',
       classNames: ['not-found-icon'],
-      attributes: [
-        { name: 'src', value: '../../assets/icons/404.png' },
-        { name: 'alt', value: 'Icon' },
-      ],
     };
     const titleConfig: ElementConfig = {
       tag: 'div',

@@ -106,15 +106,15 @@ export default class AuthButtons {
     const accountButton = document.querySelector('.account') as HTMLElement;
     const logoutButton = document.querySelector('.logout-button') as HTMLElement;
     if (registrationButton && loginButton && accountButton && logoutButton) {
-      if (tokenFlag != null) {
+      if (tokenFlag !== null) {
         registrationButton.style.display = 'none';
         loginButton.style.display = 'none';
 
-        accountButton.style.display = 'block';
-        logoutButton.style.display = 'block';
+        accountButton.style.display = 'flex';
+        logoutButton.style.display = 'flex';
       } else {
-        registrationButton.style.display = 'block';
-        loginButton.style.display = 'block';
+        registrationButton.style.display = 'flex';
+        loginButton.style.display = 'flex';
 
         accountButton.style.display = 'none';
         logoutButton.style.display = 'none';

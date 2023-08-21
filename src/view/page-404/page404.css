@@ -11,6 +11,10 @@
 
 .not-found-icon {
   width: 20%;
+  height: 200px;
+  background: url(/src/assets/icons/404.png) no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .not-found-title {
