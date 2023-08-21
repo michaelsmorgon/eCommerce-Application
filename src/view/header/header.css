@@ -173,7 +173,7 @@ button:active {
   height: 18px;
 }
 
-.auth-buttons a:nth-child(2),
+/* .auth-buttons a:nth-child(2),
 .account-icon {
   display: none;
-}
+} */
