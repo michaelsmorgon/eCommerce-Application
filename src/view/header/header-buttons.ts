@@ -3,6 +3,16 @@ import { route } from '../../router/router';
 import { LocaleStorage } from '../../api/LocaleStorage';
 
 export default class AuthButtons {
+  constructor() {
+    document.addEventListener('DOMContentLoaded', () => {
+      this.handleStorageChange();
+
+      window.addEventListener('storage', () => {
+        this.handleStorageChange();
+      });
+    });
+  }
+
   create(): ElementCreator {
     const headerButtons = this.createHeaderButtons();
     const loginButton = this.createLoginBtn();
@@ -86,5 +96,29 @@ export default class AuthButtons {
     button.addInnerElement(icon);
 
     return button;
+  }
+
+  handleStorageChange(): void {
+    const tokenFlag = localStorage.getItem('token');
+
+    const registrationButton = document.querySelector('.registration-button') as HTMLElement;
+    const loginButton = document.querySelector('.login-button') as HTMLElement;
+    const accountButton = document.querySelector('.account') as HTMLElement;
+    const logoutButton = document.querySelector('.logout-button') as HTMLElement;
+    if (registrationButton && loginButton && accountButton && logoutButton) {
+      if (tokenFlag != null) {
+        registrationButton.style.display = 'none';
+        loginButton.style.display = 'none';
+
+        accountButton.style.display = 'block';
+        logoutButton.style.display = 'block';
+      } else {
+        registrationButton.style.display = 'block';
+        loginButton.style.display = 'block';
+
+        accountButton.style.display = 'none';
+        logoutButton.style.display = 'none';
+      }
+    }
   }
 }
