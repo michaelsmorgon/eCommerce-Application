@@ -1,10 +1,11 @@
 import { ClientResponse, CustomerSignInResult, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { ctpClient } from '../../../api/BuilderClient';
+import { ctpClient, tokenCacheStore } from '../../../api/BuilderClient';
 import './login.css';
 import ElementCreator, { ElementConfig } from '../../../util/ElementCreator';
 import { InputField } from '../../../util/input_field/InputField';
 import { LoginFieldValidator } from './LoginFieldsValidation';
 import { route } from '../../../router/router';
+import { LocaleStorage } from '../../../api/LocaleStorage';
 
 export default class LoginView extends ElementCreator {
   fieldChecker: LoginFieldValidator;
@@ -126,8 +127,10 @@ export default class LoginView extends ElementCreator {
       tag: 'button',
       classNames: ['login-content-button'],
       textContent: 'LOGIN',
-      callback: async (): Promise<void> => {
-        this.loginButtonCallback();
+      attributes: [{ name: 'href', value: '/' }],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        this.loginButtonCallback(mouseEvent);
       },
     };
     const creatorLogButton = new ElementCreator(loginButton);
@@ -149,7 +152,7 @@ export default class LoginView extends ElementCreator {
     }
   }
 
-  async loginButtonCallback(): Promise<void> {
+  async loginButtonCallback(mouseEvent: MouseEvent): Promise<void> {
     const emailInput = document.getElementById('loginEmail') as HTMLInputElement;
     const passwordInput = document.getElementById('loginPassword') as HTMLInputElement;
     const errorMessageSpan = document.getElementById('login-content-Error') as HTMLInputElement;
@@ -157,7 +160,8 @@ export default class LoginView extends ElementCreator {
     const response = await this.checkCustomerExists(emailInput.value, passwordInput.value);
 
     if (response !== null) {
-      // User exists, do something with the response
+      LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
+      route(mouseEvent);
     } else {
       errorMessageSpan.textContent = 'There is no user with such an email and password';
       emailInput.style.border = '1px solid red';

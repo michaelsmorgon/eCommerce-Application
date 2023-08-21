@@ -7,6 +7,9 @@ import './registration-view.css';
 import { Customer } from '../../api/Customer';
 import { UserInfoView } from './user-view/UserInfoView';
 import { UserAddressView } from './user-view/UserAddressView';
+import { route } from '../../router/router';
+import { LocaleStorage } from '../../api/LocaleStorage';
+import { tokenCacheStore } from '../../api/BuilderClient';
 
 const CssClassesForm = {
   REGISTRATION_CONTAINER: 'registration__container',
@@ -36,6 +39,7 @@ export class RegistrationView extends View {
     const userAddressView = new UserAddressView().getHtmlElement();
     this.viewElementCreator.addInnerElement(userAddressView);
     this.addSubmitBtn();
+    this.addLoginBtn();
   }
 
   private addCaption(caption: string): void {
@@ -52,13 +56,41 @@ export class RegistrationView extends View {
     const params: ElementConfig = {
       tag: 'button',
       classNames: [CssClassesForm.REGISTRATION_BTN],
-      textContent: 'Continue',
-      attributes: [{ name: 'type', value: 'submit' }],
-      callback: async (event: Event) => this.submitBtnHandler(event),
+      textContent: 'Sign Up',
+      attributes: [
+        { name: 'type', value: 'submit' },
+        { name: 'href', value: '/' },
+      ],
+      callback: async (event: Event) => {
+        this.submitBtnHandler(event);
+      },
     };
     const submitBtn = new ElementCreator(params);
     const submitBtnElement = submitBtn.getElement();
     this.viewElementCreator.addInnerElement(submitBtnElement);
+  }
+
+  private addLoginBtn(): void {
+    const spanParams: ElementConfig = {
+      tag: 'span',
+      classNames: ['login-content-TextSignup'],
+      textContent: 'Already have an account?',
+    };
+    const spanText = new ElementCreator(spanParams);
+    this.viewElementCreator.addInnerElement(spanText.getElement());
+
+    const params: ElementConfig = {
+      tag: 'a',
+      classNames: ['login-content-loginSignup'],
+      textContent: 'Login',
+      attributes: [{ name: 'href', value: '/login' }],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        route(mouseEvent);
+      },
+    };
+    const loginBtn = new ElementCreator(params);
+    this.viewElementCreator.addInnerElement(loginBtn.getElement());
   }
 
   private async submitBtnHandler(event: Event): Promise<void> {
@@ -71,11 +103,13 @@ export class RegistrationView extends View {
       const customer = new Customer();
       customer
         .createCustomer(params)
-        .then((response) => {
-          console.log(response);
-          // todo need to redirect user to main page (routes)
+        .then(() => {
+          setTimeout(() => {
+            LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
+            route(event as MouseEvent);
+          }, 1000);
         })
-        .catch(console.error);
+        .catch(() => {});
     }
   }
 

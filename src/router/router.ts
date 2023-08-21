@@ -1,6 +1,6 @@
 function findAnchorElement(startingElement: HTMLElement | null): HTMLAnchorElement | null {
   let element = startingElement;
-  while (element && element.tagName !== 'A') {
+  while (element && element.tagName !== 'A' && element.tagName !== 'BUTTON') {
     element = element.parentNode as HTMLElement;
   }
   return element as HTMLAnchorElement | null;
