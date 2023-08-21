@@ -23,7 +23,7 @@ export class MessageView extends View {
       classNames: [CssClassesMsg.MESSAGE_CONTAINER],
     };
     super(params);
-    this.mainView = document.querySelector('.mainView') as HTMLElement;
+    this.mainView = document.querySelector('body') as HTMLElement;
     this.create();
   }
 

@@ -24,7 +24,7 @@
   margin: auto;
 }
 
-.mainView .show {
+.body .show {
   visibility: visible;
   animation: fadeIn 1s;
 }
