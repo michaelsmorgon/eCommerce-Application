@@ -63,6 +63,7 @@ export class FieldValidator {
     const lowerCaseLetters = /[a-z]/g;
     const upperCaseLetters = /[A-Z]/g;
     const numbers = /[0-9]/g;
+    const otherCharacters = /[^a-zA-Z0-9]/g;
 
     const pass = document.querySelector(`.${RegInputClasses.REG_PASS} > input`) as HTMLInputElement;
 
@@ -71,6 +72,7 @@ export class FieldValidator {
       pass.value.match(lowerCaseLetters) &&
       pass.value.match(upperCaseLetters) &&
       pass.value.match(numbers) &&
+      !pass.value.match(otherCharacters) &&
       pass.value.length >= this.PATH_MIN_LENGTH
     ) {
       Warning.removeWarning(pass, RegInputClasses.REG_PASS);
