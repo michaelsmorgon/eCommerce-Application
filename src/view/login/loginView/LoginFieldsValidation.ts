@@ -2,7 +2,7 @@ export class LoginFieldValidator {
   private PATH_MIN_LENGTH = 8;
 
   public validateEmail(email: string): boolean {
-    const regEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const regEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
 
     if (email.match(regEmail)) {
       return true;

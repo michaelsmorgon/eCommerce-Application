@@ -46,7 +46,7 @@ export class FieldValidator {
   }
 
   private validateEmail(): boolean {
-    const regEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const regEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
 
     const email = document.querySelector(`.${RegInputClasses.REG_EMAIL} > input`) as HTMLInputElement;
 
