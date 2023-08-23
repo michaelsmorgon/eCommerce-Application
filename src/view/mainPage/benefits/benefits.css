@@ -1,0 +1,119 @@
+@import '../../color.css';
+
+.benefits {
+  width: 100%;
+  background-color: var(--color-five);
+}
+
+.benefits-container {
+  max-width: 1280px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.benefit {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-three);
+}
+
+.benefit__icon {
+  width: 40px;
+  height: 40px;
+  margin-top: 15px;
+}
+
+.benefit:nth-child(1) .benefit__icon{
+  background: url(/src/assets/icons/benefits/icon1.png) no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.benefit:nth-child(2) .benefit__icon{
+  background: url(/src/assets/icons/benefits/icon2.png) no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.benefit:nth-child(3) .benefit__icon{
+  background: url(/src/assets/icons/benefits/icon3.png) no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.benefit:nth-child(4) .benefit__icon{
+  background: url(/src/assets/icons/benefits/icon4.png) no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.benefit-text {
+  max-width: 150px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.methods__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.shipping,
+.payment {
+  width: 50%;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.payu,
+.master-card {
+width: 100%;
+height: 20px;
+}
+.visa,
+.fedex,
+.dhl,
+.gls {
+  width: 100%;
+  height: 15px;
+}
+
+.payu {
+  background: url(/src/assets/icons/methods/PayU.png) no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.visa {
+  background: url(/src/assets/icons/methods/visa-card-logo-9.png) no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.master-card {
+background: url(/src/assets/icons/methods/MasterCard_Logo.svg.png) no-repeat;
+background-size: contain;
+background-position: center;
+}
+
+.fedex {
+  background: url(/src/assets/icons/methods/Fedex-Logo-PNG-Clipart.png) no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.dhl {
+  background: url(/src/assets/icons/methods/DHL-Logo-1983-2002.png) no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.gls {
+  background: url(/src/assets/icons/methods/GLS-logo-1800.svg) no-repeat;
+  background-size: contain;
+  background-position: center;}
