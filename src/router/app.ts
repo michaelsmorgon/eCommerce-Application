@@ -26,6 +26,10 @@ export class App {
   }
 
   getBody(): typeof Main | typeof LoginApp | typeof RegistrationApp {
+    const token = localStorage.getItem('token');
+    if ((document.location.pathname === '/login' && token) || (document.location.pathname === '/registration' && token)) {
+      window.history.pushState({}, '', '/');
+    }
     switch (document.location.pathname) {
       case '/':
         return Main;
