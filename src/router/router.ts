@@ -20,13 +20,8 @@ export function route(event: MouseEvent): void {
   if (!href) {
     return;
   }
-  const token = localStorage.getItem('token');
-
   window.history.pushState({}, '', href);
 
-  if ((document.location.pathname === '/login' && token) || (document.location.pathname === '/registration' && token)) {
-    window.history.pushState({}, '', '/');
-  }
   const popStateEvent = new PopStateEvent('popstate', {});
   window.dispatchEvent(popStateEvent);
 }
