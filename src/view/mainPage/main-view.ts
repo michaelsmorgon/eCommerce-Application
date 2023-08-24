@@ -48,6 +48,7 @@ export default class Main {
 
 import ElementCreator from '../../util/ElementCreator';
 import { route } from '../../router/router';
+import { LocaleStorage } from '../../api/LocaleStorage';
 
 export default class Main {
   static create(): void {
@@ -55,26 +56,12 @@ export default class Main {
       tag: 'section',
       classNames: ['main-page'],
     });
-    const catalogLink = new ElementCreator({
-      tag: 'a',
-      classNames: ['catalog-link'],
-      attributes: [{ name: 'href', value: '/catalog' }],
-      textContent: 'Catalog',
-    });
-    section.addInnerElement(catalogLink);
-    const aboutUsLink = new ElementCreator({
-      tag: 'a',
-      classNames: ['about-us-link'],
-      attributes: [{ name: 'href', value: '/about_us' }],
-      textContent: 'About Us',
-    });
-    section.addInnerElement(aboutUsLink);
-    const loginButton = this.createButton('Login', '/login', 'login');
-    section.addInnerElement(loginButton);
-    const logoutButton = this.createButton('Logout', '/', 'logout');
-    section.addInnerElement(logoutButton);
-    const registrationButton = this.createButton('Registration', '/registration', 'registration');
-    section.addInnerElement(registrationButton);
+
+    section.addInnerElement(this.createCatalogButton());
+    section.addInnerElement(this.createAboutUsButton());
+    section.addInnerElement(this.createLoginButton());
+    section.addInnerElement(this.createLogoutButton());
+    section.addInnerElement(this.createRegistrationButton());
 
     const mainView = document.querySelector('.mainView');
     if (!mainView) {
@@ -84,22 +71,67 @@ export default class Main {
     mainView.appendChild(section.getElement());
   }
 
-  private static createButton(text: string, href: string, iconClass: string): ElementCreator {
+  private static createCatalogButton(): ElementCreator {
+    return this.createButton('Catalog', '/catalog', 'catalog-link');
+  }
+
+  private static createAboutUsButton(): ElementCreator {
+    return this.createButton('About Us', '/about_us', 'about-us-link');
+  }
+
+  private static createLoginButton(): ElementCreator {
+    return this.createButton('Login', '/login', 'login-button', 'login');
+  }
+
+  private static createLogoutButton(): ElementCreator {
     const button = new ElementCreator({
       tag: 'a',
-      classNames: [`${iconClass}-button`],
-      textContent: text,
+      classNames: [`logout-button`],
+      textContent: 'Logout',
+      attributes: [{ name: 'href', value: '/' }],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        LocaleStorage.clearLocalStorage(LocaleStorage.TOKEN);
+        route(mouseEvent);
+      },
+    });
+    const icon = new ElementCreator({
+      tag: 'div',
+      classNames: ['logout'],
+    });
+    button.addInnerElement(icon);
+
+    return button;
+  }
+
+  private static createRegistrationButton(): ElementCreator {
+    return this.createButton('Registration', '/registration', 'registration-button', 'registration');
+  }
+
+  private static createButton(
+    textContent: string,
+    href: string,
+    className: string,
+    iconClass: string | null = null
+  ): ElementCreator {
+    const button = new ElementCreator({
+      tag: 'a',
+      classNames: [className],
+      textContent,
       attributes: [{ name: 'href', value: href }],
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
         route(mouseEvent);
       },
     });
-    const icon = new ElementCreator({
-      tag: 'div',
-      classNames: [iconClass],
-    });
-    button.addInnerElement(icon);
+
+    if (iconClass !== null) {
+      const icon = new ElementCreator({
+        tag: 'div',
+        classNames: [iconClass],
+      });
+      button.addInnerElement(icon);
+    }
 
     return button;
   }
