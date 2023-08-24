@@ -20,7 +20,6 @@ export function route(event: MouseEvent): void {
   if (!href) {
     return;
   }
-
   window.history.pushState({}, '', href);
 
   const popStateEvent = new PopStateEvent('popstate', {});
