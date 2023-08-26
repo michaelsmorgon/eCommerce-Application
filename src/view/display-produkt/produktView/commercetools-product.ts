@@ -14,9 +14,9 @@ interface Product {
         };
         masterVariant: {
           attributes: {
-            name: string;
-            value: string;
-          };
+            name: string[];
+            value: string[];
+          }[];
           images: {
             url: string;
             dimensions: {
@@ -76,10 +76,19 @@ export default class CommercetoolsProduct {
       const price = productData.body.masterData.current.masterVariant.prices[0].value.centAmount;
       const priceWithDiscount = productData.body.masterData.current.masterVariant.prices[1].value.centAmount;
 
-      console.log('Discount price:', priceWithDiscount);
-      console.log('Price:', price);
       console.log('Product name:', productName);
       console.log('URL product images:', productImages);
+      console.log('Discount price:', priceWithDiscount);
+      console.log('Price:', price);
+
+      const { attributes } = productData.body.masterData.current.masterVariant;
+
+      attributes.forEach((attribute) => {
+        const { name, value } = attribute;
+
+        console.log('Attribute name:', name);
+        console.log('Attribute value:', value);
+      });
     } catch (error) {
       console.error(error);
     }

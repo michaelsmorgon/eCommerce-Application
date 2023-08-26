@@ -1,5 +1,5 @@
 import { ctpClient } from '../../api/BuilderClient';
-import CommercetoolsProduct from './commercetools-product';
+import CommercetoolsProduct from './produktView/commercetools-product';
 
 const productKey = '79531';
 

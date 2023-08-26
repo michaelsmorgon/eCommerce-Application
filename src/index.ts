@@ -1,6 +1,6 @@
 import { App } from './router/app';
 import './style.css';
-import Products from './view/product-information/display-produkt';
+import Products from './view/display-produkt/displayProdukt';
 
 const app: App = new App();
 app.init();
