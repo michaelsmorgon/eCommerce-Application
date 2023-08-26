@@ -9,7 +9,7 @@ import { UserInfoView } from './user-view/UserInfoView';
 import { UserAddressView } from './user-view/UserAddressView';
 import { route } from '../../router/router';
 import { LocaleStorage } from '../../api/LocaleStorage';
-import { tokenCacheStore } from '../../api/BuilderClient';
+import { TokenCacheStore } from '../../api/TokenCacheStore';
 
 const CssClassesForm = {
   REGISTRATION_CONTAINER: 'registration__container',
@@ -100,7 +100,8 @@ export class RegistrationView extends View {
     const isValid = fieldChecker.validateFields();
     if (isValid) {
       const params = this.getCustomerParams();
-      const customer = new Customer();
+      const tokenCacheStore = new TokenCacheStore();
+      const customer = new Customer(tokenCacheStore);
       customer
         .createCustomer(params)
         .then(() => {
