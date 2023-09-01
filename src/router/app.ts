@@ -1,6 +1,7 @@
 // app.ts
 import ElementCreator from '../util/ElementCreator';
 import CatalogApp from '../view/catalog/CatalogApp';
+import ProductApp from '../view/display-produkt/productApp';
 import Footer from '../view/footer/footer-view';
 import Header from '../view/header/header-view';
 import LoginApp from '../view/login/loginvView';
@@ -11,7 +12,7 @@ import RegistrationApp from '../view/registration/displayRegistration';
 export class App {
   footer: Footer;
 
-  main: typeof Main | typeof LoginApp | typeof RegistrationApp | typeof CatalogApp;
+  main: typeof Main | typeof LoginApp | typeof RegistrationApp | typeof CatalogApp | typeof ProductApp;
 
   header: Header;
 
@@ -26,7 +27,7 @@ export class App {
     this.main.create();
   }
 
-  getBody(): typeof Main | typeof LoginApp | typeof RegistrationApp | typeof CatalogApp {
+  getBody(): typeof Main | typeof LoginApp | typeof RegistrationApp | typeof CatalogApp | typeof ProductApp {
     const token = localStorage.getItem('token');
     if (
       (document.location.pathname === '/login' && token) ||
@@ -43,6 +44,8 @@ export class App {
         return RegistrationApp;
       case '/catalog':
         return CatalogApp;
+      case '/product':
+        return ProductApp;
       default:
         return NotFoundPageApp;
     }
