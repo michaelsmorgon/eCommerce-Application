@@ -175,7 +175,7 @@ export class CatalogCard extends View {
   private async submitBtnHandler(event: Event): Promise<void> {
     event.preventDefault();
     // const productKey = this.productData.masterVariant.key;
-    const productKey = '10045';
+    const productKey = '10000';
     ProductApp.create(productKey);
   }
 }

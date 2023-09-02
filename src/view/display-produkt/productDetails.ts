@@ -47,7 +47,6 @@ export default class ProductDetails extends View {
     super(params);
     this.viewElementCreator.addInnerElement(this.addTopContainer());
     this.viewElementCreator.addInnerElement(this.addBottomContainer());
-    console.log(this.productData);
   }
 
   private addImage(): ElementCreator {
@@ -65,25 +64,9 @@ export default class ProductDetails extends View {
     };
     const imageContainer = new ElementCreator(imgContainerParams);
 
-    const sliderContainerParams: ElementConfig = {
-      tag: 'div',
-      classNames: [CssClassesProduct.PRODUKT_IMG_SLIDER],
-    };
-
-    const mainImage = new ElementCreator({
-      tag: 'img',
-      classNames: [CssClassesProduct.PRODUKT_IMG],
-      attributes: attr,
-    });
-
-    const productImageWrappperParams: ElementConfig = {
-      tag: 'div',
-      classNames: [CssClassesProduct.PRODUKT_IMG_WRAPP],
-    };
-    const productImageContainer = new ElementCreator(productImageWrappperParams);
     const discount = this.getDiscount();
     if (discount !== null) {
-      productImageContainer.addInnerElement(this.addDiscount(discount));
+      imageContainer.addInnerElement(this.addDiscount(discount));
     }
 
     // slider
@@ -99,16 +82,15 @@ export default class ProductDetails extends View {
     const rightButton = this.createButton(CssClassesProduct.RIGHT_BUTTON);
 
     const sliderImages: ElementCreator[] = [];
-    const uniqueImageUrls = new Set(); // Создаем множество для хранения уникальных URL изображений
+    const uniqueImageUrls = new Set();
 
     this.productData.variants.forEach((variant) => {
       if (variant.images && variant.images?.length > 0) {
         const [imageUrl] = variant.images;
         const imageUrlString = imageUrl.url;
 
-        // Проверяем, является ли URL изображения уникальным
         if (!uniqueImageUrls.has(imageUrlString)) {
-          uniqueImageUrls.add(imageUrlString); // Добавляем URL в множество уникальных URL
+          uniqueImageUrls.add(imageUrlString);
           const attrSliderImg = [
             { name: 'src', value: imageUrlString },
             { name: 'alt', value: this.productData.name.en },
@@ -127,15 +109,10 @@ export default class ProductDetails extends View {
       sliderImageContainer.addInnerElement(image);
     });
 
-    const sliderContainer = new ElementCreator(sliderContainerParams);
+    imageContainer.addInnerElement(leftButton);
+    imageContainer.addInnerElement(sliderImageContainer);
+    imageContainer.addInnerElement(rightButton);
 
-    sliderContainer.addInnerElement(leftButton);
-    sliderContainer.addInnerElement(sliderImageContainer);
-    sliderContainer.addInnerElement(rightButton);
-
-    productImageContainer.addInnerElement(mainImage);
-    imageContainer.addInnerElement(sliderContainer);
-    imageContainer.addInnerElement(productImageContainer);
     return imageContainer;
   }
 
@@ -238,16 +215,14 @@ export default class ProductDetails extends View {
       classNames: [CssClassesProduct.PRODUCT_INFO_CENTR],
     };
     const productInfoCentr = new ElementCreator(productInfoCentrParams);
-
-    const priceBrandContainerParams: ElementConfig = {
+    const priceContainer = this.createPriceElement(this.getDiscount());
+    /*  const priceBrandContainerParams: ElementConfig = {
       tag: 'div',
       classNames: [CssClassesProduct.PRODUCT_INFO_CENTR],
     };
     const priceBrandContainer = new ElementCreator(priceBrandContainerParams);
 
-    const priceContainer = this.createPriceElement(this.getDiscount());
-
-    /* const brandImageParams: ElementConfig = {
+    const brandImageParams: ElementConfig = {
       tag: 'img',
       classNames: [CssClassesProduct.PRODUCT_INFO_BRAND],
       attributes: [
@@ -256,9 +231,9 @@ export default class ProductDetails extends View {
       ],
     };
     const brandImage = new ElementCreator(brandImageParams);
-    priceBrandContainer.addInnerElement(brandImage); */
-    priceBrandContainer.addInnerElement(priceContainer);
-    productInfoCentr.addInnerElement(priceBrandContainer);
+    priceBrandContainer.addInnerElement(brandImage); 
+    priceBrandContainer.addInnerElement(priceContainer); */
+    productInfoCentr.addInnerElement(priceContainer);
 
     return productInfoCentr;
   }
