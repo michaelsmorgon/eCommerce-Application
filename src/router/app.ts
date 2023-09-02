@@ -24,8 +24,7 @@ export class App {
     this.footer = new Footer();
   }
 
-  urlChange(productKey: string | null = null): void {
-    this.productKey = productKey;
+  urlChange(): void {
     this.main = this.getBody();
     if (this.productKey !== null) {
       this.main.create(this.productKey);
@@ -42,7 +41,13 @@ export class App {
     ) {
       window.history.pushState({}, '', '/');
     }
-    switch (document.location.pathname) {
+    const partPathList = document.location.pathname.match(/(\/[a-zA-Z0-9]*)/g);
+
+    if (partPathList === null) {
+      return NotFoundPageApp;
+    }
+    const [firstLevel, secondLevel] = partPathList;
+    switch (firstLevel) {
       case '/':
         return Main;
       case '/login':
@@ -51,8 +56,11 @@ export class App {
         return RegistrationApp;
       case '/catalog':
         return CatalogApp;
-      // case `/catalog/product?key=${this.productKey}`:
-      case '/catalog/product?key=10006': // 'этот case  не срабатывает
+      case '/product':
+        if (partPathList.length > 1) {
+          this.productKey = secondLevel.substring(1);
+          return ProductApp;
+        }
         return ProductApp;
       default:
         return NotFoundPageApp;
@@ -67,11 +75,7 @@ export class App {
     };
     const main = new ElementCreator(params);
     document.body.appendChild(main.getElement());
-    if (this.productKey !== null) {
-      this.main.create(this.productKey);
-    } else {
-      this.main.create();
-    }
+    this.main.create();
     this.footer.create();
 
     window.onpopstate = (): void => {

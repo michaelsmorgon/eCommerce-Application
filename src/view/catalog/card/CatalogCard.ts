@@ -1,7 +1,7 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../../util/ElementCreator';
 import View, { ViewParams } from '../../View';
-import ProductApp from '../../display-produkt/productApp';
+import { route } from '../../../router/router';
 
 const CssClassesCard = {
   CATALOG_SECTION_PRODUCT: 'catalog-section__product',
@@ -33,15 +33,13 @@ export class CatalogCard extends View {
 
   private configureView(): void {
     const params: ElementConfig = {
-      tag: 'div' /* 'a' */,
+      tag: 'div',
       classNames: [CssClassesCard.CATALOG_SECTION_PRODUCT_LINK],
       textContent: '',
-      attributes: [
-        { name: 'href', value: '/' },
-        { name: 'data-key', value: this.productKey },
-      ],
+      attributes: [{ name: 'href', value: `/product/${this.productKey}` }],
       callback: async (event: Event) => {
-        this.submitBtnHandler(event);
+        const mouseEvent = event as MouseEvent;
+        route(mouseEvent);
       },
     };
     const link = new ElementCreator(params);
@@ -169,12 +167,5 @@ export class CatalogCard extends View {
     }
 
     return null;
-  }
-
-  private async submitBtnHandler(event: Event): Promise<void> {
-    event.preventDefault();
-    // const productKey = this.productData.masterVariant.key;
-    const productKey = '10000';
-    ProductApp.create(productKey);
   }
 }

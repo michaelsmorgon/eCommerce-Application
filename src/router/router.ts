@@ -1,13 +1,13 @@
 function findAnchorElement(startingElement: HTMLElement | null): HTMLAnchorElement | null {
   let element = startingElement;
-  while (element && element.tagName !== 'A' && element.tagName !== 'BUTTON') {
+  while (element && element.tagName !== 'A' && element.tagName !== 'BUTTON' && element.tagName !== 'DIV') {
     element = element.parentNode as HTMLElement;
   }
   return element as HTMLAnchorElement | null;
 }
 
 export function route(event: MouseEvent): void {
-  const anchorElement = findAnchorElement(event.target as HTMLElement);
+  const anchorElement = findAnchorElement(event.currentTarget as HTMLElement);
 
   if (!anchorElement) {
     return;
