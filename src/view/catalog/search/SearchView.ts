@@ -71,7 +71,6 @@ export class SearchView extends View {
             default:
               break;
           }
-          console.log(attrInfo); // todo
         });
         this.addButtons();
       })
