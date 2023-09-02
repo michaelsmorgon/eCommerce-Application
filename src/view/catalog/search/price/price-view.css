@@ -1,0 +1,27 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.price-container {
+  max-width: 100%;
+  padding: 10px 5px;
+}
+
+.price-title {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.price-text {
+  padding: 0px 5px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.price-search {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}

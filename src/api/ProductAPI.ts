@@ -3,6 +3,7 @@ import {
   ClientResponse,
   Product,
   ProductPagedQueryResponse,
+  ProductProjectionPagedQueryResponse,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 import { BuilderClient } from './BuilderClient';
@@ -25,6 +26,28 @@ export class ProductAPI {
   public async getProducts(): Promise<ClientResponse<ProductPagedQueryResponse | null>> {
     try {
       const response = await this.apiRoot.products().get().execute();
+
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      this.showError(error);
+      throw new Error();
+    }
+  }
+
+  public async getProductsWithSearch(
+    filterSearch: string[]
+  ): Promise<ClientResponse<ProductProjectionPagedQueryResponse | null>> {
+    try {
+      const response = await this.apiRoot
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            filter: filterSearch,
+          },
+        })
+        .execute();
 
       console.log(response);
       return response;

@@ -1,4 +1,4 @@
-import { ProductData } from '@commercetools/platform-sdk';
+import { ProductProjection } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../../util/ElementCreator';
 import View, { ViewParams } from '../../View';
 import ProductApp from '../../display-produkt/productApp';
@@ -19,14 +19,16 @@ const CssClassesCard = {
 };
 
 export class CatalogCard extends View {
-  constructor(private productData: ProductData) {
+  constructor(
+    private productData: ProductProjection,
+    private productKey: string = ''
+  ) {
     const params: ViewParams = {
       tag: 'div',
       classNames: [CssClassesCard.CATALOG_SECTION_PRODUCT],
     };
     super(params);
     this.configureView();
-    console.log(this.productData);
   }
 
   private configureView(): void {
@@ -35,11 +37,8 @@ export class CatalogCard extends View {
       classNames: [CssClassesCard.CATALOG_SECTION_PRODUCT_LINK],
       textContent: '',
       attributes: [
-        {
-          name: 'href',
-          /* value: `/catalog/product?key=${this.productData.masterVariant.key} */ value: '/catalog/product?key=10006', // даже когда меняю div  на ссылку то этот путь не прописывается
-        },
-        { name: 'data-key', value: this.productData.masterVariant.key ? this.productData.masterVariant.key : '' },
+        { name: 'href', value: '/' },
+        { name: 'data-key', value: this.productKey },
       ],
       callback: async (event: Event) => {
         this.submitBtnHandler(event);
