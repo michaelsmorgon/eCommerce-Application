@@ -1,6 +1,7 @@
 import { ProductData } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../../util/ElementCreator';
 import View, { ViewParams } from '../../View';
+import ProductApp from '../../display-produkt/productApp';
 
 const CssClassesCard = {
   CATALOG_SECTION_PRODUCT: 'catalog-section__product',
@@ -30,11 +31,14 @@ export class CatalogCard extends View {
 
   private configureView(): void {
     const params: ElementConfig = {
-      tag: 'div',
+      tag: 'div' /* 'a' */,
       classNames: [CssClassesCard.CATALOG_SECTION_PRODUCT_LINK],
       textContent: '',
       attributes: [
-        { name: 'href', value: '/' },
+        {
+          name: 'href',
+          /* value: `/catalog/product?key=${this.productData.masterVariant.key} */ value: '/catalog/product?key=10006', // даже когда меняю div  на ссылку то этот путь не прописывается
+        },
         { name: 'data-key', value: this.productData.masterVariant.key ? this.productData.masterVariant.key : '' },
       ],
       callback: async (event: Event) => {
@@ -169,7 +173,9 @@ export class CatalogCard extends View {
   }
 
   private async submitBtnHandler(event: Event): Promise<void> {
-    // todo need to open card
     event.preventDefault();
+    // const productKey = this.productData.masterVariant.key;
+    const productKey = '10045';
+    ProductApp.create(productKey);
   }
 }

@@ -99,26 +99,34 @@ export default class ProductDetails extends View {
     const rightButton = this.createButton(CssClassesProduct.RIGHT_BUTTON);
 
     const sliderImages: ElementCreator[] = [];
+    const uniqueImageUrls = new Set(); // Создаем множество для хранения уникальных URL изображений
 
     this.productData.variants.forEach((variant) => {
-      const attrSliderImg = [];
       if (variant.images && variant.images?.length > 0) {
         const [imageUrl] = variant.images;
-        attrSliderImg.push({ name: 'src', value: imageUrl.url });
+        const imageUrlString = imageUrl.url;
+
+        // Проверяем, является ли URL изображения уникальным
+        if (!uniqueImageUrls.has(imageUrlString)) {
+          uniqueImageUrls.add(imageUrlString); // Добавляем URL в множество уникальных URL
+          const attrSliderImg = [
+            { name: 'src', value: imageUrlString },
+            { name: 'alt', value: this.productData.name.en },
+          ];
+          const variantImage = new ElementCreator({
+            tag: 'img',
+            classNames: [CssClassesProduct.PRODUKT_IMG_SLIDER],
+            attributes: attrSliderImg,
+          });
+          sliderImages.push(variantImage);
+        }
       }
-      attrSliderImg.push({ name: 'alt', value: this.productData.name.en });
-      const variantImage = new ElementCreator({
-        tag: 'img',
-        classNames: [CssClassesProduct.PRODUKT_IMG_SLIDER],
-        attributes: attrSliderImg,
-      });
-      sliderImages.push(variantImage);
-      console.log(attrSliderImg);
     });
 
     sliderImages.forEach((image) => {
       sliderImageContainer.addInnerElement(image);
     });
+
     const sliderContainer = new ElementCreator(sliderContainerParams);
 
     sliderContainer.addInnerElement(leftButton);
@@ -239,7 +247,7 @@ export default class ProductDetails extends View {
 
     const priceContainer = this.createPriceElement(this.getDiscount());
 
-    const brandImageParams: ElementConfig = {
+    /* const brandImageParams: ElementConfig = {
       tag: 'img',
       classNames: [CssClassesProduct.PRODUCT_INFO_BRAND],
       attributes: [
@@ -248,7 +256,7 @@ export default class ProductDetails extends View {
       ],
     };
     const brandImage = new ElementCreator(brandImageParams);
-    priceBrandContainer.addInnerElement(brandImage);
+    priceBrandContainer.addInnerElement(brandImage); */
     priceBrandContainer.addInnerElement(priceContainer);
     productInfoCentr.addInnerElement(priceBrandContainer);
 
@@ -423,7 +431,7 @@ export default class ProductDetails extends View {
     const descriptionHeaderParams: ElementConfig = {
       tag: 'div',
       classNames: [CssClassesProduct.PRODUKT_DESCRIPTION_HEADER],
-      textContent: 'Description', // You can get content from Commercetools here
+      textContent: 'Description',
     };
     const descriptionHeader = new ElementCreator(descriptionHeaderParams);
 

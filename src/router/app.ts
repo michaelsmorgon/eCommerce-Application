@@ -16,15 +16,22 @@ export class App {
 
   header: Header;
 
+  productKey: string | null = null;
+
   constructor() {
     this.header = new Header();
     this.main = this.getBody();
     this.footer = new Footer();
   }
 
-  urlChange(): void {
+  urlChange(productKey: string | null = null): void {
+    this.productKey = productKey;
     this.main = this.getBody();
-    this.main.create();
+    if (this.productKey !== null) {
+      this.main.create(this.productKey);
+    } else {
+      this.main.create();
+    }
   }
 
   getBody(): typeof Main | typeof LoginApp | typeof RegistrationApp | typeof CatalogApp | typeof ProductApp {
@@ -44,7 +51,8 @@ export class App {
         return RegistrationApp;
       case '/catalog':
         return CatalogApp;
-      case '/product':
+      // case `/catalog/product?key=${this.productKey}`:
+      case '/catalog/product?key=10006': // 'этот case  не срабатывает
         return ProductApp;
       default:
         return NotFoundPageApp;
@@ -59,7 +67,11 @@ export class App {
     };
     const main = new ElementCreator(params);
     document.body.appendChild(main.getElement());
-    this.main.create();
+    if (this.productKey !== null) {
+      this.main.create(this.productKey);
+    } else {
+      this.main.create();
+    }
     this.footer.create();
 
     window.onpopstate = (): void => {

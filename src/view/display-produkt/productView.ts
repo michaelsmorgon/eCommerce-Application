@@ -8,12 +8,15 @@ const CssClassesProduct = {
 };
 
 export default class ProductView extends View {
-  constructor() {
+  private productKey: string;
+
+  constructor(productKey: string) {
     const params: ViewParams = {
       tag: 'section',
       classNames: [CssClassesProduct.PRODUCT_SECTION],
     };
     super(params);
+    this.productKey = productKey;
     this.create();
   }
 
@@ -21,12 +24,9 @@ export default class ProductView extends View {
     const tokenCacheStore = new TokenCacheStore();
     const products = new ProductAPI(tokenCacheStore);
 
-    const productKey = '10031';
-
     products
-      .getProductByKey(productKey)
+      .getProductByKey(this.productKey)
       .then((product) => {
-        // Передайте общий объект параметров при создании ProductDetails
         const productDetails = new ProductDetails(product.body.masterData.current);
         this.viewElementCreator.addInnerElement(productDetails.getHtmlElement());
       })
