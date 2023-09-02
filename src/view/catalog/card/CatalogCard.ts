@@ -1,6 +1,7 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../../util/ElementCreator';
 import View, { ViewParams } from '../../View';
+import ProductApp from '../../display-produkt/productApp';
 
 const CssClassesCard = {
   CATALOG_SECTION_PRODUCT: 'catalog-section__product',
@@ -32,7 +33,7 @@ export class CatalogCard extends View {
 
   private configureView(): void {
     const params: ElementConfig = {
-      tag: 'div',
+      tag: 'div' /* 'a' */,
       classNames: [CssClassesCard.CATALOG_SECTION_PRODUCT_LINK],
       textContent: '',
       attributes: [
@@ -171,7 +172,9 @@ export class CatalogCard extends View {
   }
 
   private async submitBtnHandler(event: Event): Promise<void> {
-    // todo need to open card
     event.preventDefault();
+    // const productKey = this.productData.masterVariant.key;
+    const productKey = '10000';
+    ProductApp.create(productKey);
   }
 }
