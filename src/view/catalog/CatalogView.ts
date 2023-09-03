@@ -7,10 +7,13 @@ import { CatalogCard } from './card/CatalogCard';
 import './catalog-view.css';
 import { SearchView } from './search/SearchView';
 import { QueryString } from './query/QueryString';
+import { CatalogHeaderView } from './header/CatalogHeaderView';
 
 const CssClassesCatalog = {
   CATALOG_SECTION: 'catalog-section',
   CATALOG_SECTION_CONTAINER: 'catalog-section__container',
+  CATALOG_SECTION_HEADER: 'catalog-section__header',
+  CATALOG_SECTION_BODY: 'catalog-section__body',
 };
 
 export default class CatalogView extends View {
@@ -31,10 +34,6 @@ export default class CatalogView extends View {
     this.addCatalogContainer();
   }
 
-  private addCatalogHeader(): void {
-    // return subcategories cat > subcat > subcat
-  }
-
   private addSearchContainer(): void {
     const searchView = new SearchView(this.queryString);
     this.viewElementCreator.addInnerElement(searchView.getHtmlElement());
@@ -47,11 +46,29 @@ export default class CatalogView extends View {
     };
     const catalogContainer = new ElementCreator(params);
 
+    catalogContainer.addInnerElement(this.addCatalogHeader());
+    catalogContainer.addInnerElement(this.addCatalogBody());
+
+    this.viewElementCreator.addInnerElement(catalogContainer.getElement());
+  }
+
+  private addCatalogHeader(): HTMLElement {
+    const catalogHeaderView = new CatalogHeaderView(this.queryString);
+    return catalogHeaderView.getHtmlElement();
+  }
+
+  private addCatalogBody(): HTMLElement {
+    const params: ElementConfig = {
+      tag: 'div',
+      classNames: [CssClassesCatalog.CATALOG_SECTION_BODY],
+    };
+    const catalogContainer = new ElementCreator(params);
+
     const tokenCacheStore = new TokenCacheStore();
     const products = new ProductAPI(tokenCacheStore);
 
     products
-      .getProductsWithSearch(this.queryString.getSearchList())
+      .getProductsWithSearch(this.queryString.getSearchList(), this.queryString.getSearchOrder())
       .then((response) => {
         const results = response.body?.results as ProductProjection[];
         results.forEach((product: ProductProjection) => {
@@ -61,10 +78,6 @@ export default class CatalogView extends View {
       })
       .catch(() => {});
 
-    this.viewElementCreator.addInnerElement(catalogContainer);
-  }
-
-  private addCatalogFooter(): void {
-    // return pagination
+    return catalogContainer.getElement();
   }
 }

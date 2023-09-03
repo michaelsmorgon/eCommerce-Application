@@ -36,7 +36,8 @@ export class ProductAPI {
   }
 
   public async getProductsWithSearch(
-    filterSearch: string[]
+    filterSearch: string[],
+    orderSearch: string | null = null
   ): Promise<ClientResponse<ProductProjectionPagedQueryResponse | null>> {
     try {
       const response = await this.apiRoot
@@ -44,6 +45,8 @@ export class ProductAPI {
         .search()
         .get({
           queryArgs: {
+            limit: 100,
+            sort: orderSearch ? [orderSearch] : [],
             filter: filterSearch,
           },
         })
