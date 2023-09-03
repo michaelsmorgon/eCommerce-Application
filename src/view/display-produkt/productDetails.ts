@@ -1,18 +1,20 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable max-lines-per-function */
 import { ProductData } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../util/ElementCreator';
 import View, { ViewParams } from '../View';
+import ImageSlider from './product-slider';
 
 const CssClassesProduct = {
   PRODUCT_DETAILS: 'product-details',
   PRODUCT_DETAILS_TOP: 'product-details__top',
-  PRODUKT_IMG_CONTAINER: 'produkt-img__container',
-  PRODUKT_SLIDER_WRAPP: 'produkt-img__slider-wrapper',
-  PRODUKT_IMG_SLIDER: 'produkt-img__slider',
+  PRODUCT_IMG_CONTAINER: 'product-img__container',
+  PRODUCT_SLIDER_WRAPP: 'product-img__slider-wrapper',
+  PRODUCT_SLIDER_GALERY: 'product-img__galery',
   LEFT_BUTTON: 'left-button',
   RIGHT_BUTTON: 'right-button',
-  PRODUKT_IMG_WRAPP: 'produkt-img__wrapper',
-  PRODUKT_IMG: 'produkt-img',
+  PRODUCT_IMG_WRAPP: 'product-img__wrapper',
+  PRODUCT_IMG: 'product-img',
   DISCOUNT: 'sale-procent',
   PRODUCT_INFO_CONTAINER: 'product-info__container',
   PRODUCT_INFO_TOP: 'product-info__top',
@@ -25,7 +27,6 @@ const CssClassesProduct = {
   PRODUCT_INFO_BOTTOM: 'product-info__bottom',
   PRODUCT_INFO_COLORS_OPTIONS: 'product__colors-options',
   PRODUCT_INFO_COLOR: 'product__color',
-  PRODUCT_INFO_SIZE_OPTIONS: 'product__size-options',
   PRODUCT_INFO_SIZE: 'product__size',
   PRODUCT_INFO_MATERIAL: 'product__material',
   MATERIAL_PRODUKT: 'material-produkt',
@@ -33,9 +34,9 @@ const CssClassesProduct = {
   AVAILABILITY: 'availability',
   DELIVERY: 'delivery',
   PRODUCT_DETAILS_BOTTOM: 'product-details__bottom',
-  PRODUKT_DESCRIPTION: 'produkt-description',
-  PRODUKT_DESCRIPTION_HEADER: 'produkt-description__header',
-  PRODUKT_DESCRIPTION_CONTENT: 'produkt-description__content',
+  PRODUCT_DESCRIPTION: 'product-description',
+  PRODUCT_DESCRIPTION_HEADER: 'product-description__header',
+  PRODUCT_DESCRIPTION_CONTENT: 'product-description__content',
 };
 
 export default class ProductDetails extends View {
@@ -47,6 +48,8 @@ export default class ProductDetails extends View {
     super(params);
     this.viewElementCreator.addInnerElement(this.addTopContainer());
     this.viewElementCreator.addInnerElement(this.addBottomContainer());
+    const imageSlider = new ImageSlider(0);
+    imageSlider.init();
   }
 
   private addImage(): ElementCreator {
@@ -60,7 +63,7 @@ export default class ProductDetails extends View {
 
     const imgContainerParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUKT_IMG_CONTAINER],
+      classNames: [CssClassesProduct.PRODUCT_IMG_CONTAINER],
     };
     const imageContainer = new ElementCreator(imgContainerParams);
 
@@ -71,18 +74,29 @@ export default class ProductDetails extends View {
 
     // slider
 
-    const sliderWrappperParams: ElementConfig = {
+    const imgWrappperParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUKT_IMG_WRAPP],
+      classNames: [CssClassesProduct.PRODUCT_IMG_WRAPP],
     };
 
-    const sliderImageContainer = new ElementCreator(sliderWrappperParams);
+    const imageWrapper = new ElementCreator(imgWrappperParams);
 
     const leftButton = this.createButton(CssClassesProduct.LEFT_BUTTON);
+
     const rightButton = this.createButton(CssClassesProduct.RIGHT_BUTTON);
 
     const sliderImages: ElementCreator[] = [];
+
     const uniqueImageUrls = new Set();
+
+    const imgParams: ElementConfig = {
+      tag: 'img',
+      classNames: [CssClassesProduct.PRODUCT_IMG],
+      attributes: attr,
+    };
+
+    const image = new ElementCreator(imgParams);
+    imageWrapper.addInnerElement(image);
 
     this.productData.variants.forEach((variant) => {
       if (variant.images && variant.images?.length > 0) {
@@ -97,7 +111,7 @@ export default class ProductDetails extends View {
           ];
           const variantImage = new ElementCreator({
             tag: 'img',
-            classNames: [CssClassesProduct.PRODUKT_IMG_SLIDER],
+            classNames: [CssClassesProduct.PRODUCT_IMG],
             attributes: attrSliderImg,
           });
           sliderImages.push(variantImage);
@@ -105,23 +119,47 @@ export default class ProductDetails extends View {
       }
     });
 
+    const sliderWrappperParams: ElementConfig = {
+      tag: 'div',
+      classNames: [CssClassesProduct.PRODUCT_SLIDER_WRAPP],
+    };
+
+    const sliderImageContainer = new ElementCreator(sliderWrappperParams);
+    /*
+        const galeryParams: ElementConfig = {
+          tag: 'div',
+          classNames: [CssClassesProduct.PRODUCT_SLIDER_GALERY],
+        };
+    
+        const galery = new ElementCreator(galeryParams);
+    */
     sliderImages.forEach((image) => {
-      sliderImageContainer.addInnerElement(image);
+      // galery.addInnerElement(image);
+      imageWrapper.addInnerElement(image);
     });
 
     imageContainer.addInnerElement(leftButton);
     imageContainer.addInnerElement(sliderImageContainer);
+    sliderImageContainer.addInnerElement(imageWrapper);
+    // sliderImageContainer.addInnerElement(galery);
     imageContainer.addInnerElement(rightButton);
 
     return imageContainer;
   }
 
-  private createButton(className: string): HTMLElement {
+  private createButton(className: string, callback?: () => void): HTMLElement {
     const buttonParams: ElementConfig = {
       tag: 'div',
       classNames: [className],
     };
-    return new ElementCreator(buttonParams).getElement();
+
+    const buttonElement = new ElementCreator(buttonParams).getElement();
+
+    if (callback) {
+      buttonElement.addEventListener('click', callback);
+    }
+
+    return buttonElement;
   }
 
   private createPriceElement(discount: string | null): ElementCreator {
@@ -246,11 +284,6 @@ export default class ProductDetails extends View {
     const productInfoBottom = new ElementCreator(productInfoBottomParams);
 
     // color
-    const colorsOptionsParams: ElementConfig = {
-      tag: 'div',
-      classNames: [CssClassesProduct.PRODUCT_INFO_COLORS_OPTIONS],
-    };
-    const colorsOptions = new ElementCreator(colorsOptionsParams);
     const colors = [];
     const attrs = this.productData.masterVariant.attributes;
     const colorAttr = attrs?.find((attr) => attr.name === 'color');
@@ -277,8 +310,7 @@ export default class ProductDetails extends View {
       textContent: uniqueColorsArray.join(', '),
     };
     const colorOption = new ElementCreator(colorOptionParams);
-    colorsOptions.addInnerElement(colorOption);
-    productInfoBottom.addInnerElement(colorsOptions);
+    productInfoBottom.addInnerElement(colorOption);
 
     // size
     const sizeAttr = attrs?.find((attr) => attr.name === 'size');
@@ -399,20 +431,20 @@ export default class ProductDetails extends View {
 
     const descriptionParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUKT_DESCRIPTION],
+      classNames: [CssClassesProduct.PRODUCT_DESCRIPTION],
     };
     const produktDescription = new ElementCreator(descriptionParams);
 
     const descriptionHeaderParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUKT_DESCRIPTION_HEADER],
+      classNames: [CssClassesProduct.PRODUCT_DESCRIPTION_HEADER],
       textContent: 'Description',
     };
     const descriptionHeader = new ElementCreator(descriptionHeaderParams);
 
     const descriptionContentParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUKT_DESCRIPTION_CONTENT],
+      classNames: [CssClassesProduct.PRODUCT_DESCRIPTION_CONTENT],
       textContent: this.productData.metaDescription?.en || '',
     };
     const descriptionContent = new ElementCreator(descriptionContentParams);
@@ -423,5 +455,10 @@ export default class ProductDetails extends View {
     produktDetailBottom.addInnerElement(produktDescription);
 
     return produktDetailBottom;
+  }
+
+  public initializeImageSlider(): void {
+    const imageSlider = new ImageSlider(0);
+    imageSlider.init();
   }
 }
