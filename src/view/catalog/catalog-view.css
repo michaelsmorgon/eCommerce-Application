@@ -10,7 +10,7 @@
 }
 
 
-.catalog-section__container {
+.catalog-section__body {
   max-width: 1030px;
   display: flex;
   justify-content: space-between;

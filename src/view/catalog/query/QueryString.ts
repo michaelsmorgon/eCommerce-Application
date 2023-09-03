@@ -4,6 +4,7 @@ export const QueryStringNames = {
   SIZE: 'size',
   COLOR: 'color',
   MATERIAL: 'material',
+  ORDER: 'order',
 };
 
 export class QueryString {
@@ -18,6 +19,8 @@ export class QueryString {
   private colors: string[] = [];
 
   private material: string[] = [];
+
+  private order: string | null = null;
 
   constructor(private str: string) {
     this.parseString();
@@ -41,6 +44,9 @@ export class QueryString {
           break;
         case QueryStringNames.MATERIAL:
           this.material = strParsed[1] ? strParsed[1].split(';') : [];
+          break;
+        case QueryStringNames.ORDER:
+          this.order = strParsed[1] ? strParsed[1] : null;
           break;
         default:
           break;
@@ -66,6 +72,10 @@ export class QueryString {
 
   public getMaterial(): string[] {
     return this.material;
+  }
+
+  public getOrder(): string | null {
+    return this.order;
   }
 
   public getSearchList(): string[] {
@@ -102,5 +112,20 @@ export class QueryString {
     }
 
     return this.queryList;
+  }
+
+  public getSearchOrder(): string | null {
+    switch (this.order) {
+      case 'pl':
+        return 'price asc';
+      case 'ph':
+        return 'price desc';
+      case 'tl':
+        return 'name.en asc';
+      case 'th':
+        return 'name.en desc';
+      default:
+        return null;
+    }
   }
 }
