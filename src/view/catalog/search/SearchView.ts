@@ -166,6 +166,7 @@ export class SearchView extends View {
   }
 
   private async submitBtnHandler(event: MouseEvent): Promise<void> {
+    this.removeQuery();
     this.getPriceQuery();
     this.getColorQuery();
     this.getSizeQuery();
@@ -178,6 +179,15 @@ export class SearchView extends View {
     const newUrl = `${btn?.getAttribute('href')}${queryStr}`;
     btn?.setAttribute('href', newUrl);
     route(event);
+  }
+
+  private removeQuery(): void {
+    const search = decodeURIComponent(document.location.search.replace('?', ''));
+    if (search.length > 0) {
+      this.queryList = search.split('&').filter((val) => {
+        return val.includes('search') || val.includes('order');
+      });
+    }
   }
 
   private getPriceQuery(): void {

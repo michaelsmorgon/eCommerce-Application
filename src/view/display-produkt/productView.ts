@@ -31,6 +31,6 @@ export default class ProductView extends View {
         this.viewElementCreator.addInnerElement(productDetails.getHtmlElement());
         productDetails.initializeImageSlider();
       })
-      .catch(() => { });
+      .catch(() => {});
   }
 }
