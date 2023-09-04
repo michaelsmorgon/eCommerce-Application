@@ -2,6 +2,8 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../../util/ElementCreator';
 import View, { ViewParams } from '../../View';
 import { route } from '../../../router/router';
+import { QueryString } from '../query/QueryString';
+import './catalog-card.css';
 
 const CssClassesCard = {
   CATALOG_SECTION_PRODUCT: 'catalog-section__product',
@@ -81,6 +83,8 @@ export class CatalogCard extends View {
   }
 
   private addTitle(): ElementCreator {
+    const queryString = new QueryString(decodeURIComponent(document.location.search.replace('?', '')));
+    const searchText = queryString.getSearchText();
     const containerParams: ElementConfig = {
       tag: 'div',
       classNames: [CssClassesCard.CATALOG_SECTION_NAME_CONTAINER],
@@ -90,9 +94,12 @@ export class CatalogCard extends View {
     const nameParams: ElementConfig = {
       tag: 'h3',
       classNames: [CssClassesCard.CATALOG_SECTION_NAME],
-      textContent: this.productData.name.en,
+      // textContent: this.productData.name.en.replace(searchText, `<span class='select_text'>${searchText}</span>`),
     };
     const name = new ElementCreator(nameParams);
+    const nameElem = name.getElement();
+    const pattern = new RegExp(searchText, 'gi');
+    nameElem.innerHTML = this.productData.name.en.replace(pattern, `<span class='select_text'>${searchText}</span>`);
     container.addInnerElement(name);
     container.addInnerElement(this.addDescription());
 

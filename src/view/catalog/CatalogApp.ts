@@ -5,7 +5,6 @@ export default class CatalogApp {
     const view = new CatalogView();
     const main = document.querySelector('.mainView');
     if (!main) {
-      console.log();
       return;
     }
 

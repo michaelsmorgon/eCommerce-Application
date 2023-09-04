@@ -12,7 +12,6 @@ import { CatalogHeaderView } from './header/CatalogHeaderView';
 const CssClassesCatalog = {
   CATALOG_SECTION: 'catalog-section',
   CATALOG_SECTION_CONTAINER: 'catalog-section__container',
-  CATALOG_SECTION_HEADER: 'catalog-section__header',
   CATALOG_SECTION_BODY: 'catalog-section__body',
 };
 
@@ -68,7 +67,11 @@ export default class CatalogView extends View {
     const products = new ProductAPI(tokenCacheStore);
 
     products
-      .getProductsWithSearch(this.queryString.getSearchList(), this.queryString.getSearchOrder())
+      .getProductsWithSearch(
+        this.queryString.getSearchList(),
+        this.queryString.getSearchOrder(),
+        this.queryString.getSearchText()
+      )
       .then((response) => {
         const results = response.body?.results as ProductProjection[];
         results.forEach((product: ProductProjection) => {

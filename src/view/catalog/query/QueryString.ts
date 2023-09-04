@@ -5,6 +5,7 @@ export const QueryStringNames = {
   COLOR: 'color',
   MATERIAL: 'material',
   ORDER: 'order',
+  SEARCH_PRODUCT: 'search',
 };
 
 export class QueryString {
@@ -21,6 +22,8 @@ export class QueryString {
   private material: string[] = [];
 
   private order: string | null = null;
+
+  private searchText: string = '';
 
   constructor(private str: string) {
     this.parseString();
@@ -47,6 +50,9 @@ export class QueryString {
           break;
         case QueryStringNames.ORDER:
           this.order = strParsed[1] ? strParsed[1] : null;
+          break;
+        case QueryStringNames.SEARCH_PRODUCT:
+          this.searchText = strParsed[1] ? strParsed[1] : '';
           break;
         default:
           break;
@@ -76,6 +82,10 @@ export class QueryString {
 
   public getOrder(): string | null {
     return this.order;
+  }
+
+  public getSearchText(): string {
+    return this.searchText;
   }
 
   public getSearchList(): string[] {
