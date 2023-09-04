@@ -55,13 +55,11 @@ export class App {
       case '/registration':
         return RegistrationApp;
       case '/catalog':
-        return CatalogApp;
-      case '/product':
         if (partPathList.length > 1) {
           this.productKey = secondLevel.substring(1);
           return ProductApp;
         }
-        return ProductApp;
+        return CatalogApp;
       default:
         return NotFoundPageApp;
     }
