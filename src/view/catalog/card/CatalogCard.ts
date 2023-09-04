@@ -36,7 +36,7 @@ export class CatalogCard extends View {
       tag: 'div',
       classNames: [CssClassesCard.CATALOG_SECTION_PRODUCT_LINK],
       textContent: '',
-      attributes: [{ name: 'href', value: `/product/${this.productKey}` }],
+      attributes: [{ name: 'href', value: `/catalog/${this.productKey}` }],
       callback: async (event: Event) => {
         const mouseEvent = event as MouseEvent;
         route(mouseEvent);
