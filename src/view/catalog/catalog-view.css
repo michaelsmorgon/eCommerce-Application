@@ -9,6 +9,10 @@
   margin: 0 auto;
 }
 
+.catalog-section__header {
+  display: flex;
+  flex-direction: row;
+}
 
 .catalog-section__body {
   max-width: 1030px;
