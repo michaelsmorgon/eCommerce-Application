@@ -11,7 +11,6 @@ export default class ImageSlider {
     this.slider = document.querySelector('.product-img__wrapper') as HTMLDivElement;
     const slides = document.querySelectorAll('.product-img');
     this.slides = Array.from(slides) as HTMLElement[];
-    this.init();
     this.currentIndex = currentIndex;
     this.updateSlideWidth();
 
@@ -22,9 +21,9 @@ export default class ImageSlider {
   }
 
   private updateSliderPosition(): void {
-    const slider = document.querySelector('.product-img__wrapper') as HTMLDivElement;
-    if (slider) {
-      slider.style.transform = `translateX(-${this.currentIndex * this.slideWidth}px)`;
+    if (this.slider) {
+      this.slider.style.transition = 'transform 0.5s ease-in-out';
+      this.slider.style.transform = `translateX(-${this.currentIndex * this.slideWidth}px)`;
     }
   }
 
@@ -38,21 +37,17 @@ export default class ImageSlider {
 
   showPrevSlide(): void {
     if (this.currentIndex > 0) {
-      this.currentIndex -= 1;
+      this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
       this.updateSliderPosition();
-    } else {
-      this.currentIndex = this.slides.length - 1;
-      this.updateSliderPosition();
+      this.updateButtonStates();
     }
   }
 
   showNextSlide(): void {
     if (this.currentIndex < this.slides.length - 1) {
-      this.currentIndex += 1;
+      this.currentIndex = (this.currentIndex + 1) % this.slides.length;
       this.updateSliderPosition();
-    } else {
-      this.currentIndex = 0;
-      this.updateSliderPosition();
+      this.updateButtonStates();
     }
   }
 
@@ -61,8 +56,28 @@ export default class ImageSlider {
     const nextButton = document.querySelector('.right-button');
 
     if (prevButton && nextButton) {
-      prevButton.addEventListener('click', this.showPrevSlide.bind(this));
-      nextButton.addEventListener('click', this.showNextSlide.bind(this));
+      prevButton.addEventListener('click', () => this.showPrevSlide());
+      nextButton.addEventListener('click', () => this.showNextSlide());
+      this.updateButtonStates();
+    }
+  }
+
+  private updateButtonStates(): void {
+    const prevButton = document.querySelector('.left-button') as HTMLButtonElement;
+    const nextButton = document.querySelector('.right-button') as HTMLButtonElement;
+
+    if (prevButton && nextButton) {
+      if (this.currentIndex === 0) {
+        prevButton.classList.add('disabled');
+      } else {
+        prevButton.classList.remove('disabled');
+      }
+
+      if (this.currentIndex === this.slides.length - 1) {
+        nextButton.classList.add('disabled');
+      } else {
+        nextButton.classList.remove('disabled');
+      }
     }
   }
 }
