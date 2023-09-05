@@ -3,6 +3,7 @@ import { QueryString } from '../query/QueryString';
 import { OrderView } from './order/OrderView';
 import './catalog-header-view.css';
 import { SearchProductView } from './search/SearchProductView';
+import { CategoryView } from './category/CategoryView';
 
 const CssClasses = {
   CATALOG_SECTION_HEADER: 'catalog-section__header',
@@ -20,6 +21,7 @@ export class CatalogHeaderView extends View {
   public create(): void {
     this.addOrder();
     this.addSearchField();
+    this.addCategoryField();
   }
 
   private addOrder(): void {
@@ -30,5 +32,10 @@ export class CatalogHeaderView extends View {
   private addSearchField(): void {
     const orderView = new SearchProductView(this.queryString);
     this.viewElementCreator.addInnerElement(orderView.getHtmlElement());
+  }
+
+  private addCategoryField(): void {
+    const categoryView = new CategoryView(this.queryString);
+    this.viewElementCreator.addInnerElement(categoryView.getHtmlElement());
   }
 }

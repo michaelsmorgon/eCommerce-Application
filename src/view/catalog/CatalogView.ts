@@ -18,7 +18,7 @@ const CssClassesCatalog = {
 export default class CatalogView extends View {
   private queryString: QueryString;
 
-  constructor() {
+  constructor(private categoryId: string | null = null) {
     const params: ViewParams = {
       tag: 'section',
       classNames: [CssClassesCatalog.CATALOG_SECTION],
@@ -66,11 +66,17 @@ export default class CatalogView extends View {
     const tokenCacheStore = new TokenCacheStore();
     const products = new ProductAPI(tokenCacheStore);
 
+    let filterQuery: string = '';
+    if (this.categoryId) {
+      filterQuery = `categories.id:subtree("${this.categoryId}")`;
+    }
+
     products
       .getProductsWithSearch(
         this.queryString.getSearchList(),
         this.queryString.getSearchOrder(),
-        this.queryString.getSearchText()
+        this.queryString.getSearchText(),
+        filterQuery
       )
       .then((response) => {
         const results = response.body?.results as ProductProjection[];
