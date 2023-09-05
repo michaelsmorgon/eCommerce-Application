@@ -42,10 +42,8 @@ export class App {
 
   getBody(): typeof Main | typeof LoginApp | typeof RegistrationApp | typeof CatalogApp | typeof ProductApp {
     const token = localStorage.getItem('token');
-    if (
-      (document.location.pathname === '/login' && token) ||
-      (document.location.pathname === '/registration' && token)
-    ) {
+    const { pathname } = document.location;
+    if (token && (pathname === '/login' || pathname === '/registration')) {
       window.history.pushState({}, '', '/');
     }
     const partPathList = document.location.pathname.match(/(\/[a-zA-Z0-9-]*)/g);
@@ -91,7 +89,13 @@ export class App {
     };
     const main = new ElementCreator(params);
     document.body.appendChild(main.getElement());
-    this.main.create();
+    if (this.productKey !== null) {
+      this.main.create(this.productKey);
+    } else if (this.categoryId !== null) {
+      this.main.create(this.categoryId);
+    } else {
+      this.main.create();
+    }
     this.footer.create();
 
     window.onpopstate = (): void => {
