@@ -2,12 +2,12 @@ import { ClientResponse, createApiBuilderFromCtpClient } from '@commercetools/pl
 import { BuilderClient } from '../../../api/BuilderClient';
 import { TokenCacheStore } from '../../../api/TokenCacheStore';
 
-import { RegInputClasses } from '../../../data/registration-fields';
 import ElementCreator from '../../../util/ElementCreator';
 import { InputField } from '../../../util/input_field/InputField';
 import { Warning } from '../EditPageView/input-field-warning/Warning';
 import { WarningMessage } from '../EditPageView/validation-fields/FieldValidator';
 import './passwords.css';
+import { MessageView } from '../../message/MessageView';
 
 export default class PasswordChangeView extends ElementCreator {
   private PATH_MIN_LENGTH = 8;
@@ -30,13 +30,14 @@ export default class PasswordChangeView extends ElementCreator {
 
     this.currentPasswordInput = this.createInputField('Current Password', 'user-current-passwords');
     this.newPasswordInput = this.createInputField('New Password', 'user-new-passwords');
-    this.confirmNewPasswordInput = this.createInputField('Confirm Password', 'user-new-passwords');
+    this.confirmNewPasswordInput = this.createInputField('Confirm Password', 'user-New-passwords');
 
     this.callMethods();
   }
 
   callMethods(): void {
     this.passwordsConfirmButton();
+    this.passwordsBackButton();
   }
 
   private createInputField(labelText: string, classNames: string): InputField {
@@ -44,11 +45,32 @@ export default class PasswordChangeView extends ElementCreator {
       tag: 'input',
       classNames: [classNames],
       textContent: labelText,
+      attributes: [{ name: 'type', value: 'password' }],
     };
     const inputField = new InputField(inputContent);
     this.addInnerElement(inputField);
 
     return inputField;
+  }
+
+  passwordsBackButton(): void {
+    const userContent = {
+      tag: 'div',
+      classNames: ['user-passwords'],
+    };
+    const Userdiv = new ElementCreator(userContent);
+    this.addInnerElement(Userdiv);
+
+    const Button = {
+      tag: 'button',
+      classNames: ['user-button-back'],
+      textContent: 'Back',
+      callback: (): void => {
+        window.history.back();
+      },
+    };
+    const UserButton = new ElementCreator(Button);
+    Userdiv.addInnerElement(UserButton);
   }
 
   passwordsConfirmButton(): void {
@@ -83,8 +105,7 @@ export default class PasswordChangeView extends ElementCreator {
     const numbers = /[0-9]/g;
     const otherCharacters = /[^a-zA-Z0-9]/g;
 
-    const pass = this.newPasswordInput.getElement().querySelector('input') as HTMLInputElement;
-
+    const pass = document.querySelector('.user-new-passwords > input') as HTMLInputElement;
     if (
       pass.value !== '' &&
       pass.value.match(lowerCaseLetters) &&
@@ -93,7 +114,7 @@ export default class PasswordChangeView extends ElementCreator {
       !pass.value.match(otherCharacters) &&
       pass.value.length >= this.PATH_MIN_LENGTH
     ) {
-      Warning.removeWarning(pass, RegInputClasses.REG_PASS);
+      Warning.removeWarning(pass, 'user-new-passwords');
       return true;
     }
     let warningMsg = '';
@@ -105,7 +126,7 @@ export default class PasswordChangeView extends ElementCreator {
       warningMsg = WarningMessage.PASS_INCORRECT_REQUIREMENTS;
     }
 
-    Warning.addWarning(pass, RegInputClasses.REG_PASS, warningMsg);
+    Warning.addWarning(pass, 'user-new-passwords', warningMsg);
 
     return false;
   }
@@ -116,8 +137,7 @@ export default class PasswordChangeView extends ElementCreator {
     const numbers = /[0-9]/g;
     const otherCharacters = /[^a-zA-Z0-9]/g;
 
-    const pass = this.currentPasswordInput.getElement().querySelector('input') as HTMLInputElement;
-
+    const pass = document.querySelector('.user-current-passwords > input') as HTMLInputElement;
     if (
       pass.value !== '' &&
       pass.value.match(lowerCaseLetters) &&
@@ -126,7 +146,7 @@ export default class PasswordChangeView extends ElementCreator {
       !pass.value.match(otherCharacters) &&
       pass.value.length >= this.PATH_MIN_LENGTH
     ) {
-      Warning.removeWarning(pass, RegInputClasses.REG_PASS);
+      Warning.removeWarning(pass, 'user-current-passwords');
       return true;
     }
     let warningMsg = '';
@@ -138,17 +158,17 @@ export default class PasswordChangeView extends ElementCreator {
       warningMsg = WarningMessage.PASS_INCORRECT_REQUIREMENTS;
     }
 
-    Warning.addWarning(pass, RegInputClasses.REG_PASS, warningMsg);
+    Warning.addWarning(pass, 'user-current-passwords', warningMsg);
 
     return false;
   }
 
   private validateConfirmPass(): boolean {
     const pass = this.newPasswordInput.getElement().querySelector('input') as HTMLInputElement;
-    const confirmPass = this.confirmNewPasswordInput.getElement().querySelector('input') as HTMLInputElement;
+    const confirmPass = document.querySelector('.user-New-passwords > input') as HTMLInputElement;
 
     if (confirmPass.value !== '' && confirmPass.value === pass.value) {
-      Warning.removeWarning(confirmPass, RegInputClasses.REG_CONFIRM_PASS);
+      Warning.removeWarning(confirmPass, 'user-New-passwords');
       return true;
     }
     let warningMsg = '';
@@ -157,7 +177,7 @@ export default class PasswordChangeView extends ElementCreator {
     } else {
       warningMsg = WarningMessage.CONFIRM_PASS;
     }
-    Warning.addWarning(confirmPass, RegInputClasses.REG_CONFIRM_PASS, warningMsg);
+    Warning.addWarning(confirmPass, 'user-New-passwords', warningMsg);
     return false;
   }
 
@@ -182,7 +202,8 @@ export default class PasswordChangeView extends ElementCreator {
 
       try {
         await apiRoot.customers().password().post({ body: customerPassword }).execute();
-        console.log('Password changed successfully:');
+        const msgView = new MessageView('Password Changed!');
+        msgView.showWindowMsg();
       } catch (error) {
         console.error('Error changing password:');
         console.error(error);

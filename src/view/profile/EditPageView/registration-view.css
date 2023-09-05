@@ -22,3 +22,6 @@
 .reg-input:valid {
   border-color: var(--color-three);
 }
+.user-userEditButton{
+  margin-top: 5px;
+}

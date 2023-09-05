@@ -17,6 +17,7 @@ import { BuilderClient } from '../../../api/BuilderClient';
 
 import { TokenCacheStore } from '../../../api/TokenCacheStore';
 import { CUSTOMER_UPDATE_ACTIONS } from '../../../data/Actions';
+import { MessageView } from '../../message/MessageView';
 
 const CssClassesForm = {
   REGISTRATION_CONTAINER: 'registration__container',
@@ -104,7 +105,8 @@ export class RegistrationView extends View {
           this.CustomerShippingAdressesActions(customerUpdate, params, customerResponse);
           this.CustomerBillingAdressesActions(customerUpdate, params, customerResponse);
           const response = await apiRoot.customers().withId({ ID: id }).post({ body: customerUpdate }).execute();
-          console.log(response);
+          const msgView = new MessageView('Information Changed!');
+          msgView.showWindowMsg();
           return response;
         } catch (error) {
           console.error('Error checking customer:', error);
@@ -177,13 +179,24 @@ export class RegistrationView extends View {
           country: shippingAddressNow.country,
         },
       });
-    } else if (shippingAddress && !shippingAddressNow) {
+    }
+    this.ShippingMoreAddres(customerUpdate, params, customerResponse);
+    this.ShippingAddsAddres(customerUpdate, params, customerResponse);
+  }
+
+  ShippingAddsAddres(
+    customerUpdate: { version: number; actions: CustomerUpdateAction[] },
+    params: CustomerDraft,
+    customerResponse: ClientResponse
+  ): void {
+    const shippingAddress = customerResponse.body.addresses?.find((address: BaseAddress) => address.key === 'shipping');
+    const shippingAddressNow = params.addresses?.find((address: BaseAddress) => address.key === 'shipping');
+    if (shippingAddress && !shippingAddressNow) {
       customerUpdate.actions.push({
         action: CUSTOMER_UPDATE_ACTIONS.REMOVE_ADRESS,
         addressId: shippingAddress.id,
       });
     }
-    this.ShippingMoreAddres(customerUpdate, params, customerResponse);
   }
 
   ShippingMoreAddres(
@@ -257,13 +270,24 @@ export class RegistrationView extends View {
           country: billingAddressNow.country,
         },
       });
-    } else if (billingAddress && !billingAddressNow) {
+    }
+    this.BillingMoreAddres(customerUpdate, params, customerResponse);
+    this.BillingAddAddres(customerUpdate, params, customerResponse);
+  }
+
+  BillingAddAddres(
+    customerUpdate: { version: number; actions: CustomerUpdateAction[] },
+    params: CustomerDraft,
+    customerResponse: ClientResponse
+  ): void {
+    const billingAddress = customerResponse.body.addresses?.find((address: BaseAddress) => address.key === 'billing');
+    const billingAddressNow = params.addresses?.find((address: BaseAddress) => address.key === 'billing');
+    if (billingAddress && !billingAddressNow) {
       customerUpdate.actions.push({
         action: CUSTOMER_UPDATE_ACTIONS.REMOVE_ADRESS,
         addressId: billingAddress.id,
       });
     }
-    this.BillingMoreAddres(customerUpdate, params, customerResponse);
   }
 
   BillingMoreAddres(
@@ -292,6 +316,7 @@ export class RegistrationView extends View {
       customerResponse.body.shippingAddressIds?.includes(customerResponse.body.billingAddressIds[0]) &&
       !includeBilling.checked
     ) {
+      console.log(customerResponse);
       customerUpdate.actions.push({
         action: CUSTOMER_UPDATE_ACTIONS.REMOVE_SHIPPING_ADRESS_ID,
         addressKey: 'billing',
