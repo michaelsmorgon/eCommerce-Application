@@ -1,11 +1,10 @@
 import CatalogView from './CatalogView';
 
 export default class CatalogApp {
-  static create(): void {
-    const view = new CatalogView();
+  static create(categoryId: string | null = null): void {
+    const view = new CatalogView(categoryId);
     const main = document.querySelector('.mainView');
     if (!main) {
-      console.log();
       return;
     }
 

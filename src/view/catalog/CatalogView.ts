@@ -12,14 +12,13 @@ import { CatalogHeaderView } from './header/CatalogHeaderView';
 const CssClassesCatalog = {
   CATALOG_SECTION: 'catalog-section',
   CATALOG_SECTION_CONTAINER: 'catalog-section__container',
-  CATALOG_SECTION_HEADER: 'catalog-section__header',
   CATALOG_SECTION_BODY: 'catalog-section__body',
 };
 
 export default class CatalogView extends View {
   private queryString: QueryString;
 
-  constructor() {
+  constructor(private categoryId: string | null = null) {
     const params: ViewParams = {
       tag: 'section',
       classNames: [CssClassesCatalog.CATALOG_SECTION],
@@ -67,8 +66,18 @@ export default class CatalogView extends View {
     const tokenCacheStore = new TokenCacheStore();
     const products = new ProductAPI(tokenCacheStore);
 
+    let filterQuery: string = '';
+    if (this.categoryId) {
+      filterQuery = `categories.id:subtree("${this.categoryId}")`;
+    }
+
     products
-      .getProductsWithSearch(this.queryString.getSearchList(), this.queryString.getSearchOrder())
+      .getProductsWithSearch(
+        this.queryString.getSearchList(),
+        this.queryString.getSearchOrder(),
+        this.queryString.getSearchText(),
+        filterQuery
+      )
       .then((response) => {
         const results = response.body?.results as ProductProjection[];
         results.forEach((product: ProductProjection) => {

@@ -21,6 +21,8 @@ export class App {
 
   productKey: string | null = null;
 
+  categoryId: string | null = null;
+
   constructor() {
     this.header = new Header();
     this.main = this.getBody();
@@ -31,6 +33,8 @@ export class App {
     this.main = this.getBody();
     if (this.productKey !== null) {
       this.main.create(this.productKey);
+    } else if (this.categoryId !== null) {
+      this.main.create(this.categoryId);
     } else {
       this.main.create();
     }
@@ -44,7 +48,7 @@ export class App {
     ) {
       window.history.pushState({}, '', '/');
     }
-    const partPathList = document.location.pathname.match(/(\/[a-zA-Z0-9]*)/g);
+    const partPathList = document.location.pathname.match(/(\/[a-zA-Z0-9-]*)/g);
 
     if (partPathList === null) {
       return NotFoundPageApp;
@@ -58,13 +62,17 @@ export class App {
       case '/registration':
         return RegistrationApp;
       case '/catalog':
-        return CatalogApp;
-      case '/product':
         if (partPathList.length > 1) {
           this.productKey = secondLevel.substring(1);
           return ProductApp;
         }
-        return ProductApp;
+        return CatalogApp;
+      case '/category':
+        if (partPathList.length > 1) {
+          this.categoryId = secondLevel.substring(1);
+          return CatalogApp;
+        }
+        return CatalogApp;
       case '/profile':
         return ProfileApp;
       case '/EditPage':
