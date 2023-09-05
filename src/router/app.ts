@@ -7,6 +7,9 @@ import Header from '../view/header/header-view';
 import LoginApp from '../view/login/loginvView';
 import Main from '../view/mainPage/main-view';
 import NotFoundPageApp from '../view/page-404/page404View';
+import ChangePassword from '../view/profile/ChangePasswordView/changePasswordView';
+import EditPage from '../view/profile/EditPageView/displayRegistration';
+import ProfileApp from '../view/profile/profileView';
 import RegistrationApp from '../view/registration/displayRegistration';
 
 export class App {
@@ -62,6 +65,12 @@ export class App {
           return ProductApp;
         }
         return ProductApp;
+      case '/profile':
+        return ProfileApp;
+      case '/EditPage':
+        return EditPage;
+      case '/ChangePassword':
+        return ChangePassword;
       default:
         return NotFoundPageApp;
     }

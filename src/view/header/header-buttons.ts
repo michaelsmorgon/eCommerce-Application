@@ -57,6 +57,7 @@ export default class AuthButtons {
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
         LocaleStorage.clearLocalStorage(LocaleStorage.TOKEN);
+        LocaleStorage.clearLocalStorage(LocaleStorage.ID);
         route(mouseEvent);
       },
     });
