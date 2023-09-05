@@ -1,5 +1,6 @@
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import {
+  CategoryPagedQueryResponse,
   ClientResponse,
   Product,
   ProductPagedQueryResponse,
@@ -38,7 +39,8 @@ export class ProductAPI {
   public async getProductsWithSearch(
     filterSearch: string[],
     orderSearch: string | null = null,
-    searchText: string = ''
+    searchText: string = '',
+    filterQuery: string = ''
   ): Promise<ClientResponse<ProductProjectionPagedQueryResponse | null>> {
     try {
       const response = await this.apiRoot
@@ -50,6 +52,7 @@ export class ProductAPI {
             'text.en': searchText,
             sort: orderSearch ? [orderSearch] : [],
             filter: filterSearch,
+            'filter.query': filterQuery !== '' ? filterQuery : undefined,
           },
         })
         .execute();
@@ -77,6 +80,26 @@ export class ProductAPI {
   public async getProductById(id: string): Promise<ClientResponse<Product>> {
     try {
       const response = await this.apiRoot.products().withId({ ID: id }).get().execute();
+
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      this.showError(error);
+      throw new Error();
+    }
+  }
+
+  public async getProductCategories(): Promise<ClientResponse<CategoryPagedQueryResponse>> {
+    try {
+      const response = await this.apiRoot
+        .categories()
+        .get({
+          queryArgs: {
+            limit: 25,
+            sort: 'orderHint asc',
+          },
+        })
+        .execute();
 
       console.log(response);
       return response;
