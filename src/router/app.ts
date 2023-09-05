@@ -49,10 +49,7 @@ export class App {
       window.history.pushState({}, '', '/');
     }
     const partPathList = document.location.pathname.match(/(\/[a-zA-Z0-9-]*)/g);
-
-    if (partPathList === null) {
-      return NotFoundPageApp;
-    }
+    if (partPathList === null) return NotFoundPageApp;
     const [firstLevel, secondLevel] = partPathList;
     switch (firstLevel) {
       case '/':
