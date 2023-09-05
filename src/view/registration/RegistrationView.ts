@@ -104,9 +104,10 @@ export class RegistrationView extends View {
       const customer = new Customer(tokenCacheStore);
       customer
         .createCustomer(params)
-        .then(() => {
+        .then((response) => {
           setTimeout(() => {
             LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
+            LocaleStorage.saveLocalStorage(LocaleStorage.ID, response?.body.customer.id);
             route(event as MouseEvent);
           }, 1000);
         })
@@ -175,6 +176,7 @@ export class RegistrationView extends View {
 
   private getBillingAddress(): BaseAddress {
     return {
+      key: 'billing',
       streetName: this.getFieldValue(RegInputClasses.REG_STREET),
       city: this.getFieldValue(RegInputClasses.REG_CITY),
       postalCode: this.getFieldValue(RegInputClasses.REG_POSTAL_CODE),
@@ -184,6 +186,7 @@ export class RegistrationView extends View {
 
   private getShippingAddress(): BaseAddress {
     return {
+      key: 'shipping',
       streetName: this.getFieldValue(RegInputClasses.REG_STREET_SHIPPING),
       city: this.getFieldValue(RegInputClasses.REG_CITY_SHIPPING),
       postalCode: this.getFieldValue(RegInputClasses.REG_POSTAL_CODE_SHIPPING),

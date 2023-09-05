@@ -7,6 +7,9 @@ import Header from '../view/header/header-view';
 import LoginApp from '../view/login/loginvView';
 import Main from '../view/mainPage/main-view';
 import NotFoundPageApp from '../view/page-404/page404View';
+import ChangePassword from '../view/profile/ChangePasswordView/changePasswordView';
+import EditPage from '../view/profile/EditPageView/displayRegistration';
+import ProfileApp from '../view/profile/profileView';
 import RegistrationApp from '../view/registration/displayRegistration';
 
 export class App {
@@ -46,10 +49,7 @@ export class App {
       window.history.pushState({}, '', '/');
     }
     const partPathList = document.location.pathname.match(/(\/[a-zA-Z0-9-]*)/g);
-
-    if (partPathList === null) {
-      return NotFoundPageApp;
-    }
+    if (partPathList === null) return NotFoundPageApp;
     const [firstLevel, secondLevel] = partPathList;
     this.productKey = null;
     this.categoryId = null;
@@ -72,6 +72,12 @@ export class App {
           return CatalogApp;
         }
         return CatalogApp;
+      case '/profile':
+        return ProfileApp;
+      case '/EditPage':
+        return EditPage;
+      case '/ChangePassword':
+        return ChangePassword;
       default:
         return NotFoundPageApp;
     }

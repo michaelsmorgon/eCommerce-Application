@@ -6,7 +6,7 @@ export default class AccountLink {
     const accountLink = new ElementCreator({
       tag: 'a',
       classNames: [],
-      attributes: [{ name: 'href', value: '/account' }],
+      attributes: [{ name: 'href', value: '/profile' }],
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
         route(mouseEvent);
