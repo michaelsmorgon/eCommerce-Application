@@ -51,6 +51,8 @@ export class App {
       return NotFoundPageApp;
     }
     const [firstLevel, secondLevel] = partPathList;
+    this.productKey = null;
+    this.categoryId = null;
     switch (firstLevel) {
       case '/':
         return Main;
