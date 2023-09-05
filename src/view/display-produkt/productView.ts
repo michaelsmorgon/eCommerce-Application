@@ -42,6 +42,6 @@ export default class ProductView extends View {
           });
         });
       })
-      .catch(() => { });
+      .catch(() => {});
   }
 }
