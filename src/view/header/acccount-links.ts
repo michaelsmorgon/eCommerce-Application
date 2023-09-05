@@ -17,7 +17,7 @@ export default class AccountLink {
       tag: 'img',
       classNames: ['account-icon'],
       attributes: [
-        { name: 'src', value: './assets/icons/my-account.png' },
+        { name: 'src', value: '/assets/icons/my-account.png' },
         { name: 'alt', value: 'account-icon' },
       ],
     });
