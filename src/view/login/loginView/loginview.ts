@@ -148,6 +148,7 @@ export default class LoginView extends ElementCreator {
       .loginUseCredentials()
       .then((response) => {
         LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
+        LocaleStorage.saveLocalStorage(LocaleStorage.ID, `${response?.body.customer.id}`);
         route(mouseEvent);
         console.log(response);
       })
