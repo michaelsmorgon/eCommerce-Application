@@ -78,6 +78,13 @@
   transform: translateY(-50%) rotate(180deg);
 }
 
+.disabled,
+.disabled:hover,
+.disabled:active {
+  opacity: 0.3;
+  cursor: none;
+}
+
 .sale-procent {
   position: absolute;
   left: 20px;

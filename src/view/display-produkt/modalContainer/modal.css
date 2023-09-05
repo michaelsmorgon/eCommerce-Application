@@ -41,7 +41,6 @@
   overflow: hidden;
   background-color: rgb(255, 255, 255);
   z-index: 6;
-  transition: all 0.3s ease-in-out;
 }
 
 .modal-slider .product-img {
@@ -49,6 +48,11 @@
   height: 600px;
   padding: 15px;
   left: 0;
+  display: none;
+}
+
+.modal-slider > .product-img.active {
+  display: block;
 }
 
 .prev-button, .next-button {
