@@ -7,7 +7,12 @@ function findAnchorElement(startingElement: HTMLElement | null): HTMLAnchorEleme
 }
 
 export function route(event: MouseEvent): void {
-  const anchorElement = findAnchorElement(event.currentTarget as HTMLElement);
+  let anchorElement = null;
+  if (event.currentTarget !== null) {
+    anchorElement = findAnchorElement(event.currentTarget as HTMLElement);
+  } else {
+    anchorElement = findAnchorElement(event.target as HTMLElement);
+  }
 
   if (!anchorElement) {
     return;
