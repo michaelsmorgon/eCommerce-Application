@@ -17,6 +17,8 @@ export default class Modal {
 
   private currentImageIndex: number = 0;
 
+  private dotsContainer: HTMLDivElement;
+
   constructor(img: HTMLElement) {
     this.img = img;
     this.slides = Array.from(document.querySelectorAll('.product-img'));
@@ -26,6 +28,9 @@ export default class Modal {
     this.slider = this.createSlider();
     this.prevButton = this.createPrevButton();
     this.nextButton = this.createNextButton();
+    this.dotsContainer = this.createDotsContainer(); // Создаем контейнер для точек
+    this.createDots(); // Создаем точки
+    this.updateDots(); // Обновляем точки
     this.init();
 
     this.modalContainer.addEventListener('click', (event) => {
@@ -75,6 +80,7 @@ export default class Modal {
     prevButton.addEventListener('click', () => {
       this.currentImageIndex = (this.currentImageIndex - 1 + this.slidesCopy.length) % this.slidesCopy.length;
       this.updateSlider();
+      this.updateDots();
     });
     this.modalContainer.appendChild(prevButton);
     return prevButton;
@@ -86,6 +92,7 @@ export default class Modal {
     nextButton.addEventListener('click', () => {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.slidesCopy.length;
       this.updateSlider();
+      this.updateDots();
     });
     this.modalContainer.appendChild(nextButton);
     return nextButton;
@@ -98,6 +105,7 @@ export default class Modal {
   }
 
   private closeModal(): void {
+    document.body.style.overflow = 'auto';
     this.removeModalFromDOM();
   }
 
@@ -106,7 +114,6 @@ export default class Modal {
 
     this.slidesCopy.forEach((element: HTMLElement, index) => {
       const shouldDisplay = index === currentImageIndex;
-      // Добавляем/удаляем класс 'active' для анимации
       if (shouldDisplay) {
         element.classList.add('active');
       } else {
@@ -115,9 +122,49 @@ export default class Modal {
     });
   }
 
+  private createDotsContainer(): HTMLDivElement {
+    const dotsContainer = document.createElement('div');
+    dotsContainer.classList.add('dots-container');
+    this.slider.appendChild(dotsContainer);
+    return dotsContainer;
+  }
+
+  private createDots(): void {
+    if (this.slidesCopy.length > 1) {
+      this.slidesCopy.forEach((_, index) => {
+        const dot = document.createElement('span');
+        dot.classList.add('dot');
+        this.dotsContainer.appendChild(dot);
+
+        dot.addEventListener('click', () => this.goToSlide(index));
+      });
+    }
+  }
+
+  private goToSlide(index: number): void {
+    if (index >= 0 && index < this.slidesCopy.length) {
+      this.currentImageIndex = index;
+      this.updateSlider();
+      this.updateDots();
+    }
+  }
+
+  private updateDots(): void {
+    const dots = this.dotsContainer.querySelectorAll('.dot');
+
+    if (dots) {
+      dots.forEach((dot, index) => {
+        if (index === this.currentImageIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+  }
+
   public init(): void {
     this.closeButton.addEventListener('click', () => {
-      document.body.style.overflow = 'auto';
       this.closeModal();
     });
   }

@@ -10,7 +10,6 @@ const CssClassesProduct = {
   PRODUCT_DETAILS_TOP: 'product-details__top',
   PRODUCT_IMG_CONTAINER: 'product-img__container',
   PRODUCT_SLIDER_WRAPP: 'product-img__slider-wrapper',
-  PRODUCT_SLIDER_GALERY: 'product-img__galery',
   LEFT_BUTTON: 'left-button',
   RIGHT_BUTTON: 'right-button',
   PRODUCT_IMG_WRAPP: 'product-img__wrapper',
@@ -37,6 +36,7 @@ const CssClassesProduct = {
   PRODUCT_DESCRIPTION: 'product-description',
   PRODUCT_DESCRIPTION_HEADER: 'product-description__header',
   PRODUCT_DESCRIPTION_CONTENT: 'product-description__content',
+  DOTS: 'slider-dots',
 };
 
 export default class ProductDetails extends View {
@@ -48,8 +48,6 @@ export default class ProductDetails extends View {
     super(params);
     this.viewElementCreator.addInnerElement(this.addTopContainer());
     this.viewElementCreator.addInnerElement(this.addBottomContainer());
-    const imageSlider = new ImageSlider(0);
-    imageSlider.init();
   }
 
   private addImage(): ElementCreator {
@@ -125,23 +123,22 @@ export default class ProductDetails extends View {
     };
 
     const sliderImageContainer = new ElementCreator(sliderWrappperParams);
-    /*
-        const galeryParams: ElementConfig = {
-          tag: 'div',
-          classNames: [CssClassesProduct.PRODUCT_SLIDER_GALERY],
-        };
-    
-        const galery = new ElementCreator(galeryParams);
-    */
+
+    const dotsParams: ElementConfig = {
+      tag: 'div',
+      classNames: [CssClassesProduct.DOTS],
+    };
+
+    const dotsContainer = new ElementCreator(dotsParams);
+
     sliderImages.forEach((image) => {
-      // galery.addInnerElement(image);
       imageWrapper.addInnerElement(image);
     });
 
     imageContainer.addInnerElement(leftButton);
     imageContainer.addInnerElement(sliderImageContainer);
     sliderImageContainer.addInnerElement(imageWrapper);
-    // sliderImageContainer.addInnerElement(galery);
+    sliderImageContainer.addInnerElement(dotsContainer);
     imageContainer.addInnerElement(rightButton);
 
     return imageContainer;
