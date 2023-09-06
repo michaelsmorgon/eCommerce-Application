@@ -35,3 +35,13 @@
   justify-content: center;
   align-items: center;
 }
+@media (max-width:575px) {
+  .user-information-content{
+    width: 315px;
+    font-size: 16px;
+  }
+  .user-userEditButton{
+    width: 150px;
+  }
+
+}
