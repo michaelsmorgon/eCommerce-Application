@@ -5,7 +5,7 @@
   padding: 5px;
 }
 
-@media (max-width: 905px) {
+@media (max-width: 1095px) {
   .catalog-section__header {
     display: flex;
     flex-direction: column;
