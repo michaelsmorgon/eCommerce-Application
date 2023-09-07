@@ -1,0 +1,75 @@
+.user-info__container {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.user-addresses__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.user-address__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info__caption,
+.user-address__caption {
+  font-size: 24px;
+  color: var(--color-four);
+  display: block;
+  font-weight: bold;
+  margin: 15px auto;
+  width: 90%;
+  text-align: center;
+}
+
+.user-info__caption:after,
+.user-address__caption:after {
+  content: '';
+  background-color: var(--color-four);
+  height: 1px;
+  display: block;
+}
+
+.billing_default > label {
+  display: inline-block;
+}
+
+.address-checkbox {
+  padding: 5px 0;
+}
+
+input#shipping-def,
+input#billing-def,
+input#use-billing,
+input#use-shipping,
+input#billing-include,
+input#shipping-include {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  min-height: auto;
+}
+
+label.address-label {
+  display: inline-block;
+  padding: 0 5px 5px 5px;
+}
+
+@media (max-width: 768px) {
+  .user-addresses__container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .user-address__container {
+    --width: 70%;
+  }
+}

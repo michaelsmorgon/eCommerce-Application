@@ -3,6 +3,8 @@
 @import '../mainPage/benefits/benefits.css';
 @import '../mainPage/sale/sale.css';
 @import '../page-404/page404.css';
+@import '../display-produkt/product-details.css';
+@import '../display-produkt/modalContainer/modal.css';
 
 .not-found-container,
 .mainView {

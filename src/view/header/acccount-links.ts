@@ -6,7 +6,7 @@ export default class AccountLink {
     const accountLink = new ElementCreator({
       tag: 'a',
       classNames: [],
-      attributes: [{ name: 'href', value: '/account' }],
+      attributes: [{ name: 'href', value: '/profile' }],
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
         route(mouseEvent);
@@ -17,7 +17,7 @@ export default class AccountLink {
       tag: 'img',
       classNames: ['account-icon'],
       attributes: [
-        { name: 'src', value: './assets/icons/my-account.png' },
+        { name: 'src', value: '/assets/icons/my-account.png' },
         { name: 'alt', value: 'account-icon' },
       ],
     });

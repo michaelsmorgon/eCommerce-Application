@@ -1,11 +1,11 @@
-import { ClientResponse, CustomerSignInResult, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { ctpClient, tokenCacheStore } from '../../../api/BuilderClient';
 import './login.css';
 import ElementCreator, { ElementConfig } from '../../../util/ElementCreator';
 import { InputField } from '../../../util/input_field/InputField';
 import { LoginFieldValidator } from './LoginFieldsValidation';
 import { route } from '../../../router/router';
 import { LocaleStorage } from '../../../api/LocaleStorage';
+import { Login } from '../../../api/Login';
+import { TokenCacheStore } from '../../../api/TokenCacheStore';
 
 export default class LoginView extends ElementCreator {
   fieldChecker: LoginFieldValidator;
@@ -19,21 +19,6 @@ export default class LoginView extends ElementCreator {
     this.configureView();
 
     this.fieldChecker = new LoginFieldValidator();
-  }
-
-  async checkCustomerExists(email: string, password: string): Promise<ClientResponse<CustomerSignInResult> | null> {
-    const projectKey = 'dumians';
-    const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({ projectKey });
-
-    try {
-      const response = await apiRoot.login().post({ body: { email, password } }).execute();
-
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.error('Error checking customer:', error);
-      return null;
-    }
   }
 
   configureInputFields(): ElementConfig[] {
@@ -157,27 +142,32 @@ export default class LoginView extends ElementCreator {
     const passwordInput = document.getElementById('loginPassword') as HTMLInputElement;
     const errorMessageSpan = document.getElementById('login-content-Error') as HTMLInputElement;
 
-    const response = await this.checkCustomerExists(emailInput.value, passwordInput.value);
+    const tokenCacheStore = new TokenCacheStore();
+    const login = new Login(tokenCacheStore, emailInput.value, passwordInput.value);
+    login
+      .loginUseCredentials()
+      .then((response) => {
+        LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
+        LocaleStorage.saveLocalStorage(LocaleStorage.ID, `${response?.body.customer.id}`);
+        route(mouseEvent);
+        console.log(response);
+      })
+      .catch(() => {
+        errorMessageSpan.textContent = 'There is no user with such an email and password';
+        emailInput.style.border = '1px solid red';
+        passwordInput.style.border = '1px solid red';
 
-    if (response !== null) {
-      LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
-      route(mouseEvent);
-    } else {
-      errorMessageSpan.textContent = 'There is no user with such an email and password';
-      emailInput.style.border = '1px solid red';
-      passwordInput.style.border = '1px solid red';
-
-      emailInput.addEventListener('focus', () => {
-        errorMessageSpan.textContent = '';
-        emailInput.style.border = 'none';
-        passwordInput.style.border = 'none';
+        emailInput.addEventListener('focus', () => {
+          errorMessageSpan.textContent = '';
+          emailInput.style.border = 'none';
+          passwordInput.style.border = 'none';
+        });
+        passwordInput.addEventListener('focus', () => {
+          errorMessageSpan.textContent = '';
+          emailInput.style.border = 'none';
+          passwordInput.style.border = 'none';
+        });
       });
-      passwordInput.addEventListener('focus', () => {
-        errorMessageSpan.textContent = '';
-        emailInput.style.border = 'none';
-        passwordInput.style.border = 'none';
-      });
-    }
   }
 
   private handlePasswordInputValidation(): void {

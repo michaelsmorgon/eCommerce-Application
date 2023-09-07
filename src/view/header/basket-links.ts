@@ -19,7 +19,7 @@ export default class BasketLink {
       attributes: [
         {
           name: 'src',
-          value: './assets/icons/basket.png',
+          value: '/assets/icons/basket.png',
         },
         {
           name: 'alt',

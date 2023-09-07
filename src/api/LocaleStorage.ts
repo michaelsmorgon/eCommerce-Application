@@ -1,6 +1,8 @@
 export class LocaleStorage {
   static TOKEN = 'token';
 
+  static ID = 'id';
+
   public static saveLocalStorage(name: string, value: string): void {
     localStorage.setItem(name, value);
 

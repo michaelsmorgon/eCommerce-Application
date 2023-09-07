@@ -56,7 +56,9 @@ export default class ElementCreator {
   protected setAttributes(attributes: IAttribute[] | null = null): void {
     if (attributes !== null) {
       attributes.forEach((attribute: IAttribute) => {
-        this.element.setAttribute(attribute.name, attribute.value);
+        if (attribute.name !== '') {
+          this.element.setAttribute(attribute.name, attribute.value);
+        }
       });
     }
   }

@@ -45,7 +45,7 @@ export default class AuthButtons {
       },
     });
 
-    return this.createButton(btn, 'login', './assets/icons/login-icon.png');
+    return this.createButton(btn, 'login', '/assets/icons/login-icon.png');
   }
 
   private createLogoutBtn(): ElementCreator {
@@ -57,11 +57,12 @@ export default class AuthButtons {
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
         LocaleStorage.clearLocalStorage(LocaleStorage.TOKEN);
+        LocaleStorage.clearLocalStorage(LocaleStorage.ID);
         route(mouseEvent);
       },
     });
 
-    return this.createButton(btn, 'logout', './assets/icons/logout-icon.png');
+    return this.createButton(btn, 'logout', '/assets/icons/logout-icon.png');
   }
 
   private createRegistrationBtn(): ElementCreator {
@@ -77,7 +78,7 @@ export default class AuthButtons {
       },
     });
 
-    return this.createButton(btn, 'registration', './assets/icons/registration-1.png');
+    return this.createButton(btn, 'registration', '/assets/icons/registration-1.png');
   }
 
   private createButton(button: ElementCreator, iconClass: string, iconSrc: string): ElementCreator {

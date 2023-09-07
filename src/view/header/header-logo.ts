@@ -17,7 +17,7 @@ export default class HeaderLogo {
       tag: 'img',
       classNames: ['logo-img'],
       attributes: [
-        { name: 'src', value: './assets/images/Sport-logo.png' },
+        { name: 'src', value: '/assets/images/Sport-logo.png' },
         { name: 'alt', value: 'logo' },
       ],
     });
