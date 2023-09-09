@@ -18,6 +18,7 @@ const CssClassesCard = {
   PRICE_NEW: 'price__new',
   PRICE_OLD: 'price__old',
   DISCOUNT: 'catalog-section__discount',
+  CATALOG_SECTION_CART: 'catalog-section__cart',
 };
 
 export class CatalogCard extends View {
@@ -126,33 +127,37 @@ export class CatalogCard extends View {
 
     const prices = [...(this.productData.masterVariant.prices || [])];
     let productPrice = '';
-    let newPrice = '';
+    let priceWithDiscount = '';
     if (prices && prices[0]) {
       const calcPrice = prices[0].value.centAmount / 100;
       productPrice = `${calcPrice.toFixed(2)} ${prices[0].value.currencyCode}`;
       if (discount !== null) {
-        newPrice = `${((calcPrice * (100 - +discount)) / 100).toFixed(2)} ${prices[0].value.currencyCode}`;
+        priceWithDiscount = `${((calcPrice * (100 - +discount)) / 100).toFixed(2)} ${prices[0].value.currencyCode}`;
       }
     }
 
+    const newPrice = this.addElementPrice(
+      CssClassesCard.PRICE_NEW,
+      discount !== null ? priceWithDiscount : productPrice
+    );
+    priceContainer.addInnerElement(newPrice);
+
+    const oldPrice = this.addElementPrice(CssClassesCard.PRICE_OLD, productPrice);
+    priceContainer.addInnerElement(oldPrice);
+
+    const cartBtn = this.addCartBtn();
+    priceContainer.addInnerElement(cartBtn);
+
+    return priceContainer;
+  }
+
+  private addElementPrice(className: string, priceValue: string): ElementCreator {
     const priceParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesCard.PRICE_NEW],
-      textContent: discount !== null ? newPrice : productPrice,
+      classNames: [className],
+      textContent: priceValue,
     };
-    const price = new ElementCreator(priceParams);
-    priceContainer.addInnerElement(price);
-
-    if (discount !== null) {
-      const oldPriceParams: ElementConfig = {
-        tag: 'div',
-        classNames: [CssClassesCard.PRICE_OLD],
-        textContent: productPrice,
-      };
-      const oldPrice = new ElementCreator(oldPriceParams);
-      priceContainer.addInnerElement(oldPrice);
-    }
-    return priceContainer;
+    return new ElementCreator(priceParams);
   }
 
   private addDiscount(text: string): ElementCreator {
@@ -174,5 +179,14 @@ export class CatalogCard extends View {
     }
 
     return null;
+  }
+
+  private addCartBtn(): ElementCreator {
+    const params: ElementConfig = {
+      tag: 'button',
+      classNames: [CssClassesCard.CATALOG_SECTION_CART],
+      textContent: 'Add to Cart',
+    };
+    return new ElementCreator(params);
   }
 }

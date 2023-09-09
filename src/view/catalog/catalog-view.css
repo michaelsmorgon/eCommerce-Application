@@ -115,13 +115,18 @@
   padding: 10px;
 }
 
+.price__new,
+.price__old {
+  padding: 5px;
+}
+
 .price__new {
   color: #de1515;
   padding-right: 10px;
 }
 
 .price__old {
-  text-decoration: line-through ;
+  text-decoration: line-through;
   color: rgb(159, 162, 164);
 }
 
