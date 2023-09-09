@@ -23,9 +23,7 @@ const CssClassesProduct = {
   PRODUCT_INFO_BRAND: 'product__brand',
   PRODUCT_INFO_BOTTOM: 'product-info__bottom',
   PRODUCT_INFO_COLORS_OPTIONS: 'product__colors-options',
-  PRODUCT_INFO_COLOR: 'product__color',
-  PRODUCT_INFO_SIZE: 'product__size',
-  PRODUCT_INFO_MATERIAL: 'product__material',
+  PRODUCT_INFO_ATTRIBUTE: 'product__attribute',
   MATERIAL_PRODUKT: 'material-produkt',
   ABOUT_ORDER: 'about-order',
   AVAILABILITY: 'availability',
@@ -272,86 +270,114 @@ export default class ProductDetails extends View {
 
   private createColorOption(): ElementCreator {
     const colors = new Set<string>();
-
     const attrs = this.productData.masterVariant.attributes;
     const colorAttr = attrs?.find((attr) => attr.name === 'color');
 
     if (colorAttr && colorAttr.value && colorAttr.value.label.en) {
       colors.add(colorAttr.value.label.en);
+
+      this.productData.variants.forEach((variant) => {
+        const attrsVariant = variant.attributes;
+        const colorAttrVariant = attrsVariant?.find((attr) => attr.name === 'color');
+
+        if (colorAttrVariant && colorAttrVariant.value && colorAttrVariant.value.label.en) {
+          colors.add(colorAttrVariant.value.label.en);
+        }
+      });
+
+      const colorOptionContainer = new ElementCreator({
+        tag: 'div',
+        classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
+        textContent: `Color: `,
+      });
+      colors.forEach((color) => {
+        const sizeElement = new ElementCreator({
+          tag: 'div',
+          classNames: ['color-option'],
+          textContent: `${color}`,
+        });
+        colorOptionContainer.addInnerElement(sizeElement);
+      });
+      return colorOptionContainer;
     }
-
-    this.productData.variants.forEach((variant) => {
-      const attrsVariant = variant.attributes;
-      const colorAttrVariant = attrsVariant?.find((attr) => attr.name === 'color');
-
-      if (colorAttrVariant && colorAttrVariant.value && colorAttrVariant.value.label.en) {
-        colors.add(colorAttrVariant.value.label.en);
-      }
-    });
-
-    const colorOptionParams: ElementConfig = {
+    const defaultOptionParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUCT_INFO_COLOR],
-      textContent: Array.from(colors).join(', '),
+      classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
     };
 
-    return new ElementCreator(colorOptionParams);
+    return new ElementCreator(defaultOptionParams);
   }
 
   private createSizeOption(): ElementCreator {
     const sizes = new Set<string>();
     const attrs = this.productData.masterVariant.attributes;
-
     const sizeAttr = attrs?.find((attr) => attr.name === 'size');
 
     if (sizeAttr && sizeAttr.value && sizeAttr.value.label) {
       sizes.add(sizeAttr.value.label);
+
+      this.productData.variants.forEach((variant) => {
+        const attrsVariant = variant.attributes;
+        const sizeAttrVariant = attrsVariant?.find((attr) => attr.name === 'size');
+        if (sizeAttrVariant && sizeAttrVariant.value && sizeAttrVariant.value.label) {
+          sizes.add(sizeAttrVariant.value.label);
+        }
+      });
+      const sizeOptionContainer = new ElementCreator({
+        tag: 'div',
+        classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
+        textContent: `Size: `,
+      });
+      sizes.forEach((size) => {
+        const sizeElement = new ElementCreator({
+          tag: 'div',
+          classNames: ['size-option'],
+          textContent: `${size}`,
+        });
+        sizeOptionContainer.addInnerElement(sizeElement);
+      });
+      return sizeOptionContainer;
     }
-
-    this.productData.variants.forEach((variant) => {
-      const attrsVariant = variant.attributes;
-      const sizeAttrVariant = attrsVariant?.find((attr) => attr.name === 'size');
-
-      if (sizeAttrVariant && sizeAttrVariant.value && sizeAttrVariant.value.label) {
-        sizes.add(sizeAttrVariant.value.label);
-      }
-    });
-
-    const sizeOptionParams: ElementConfig = {
+    const defaultOptionParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUCT_INFO_SIZE],
-      textContent: Array.from(sizes).join(', '),
+      classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
     };
-
-    return new ElementCreator(sizeOptionParams);
+    return new ElementCreator(defaultOptionParams);
   }
 
   private createMaterialOption(): ElementCreator {
     const materials = new Set<string>();
     const attrs = this.productData.masterVariant.attributes;
-
     const materialAttr = attrs?.find((attr) => attr.name === 'material');
-
     if (materialAttr && materialAttr.value && materialAttr.value.label.en) {
       materials.add(materialAttr.value.label.en);
+      this.productData.variants.forEach((variant) => {
+        const attrsVariant = variant.attributes;
+        const materialAttrVariant = attrsVariant?.find((attr) => attr.name === 'material');
+        if (materialAttrVariant && materialAttrVariant.value && materialAttrVariant.value.label.en) {
+          materials.add(materialAttrVariant.value.label.en);
+        }
+      });
+      const materialOptionContainer = new ElementCreator({
+        tag: 'div',
+        classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
+        textContent: `Material: `,
+      });
+      materials.forEach((material) => {
+        const sizeElement = new ElementCreator({
+          tag: 'div',
+          classNames: ['material-option'],
+          textContent: `${material}`,
+        });
+        materialOptionContainer.addInnerElement(sizeElement);
+      });
+      return materialOptionContainer;
     }
-
-    this.productData.variants.forEach((variant) => {
-      const attrsVariant = variant.attributes;
-      const materialAttrVariant = attrsVariant?.find((attr) => attr.name === 'material');
-
-      if (materialAttrVariant && materialAttrVariant.value && materialAttrVariant.value.label.en) {
-        materials.add(materialAttrVariant.value.label.en);
-      }
-    });
-
-    const materialOptionParams: ElementConfig = {
+    const defaultOptionParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUCT_INFO_MATERIAL],
-      textContent: Array.from(materials).join(', '),
+      classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
     };
-
-    return new ElementCreator(materialOptionParams);
+    return new ElementCreator(defaultOptionParams);
   }
 
   private createAboutOrder(): ElementCreator {

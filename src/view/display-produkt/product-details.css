@@ -171,27 +171,18 @@
   gap: 5px;
 }
 
-.product__colors-options {
-  padding: 10px 0px;
+.product__attribute {
+  padding: 5px 0px;
+ font-weight: bold;
+ display: inline-flex;
 }
 
-.product__color {
-  display: inline-block;
-  font-weight: bold;
-}
-
-.product__size-options {
- padding: 10px;
-}
-
-.product__size {
-  display: inline-block;
-  font-weight: bold;
-}
-
-.product__material {
-  display: inline-block;
-  font-weight: bold;
+.color-option,
+.size-option,
+.material-option {
+  color: rgb(255, 174, 0);
+  padding-left: 7px;
+  cursor: pointer;
 }
 
 .about-order {
