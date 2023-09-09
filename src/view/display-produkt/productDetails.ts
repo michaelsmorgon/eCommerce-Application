@@ -2,6 +2,7 @@ import { ProductData } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../util/ElementCreator';
 import View, { ViewParams } from '../View';
 import ImageSlider from './product-slider';
+import ShoppingCartManager from './productInCart/productInCart';
 
 const CssClassesProduct = {
   PRODUCT_DETAILS: 'product-details',
@@ -410,6 +411,24 @@ export default class ProductDetails extends View {
     return aboutOrder;
   }
 
+  private createAddCartButton(): ElementCreator {
+    const addCartButtonParams: ElementConfig = {
+      tag: 'button',
+      classNames: ['add-cart'],
+      textContent: 'Add to Cart',
+    };
+    const addCartButton = new ElementCreator(addCartButtonParams);
+
+    const shoppingCartManager = new ShoppingCartManager();
+
+    addCartButton.getElement().addEventListener('click', () => {
+      shoppingCartManager.handleAddToCartClick();
+    });
+
+
+    return addCartButton;
+  }
+
   private addProductInfoBottom(): ElementCreator {
     const productInfoBottomParams: ElementConfig = {
       tag: 'div',
@@ -421,6 +440,7 @@ export default class ProductDetails extends View {
     productInfoBottom.addInnerElement(this.createSizeOption());
     productInfoBottom.addInnerElement(this.createMaterialOption());
     productInfoBottom.addInnerElement(this.createAboutOrder());
+    productInfoBottom.addInnerElement(this.createAddCartButton());
 
     return productInfoBottom;
   }
