@@ -1,3 +1,15 @@
 .select_text {
   color: var(--color-one);
 }
+
+.catalog-section__cart {
+  background-color: #00CF00;
+  color: var(--color-four);
+  padding: 0px 30px 0px 20px;
+}
+
+.catalog-section__cart::after {
+  content: '+';
+  position: absolute;
+  padding-left: 10px;
+}
