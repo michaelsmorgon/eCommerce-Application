@@ -181,9 +181,8 @@
 .color-option,
 .size-option,
 .material-option {
-  color: rgb(255, 174, 0);
+  color: rgb(247, 162, 4);
   padding: 0 0 5px 7px;
-  cursor: pointer;
 }
 
 .about-order {

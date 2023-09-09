@@ -28,7 +28,7 @@ export default class ProductView extends View {
     products
       .getProductByKey(this.productKey)
       .then((product) => {
-        const productDetails = new ProductDetails(product.body.masterData.current);
+        const productDetails = new ProductDetails(product.body.masterData.current, this.productKey);
         this.viewElementCreator.addInnerElement(productDetails.getHtmlElement());
         productDetails.initializeImageSlider();
 
@@ -42,6 +42,6 @@ export default class ProductView extends View {
           });
         });
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 }

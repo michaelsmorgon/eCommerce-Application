@@ -2,7 +2,7 @@ import { ProductData } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../util/ElementCreator';
 import View, { ViewParams } from '../View';
 import ImageSlider from './product-slider';
-import ShoppingCartManager from './productInCart/productInCart';
+import ShoppingCartManager from './productInCart/addProductInCart';
 
 const CssClassesProduct = {
   PRODUCT_DETAILS: 'product-details',
@@ -37,7 +37,10 @@ const CssClassesProduct = {
 };
 
 export default class ProductDetails extends View {
-  constructor(private productData: ProductData) {
+  constructor(
+    private productData: ProductData,
+    private produktKey: string
+  ) {
     const params: ViewParams = {
       tag: 'div',
       classNames: [CssClassesProduct.PRODUCT_DETAILS],
@@ -422,9 +425,8 @@ export default class ProductDetails extends View {
     const shoppingCartManager = new ShoppingCartManager();
 
     addCartButton.getElement().addEventListener('click', () => {
-      shoppingCartManager.handleAddToCartClick();
+      shoppingCartManager.handleAddToCartClick(this.produktKey);
     });
-
 
     return addCartButton;
   }
