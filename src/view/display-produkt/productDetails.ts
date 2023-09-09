@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable max-lines-per-function */
 import { ProductData } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../util/ElementCreator';
 import View, { ViewParams } from '../View';
 import ImageSlider from './product-slider';
+import ShoppingCartManager from './productInCart/addProductInCart';
 
 const CssClassesProduct = {
   PRODUCT_DETAILS: 'product-details',
@@ -25,9 +24,7 @@ const CssClassesProduct = {
   PRODUCT_INFO_BRAND: 'product__brand',
   PRODUCT_INFO_BOTTOM: 'product-info__bottom',
   PRODUCT_INFO_COLORS_OPTIONS: 'product__colors-options',
-  PRODUCT_INFO_COLOR: 'product__color',
-  PRODUCT_INFO_SIZE: 'product__size',
-  PRODUCT_INFO_MATERIAL: 'product__material',
+  PRODUCT_INFO_ATTRIBUTE: 'product__attribute',
   MATERIAL_PRODUKT: 'material-produkt',
   ABOUT_ORDER: 'about-order',
   AVAILABILITY: 'availability',
@@ -40,7 +37,10 @@ const CssClassesProduct = {
 };
 
 export default class ProductDetails extends View {
-  constructor(private productData: ProductData) {
+  constructor(
+    private productData: ProductData,
+    private produktKey: string
+  ) {
     const params: ViewParams = {
       tag: 'div',
       classNames: [CssClassesProduct.PRODUCT_DETAILS],
@@ -50,14 +50,15 @@ export default class ProductDetails extends View {
     this.viewElementCreator.addInnerElement(this.addBottomContainer());
   }
 
-  private addImage(): ElementCreator {
-    const attr: IAttribute[] = [];
+  private attr: IAttribute[] = [];
+
+  private createImageContainer(): ElementCreator {
     if (this.productData.masterVariant.images && this.productData.masterVariant.images?.length > 0) {
       const [imageUrl] = this.productData.masterVariant.images;
-      attr.push({ name: 'src', value: imageUrl.url });
+      this.attr.push({ name: 'src', value: imageUrl.url });
     }
 
-    attr.push({ name: 'alt', value: this.productData.name.en });
+    this.attr.push({ name: 'alt', value: this.productData.name.en });
 
     const imgContainerParams: ElementConfig = {
       tag: 'div',
@@ -65,36 +66,41 @@ export default class ProductDetails extends View {
     };
     const imageContainer = new ElementCreator(imgContainerParams);
 
-    const discount = this.getDiscount();
-    if (discount !== null) {
-      imageContainer.addInnerElement(this.addDiscount(discount));
-    }
+    return imageContainer;
+  }
 
-    // slider
-
-    const imgWrappperParams: ElementConfig = {
+  private createImageWrapper(): ElementCreator {
+    const imgWrapperParams: ElementConfig = {
       tag: 'div',
       classNames: [CssClassesProduct.PRODUCT_IMG_WRAPP],
     };
+    return new ElementCreator(imgWrapperParams);
+  }
 
-    const imageWrapper = new ElementCreator(imgWrappperParams);
-
-    const leftButton = this.createButton(CssClassesProduct.LEFT_BUTTON);
-
-    const rightButton = this.createButton(CssClassesProduct.RIGHT_BUTTON);
-
-    const sliderImages: ElementCreator[] = [];
-
-    const uniqueImageUrls = new Set();
-
+  private createImageElement(): ElementCreator {
     const imgParams: ElementConfig = {
       tag: 'img',
       classNames: [CssClassesProduct.PRODUCT_IMG],
-      attributes: attr,
+      attributes: this.attr,
     };
+    return new ElementCreator(imgParams);
+  }
 
-    const image = new ElementCreator(imgParams);
-    imageWrapper.addInnerElement(image);
+  private createVariantImage(imageUrl: string): ElementCreator {
+    const attrSliderImg = [
+      { name: 'src', value: imageUrl },
+      { name: 'alt', value: this.productData.name.en },
+    ];
+    return new ElementCreator({
+      tag: 'img',
+      classNames: [CssClassesProduct.PRODUCT_IMG],
+      attributes: attrSliderImg,
+    });
+  }
+
+  private createSliderImages(): ElementCreator[] {
+    const sliderImages: ElementCreator[] = [];
+    const uniqueImageUrls = new Set();
 
     this.productData.variants.forEach((variant) => {
       if (variant.images && variant.images?.length > 0) {
@@ -103,32 +109,41 @@ export default class ProductDetails extends View {
 
         if (!uniqueImageUrls.has(imageUrlString)) {
           uniqueImageUrls.add(imageUrlString);
-          const attrSliderImg = [
-            { name: 'src', value: imageUrlString },
-            { name: 'alt', value: this.productData.name.en },
-          ];
-          const variantImage = new ElementCreator({
-            tag: 'img',
-            classNames: [CssClassesProduct.PRODUCT_IMG],
-            attributes: attrSliderImg,
-          });
+          const variantImage = this.createVariantImage(imageUrlString);
           sliderImages.push(variantImage);
         }
       }
     });
 
+    return sliderImages;
+  }
+
+  private createImageSlider(): ElementCreator {
+    const imageContainer = this.createImageContainer();
+
+    const discount = this.getDiscount();
+    if (discount !== null) {
+      imageContainer.addInnerElement(this.addDiscount(discount));
+    }
+
+    const imageWrapper = this.createImageWrapper();
+    imageWrapper.addInnerElement(this.createImageElement());
+
+    const leftButton = this.createButton(CssClassesProduct.LEFT_BUTTON);
+    const rightButton = this.createButton(CssClassesProduct.RIGHT_BUTTON);
+
+    const sliderImages = this.createSliderImages();
+
     const sliderWrappperParams: ElementConfig = {
       tag: 'div',
       classNames: [CssClassesProduct.PRODUCT_SLIDER_WRAPP],
     };
-
     const sliderImageContainer = new ElementCreator(sliderWrappperParams);
 
     const dotsParams: ElementConfig = {
       tag: 'div',
       classNames: [CssClassesProduct.DOTS],
     };
-
     const dotsContainer = new ElementCreator(dotsParams);
 
     sliderImages.forEach((image) => {
@@ -251,123 +266,125 @@ export default class ProductDetails extends View {
     };
     const productInfoCentr = new ElementCreator(productInfoCentrParams);
     const priceContainer = this.createPriceElement(this.getDiscount());
-    /*  const priceBrandContainerParams: ElementConfig = {
-      tag: 'div',
-      classNames: [CssClassesProduct.PRODUCT_INFO_CENTR],
-    };
-    const priceBrandContainer = new ElementCreator(priceBrandContainerParams);
 
-    const brandImageParams: ElementConfig = {
-      tag: 'img',
-      classNames: [CssClassesProduct.PRODUCT_INFO_BRAND],
-      attributes: [
-        { name: 'src', value: '' }, // Replace with actual brand URL
-        { name: 'alt', value: 'brand-icon' },
-      ],
-    };
-    const brandImage = new ElementCreator(brandImageParams);
-    priceBrandContainer.addInnerElement(brandImage); 
-    priceBrandContainer.addInnerElement(priceContainer); */
     productInfoCentr.addInnerElement(priceContainer);
 
     return productInfoCentr;
   }
 
-  private addProductInfoBottom(): ElementCreator {
-    const productInfoBottomParams: ElementConfig = {
-      tag: 'div',
-      classNames: [CssClassesProduct.PRODUCT_INFO_BOTTOM],
-    };
-    const productInfoBottom = new ElementCreator(productInfoBottomParams);
-
-    // color
-    const colors = [];
+  private createColorOption(): ElementCreator {
+    const colors = new Set<string>();
     const attrs = this.productData.masterVariant.attributes;
     const colorAttr = attrs?.find((attr) => attr.name === 'color');
 
-    if (colorAttr && colorAttr.value && colorAttr.value.key) {
-      const colorMaster = colorAttr.value.label.en;
-      colors.push(colorMaster);
+    if (colorAttr && colorAttr.value && colorAttr.value.label.en) {
+      colors.add(colorAttr.value.label.en);
+
+      this.productData.variants.forEach((variant) => {
+        const attrsVariant = variant.attributes;
+        const colorAttrVariant = attrsVariant?.find((attr) => attr.name === 'color');
+
+        if (colorAttrVariant && colorAttrVariant.value && colorAttrVariant.value.label.en) {
+          colors.add(colorAttrVariant.value.label.en);
+        }
+      });
+
+      const colorOptionContainer = new ElementCreator({
+        tag: 'div',
+        classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
+        textContent: `Color: `,
+      });
+      colors.forEach((color) => {
+        const sizeElement = new ElementCreator({
+          tag: 'div',
+          classNames: ['color-option'],
+          textContent: `${color}`,
+        });
+        colorOptionContainer.addInnerElement(sizeElement);
+      });
+      return colorOptionContainer;
     }
-
-    this.productData.variants.forEach((variant) => {
-      const attrsVariant = variant.attributes;
-      const colorAttrVariant = attrsVariant?.find((attr) => attr.name === 'color');
-
-      if (colorAttrVariant && colorAttrVariant.value && colorAttrVariant.value.key) {
-        const colorVariant = colorAttrVariant.value.label.en;
-        colors.push(colorVariant);
-      }
-    });
-    const uniqueColorsSet = new Set(colors);
-    const uniqueColorsArray = [...uniqueColorsSet];
-    const colorOptionParams: ElementConfig = {
+    const defaultOptionParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUCT_INFO_COLOR],
-      textContent: uniqueColorsArray.join(', '),
+      classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
     };
-    const colorOption = new ElementCreator(colorOptionParams);
-    productInfoBottom.addInnerElement(colorOption);
 
-    // size
+    return new ElementCreator(defaultOptionParams);
+  }
+
+  private createSizeOption(): ElementCreator {
+    const sizes = new Set<string>();
+    const attrs = this.productData.masterVariant.attributes;
     const sizeAttr = attrs?.find((attr) => attr.name === 'size');
-    const sizes = [];
 
     if (sizeAttr && sizeAttr.value && sizeAttr.value.label) {
-      const sizeMaster = sizeAttr.value.label.en;
-      sizes.push(sizeMaster);
+      sizes.add(sizeAttr.value.label);
+
+      this.productData.variants.forEach((variant) => {
+        const attrsVariant = variant.attributes;
+        const sizeAttrVariant = attrsVariant?.find((attr) => attr.name === 'size');
+        if (sizeAttrVariant && sizeAttrVariant.value && sizeAttrVariant.value.label) {
+          sizes.add(sizeAttrVariant.value.label);
+        }
+      });
+      const sizeOptionContainer = new ElementCreator({
+        tag: 'div',
+        classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
+        textContent: `Size: `,
+      });
+      sizes.forEach((size) => {
+        const sizeElement = new ElementCreator({
+          tag: 'div',
+          classNames: ['size-option'],
+          textContent: `${size}`,
+        });
+        sizeOptionContainer.addInnerElement(sizeElement);
+      });
+      return sizeOptionContainer;
     }
-
-    this.productData.variants.forEach((variant) => {
-      const attrsVariant = variant.attributes;
-      const sizeAttrVariant = attrsVariant?.find((attr) => attr.name === 'size');
-
-      if (sizeAttrVariant && sizeAttrVariant.value && sizeAttrVariant.value.label) {
-        const sizeVariant = sizeAttrVariant.value.label.en;
-        sizes.push(sizeVariant);
-      }
-    });
-
-    const uniqueSizesSet = new Set(sizes);
-    const uniqueSizesArray = [...uniqueSizesSet];
-    const sizeOptionParams: ElementConfig = {
+    const defaultOptionParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUCT_INFO_SIZE],
-      textContent: uniqueSizesArray.join(', '),
+      classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
     };
-    const sizeOption = new ElementCreator(sizeOptionParams);
-    productInfoBottom.addInnerElement(sizeOption);
+    return new ElementCreator(defaultOptionParams);
+  }
 
-    // material
+  private createMaterialOption(): ElementCreator {
+    const materials = new Set<string>();
+    const attrs = this.productData.masterVariant.attributes;
     const materialAttr = attrs?.find((attr) => attr.name === 'material');
-    const materials = [];
-
-    if (materialAttr && materialAttr.value && materialAttr.value.label) {
-      const materialMaster = materialAttr.value.label.en;
-      materials.push(materialMaster);
+    if (materialAttr && materialAttr.value && materialAttr.value.label.en) {
+      materials.add(materialAttr.value.label.en);
+      this.productData.variants.forEach((variant) => {
+        const attrsVariant = variant.attributes;
+        const materialAttrVariant = attrsVariant?.find((attr) => attr.name === 'material');
+        if (materialAttrVariant && materialAttrVariant.value && materialAttrVariant.value.label.en) {
+          materials.add(materialAttrVariant.value.label.en);
+        }
+      });
+      const materialOptionContainer = new ElementCreator({
+        tag: 'div',
+        classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
+        textContent: `Material: `,
+      });
+      materials.forEach((material) => {
+        const sizeElement = new ElementCreator({
+          tag: 'div',
+          classNames: ['material-option'],
+          textContent: `${material}`,
+        });
+        materialOptionContainer.addInnerElement(sizeElement);
+      });
+      return materialOptionContainer;
     }
-
-    this.productData.variants.forEach((variant) => {
-      const attrsVariant = variant.attributes;
-      const materialAttrVariant = attrsVariant?.find((attr) => attr.name === 'material');
-
-      if (materialAttrVariant && materialAttrVariant.value && materialAttrVariant.value.label) {
-        const materialVariant = materialAttrVariant.value.label.en;
-        materials.push(materialVariant);
-      }
-    });
-
-    const uniqueMaterialsSet = new Set(materials);
-    const uniqueMaterialsArray = [...uniqueMaterialsSet];
-    const materialOptionParams: ElementConfig = {
+    const defaultOptionParams: ElementConfig = {
       tag: 'div',
-      classNames: [CssClassesProduct.PRODUCT_INFO_MATERIAL],
-      textContent: uniqueMaterialsArray.join(', '),
+      classNames: [CssClassesProduct.PRODUCT_INFO_ATTRIBUTE],
     };
-    const materialOption = new ElementCreator(materialOptionParams);
-    productInfoBottom.addInnerElement(materialOption);
+    return new ElementCreator(defaultOptionParams);
+  }
 
-    // aboutOrder
+  private createAboutOrder(): ElementCreator {
     const aboutOrderParams: ElementConfig = {
       tag: 'div',
       classNames: [CssClassesProduct.ABOUT_ORDER],
@@ -380,8 +397,8 @@ export default class ProductDetails extends View {
       textContent: 'In stock. Delivery tomorrow',
     };
     const availability = new ElementCreator(availabilityParams);
-    const shippingCost = 30;
 
+    const shippingCost = 30;
     const shippingMessage = `Free shipping from: ${shippingCost}$`;
 
     const deliveryParams: ElementConfig = {
@@ -393,7 +410,39 @@ export default class ProductDetails extends View {
 
     aboutOrder.addInnerElement(availability);
     aboutOrder.addInnerElement(delivery);
-    productInfoBottom.addInnerElement(aboutOrder);
+
+    return aboutOrder;
+  }
+
+  private createAddCartButton(): ElementCreator {
+    const addCartButtonParams: ElementConfig = {
+      tag: 'button',
+      classNames: ['add-cart'],
+      textContent: 'Add to Cart',
+    };
+    const addCartButton = new ElementCreator(addCartButtonParams);
+
+    const shoppingCartManager = new ShoppingCartManager();
+
+    addCartButton.getElement().addEventListener('click', () => {
+      shoppingCartManager.handleAddToCartClick(this.produktKey);
+    });
+
+    return addCartButton;
+  }
+
+  private addProductInfoBottom(): ElementCreator {
+    const productInfoBottomParams: ElementConfig = {
+      tag: 'div',
+      classNames: [CssClassesProduct.PRODUCT_INFO_BOTTOM],
+    };
+    const productInfoBottom = new ElementCreator(productInfoBottomParams);
+
+    productInfoBottom.addInnerElement(this.createColorOption());
+    productInfoBottom.addInnerElement(this.createSizeOption());
+    productInfoBottom.addInnerElement(this.createMaterialOption());
+    productInfoBottom.addInnerElement(this.createAboutOrder());
+    productInfoBottom.addInnerElement(this.createAddCartButton());
 
     return productInfoBottom;
   }
@@ -404,7 +453,7 @@ export default class ProductDetails extends View {
       classNames: [CssClassesProduct.PRODUCT_DETAILS_TOP],
     };
     const topContainer = new ElementCreator(topContainerParams);
-    topContainer.addInnerElement(this.addImage());
+    topContainer.addInnerElement(this.createImageSlider());
     topContainer.addInnerElement(this.addProductInfoContainer());
     return topContainer.getElement();
   }
