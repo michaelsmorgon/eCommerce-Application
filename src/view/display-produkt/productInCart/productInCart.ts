@@ -3,4 +3,8 @@ export default class ShoppingCartManager {
     console.log('Click ADD TO CART');
     console.log(productKey);
   }
+
+  handleRemoveToCartClick(): void {
+    console.log('Click Remove from Cart');
+  }
 }

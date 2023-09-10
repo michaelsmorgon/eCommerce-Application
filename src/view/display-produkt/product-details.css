@@ -224,6 +224,7 @@
   color: #333;
 }
 
+.remove-cart,
 .add-cart {
   background-color: var(--color-one);
   color: var(--color-two);
@@ -233,14 +234,23 @@
   max-width: 200px;
   border: var(--color-one);
 }
+
+.remove-cart:hover,
 .add-cart:hover {
   border: var(--color-one);
 }
 
+.remove-cart:active,
 .add-cart:active {
   border: var(--color-one);
   background-color: #3988dd;
   color: #ffffff;
+}
+
+.remove-cart {
+  background-color: var(--color-two);
+  color: var(--color-one);
+  border: var(--color-one);
 }
 
 @media (max-width: 787px) {

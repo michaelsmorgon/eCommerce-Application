@@ -5,7 +5,7 @@ import ProductDetails from './productDetails';
 import Modal from './modalContainer/modalContainer';
 
 const CssClassesProduct = {
-  PRODUCT_SECTION: '.product-section',
+  PRODUCT_SECTION: 'product-section',
 };
 
 export default class ProductView extends View {
@@ -42,6 +42,6 @@ export default class ProductView extends View {
           });
         });
       })
-      .catch(() => { });
+      .catch(() => {});
   }
 }

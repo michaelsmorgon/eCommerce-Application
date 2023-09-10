@@ -2,7 +2,7 @@ import { ProductData } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../util/ElementCreator';
 import View, { ViewParams } from '../View';
 import ImageSlider from './product-slider';
-import ShoppingCartManager from './productInCart/addProductInCart';
+import ShoppingCartManager from './productInCart/productInCart';
 
 const CssClassesProduct = {
   PRODUCT_DETAILS: 'product-details',
@@ -37,6 +37,10 @@ const CssClassesProduct = {
 };
 
 export default class ProductDetails extends View {
+  private addCartButton: HTMLElement | null = null;
+
+  private removeCartButton: HTMLElement | null = null;
+
   constructor(
     private productData: ProductData,
     private produktKey: string
@@ -414,21 +418,43 @@ export default class ProductDetails extends View {
     return aboutOrder;
   }
 
-  private createAddCartButton(): ElementCreator {
-    const addCartButtonParams: ElementConfig = {
+  private createCartButton(isAddToCart: boolean): ElementCreator {
+    const buttonParams: ElementConfig = {
       tag: 'button',
-      classNames: ['add-cart'],
-      textContent: 'Add to Cart',
+      classNames: isAddToCart ? ['add-cart'] : ['remove-cart'],
+      textContent: isAddToCart ? 'Add to Cart' : 'Remove from Cart',
     };
-    const addCartButton = new ElementCreator(addCartButtonParams);
 
+    const button = new ElementCreator(buttonParams);
     const shoppingCartManager = new ShoppingCartManager();
 
-    addCartButton.getElement().addEventListener('click', () => {
-      shoppingCartManager.handleAddToCartClick(this.produktKey);
+    button.getElement().addEventListener('click', () => {
+      if (isAddToCart) {
+        shoppingCartManager.handleAddToCartClick(this.produktKey);
+        if (this.addCartButton) {
+          this.addCartButton.style.display = 'none';
+        }
+        if (this.removeCartButton) {
+          this.removeCartButton.style.display = 'block';
+        }
+      } else {
+        shoppingCartManager.handleRemoveToCartClick();
+        if (this.addCartButton) {
+          this.addCartButton.style.display = 'block';
+        }
+        if (this.removeCartButton) {
+          this.removeCartButton.style.display = 'none';
+        }
+      }
     });
 
-    return addCartButton;
+    if (isAddToCart) {
+      this.addCartButton = button.getElement();
+    } else {
+      this.removeCartButton = button.getElement();
+    }
+
+    return button;
   }
 
   private addProductInfoBottom(): ElementCreator {
@@ -442,7 +468,11 @@ export default class ProductDetails extends View {
     productInfoBottom.addInnerElement(this.createSizeOption());
     productInfoBottom.addInnerElement(this.createMaterialOption());
     productInfoBottom.addInnerElement(this.createAboutOrder());
-    productInfoBottom.addInnerElement(this.createAddCartButton());
+
+    const addCartButton = this.createCartButton(true);
+    const removeCartButton = this.createCartButton(false);
+    productInfoBottom.addInnerElement(addCartButton);
+    productInfoBottom.addInnerElement(removeCartButton);
 
     return productInfoBottom;
   }

@@ -5,6 +5,7 @@
 @import '../page-404/page404.css';
 @import '../display-produkt/product-details.css';
 @import '../display-produkt/modalContainer/modal.css';
+@import '../about-us/about-us.css';
 
 .not-found-container,
 .mainView {
