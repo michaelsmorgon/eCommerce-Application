@@ -107,7 +107,7 @@ export class RegistrationView extends View {
         .then((response) => {
           setTimeout(() => {
             LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
-            LocaleStorage.saveLocalStorage(LocaleStorage.ID, response?.body.customer.id);
+            LocaleStorage.saveLocalStorage(LocaleStorage.CUSTOMER_ID, response?.body.customer.id);
             route(event as MouseEvent);
           }, 1000);
         })
