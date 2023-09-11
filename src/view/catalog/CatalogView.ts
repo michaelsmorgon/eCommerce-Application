@@ -1,5 +1,5 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { ProductAPI } from '../../api/ProductAPI';
+import { IProductSearch, ProductAPI } from '../../api/ProductAPI';
 import { TokenCacheStore } from '../../api/TokenCacheStore';
 import ElementCreator, { ElementConfig } from '../../util/ElementCreator';
 import View, { ViewParams } from '../View';
@@ -8,6 +8,7 @@ import './catalog-view.css';
 import { SearchView } from './search/SearchView';
 import { QueryString } from './query/QueryString';
 import { CatalogHeaderView } from './header/CatalogHeaderView';
+import { CatalogPaginatorView } from './paginator/CatalogPaginatorView';
 
 const CssClassesCatalog = {
   CATALOG_SECTION: 'catalog-section',
@@ -47,6 +48,7 @@ export default class CatalogView extends View {
 
     catalogContainer.addInnerElement(this.addCatalogHeader());
     catalogContainer.addInnerElement(this.addCatalogBody());
+    catalogContainer.addInnerElement(this.addCatalogPaginator());
 
     this.viewElementCreator.addInnerElement(catalogContainer.getElement());
   }
@@ -54,6 +56,11 @@ export default class CatalogView extends View {
   private addCatalogHeader(): HTMLElement {
     const catalogHeaderView = new CatalogHeaderView(this.queryString);
     return catalogHeaderView.getHtmlElement();
+  }
+
+  private addCatalogPaginator(): HTMLElement {
+    const catalogPaginatorView = new CatalogPaginatorView();
+    return catalogPaginatorView.getHtmlElement();
   }
 
   private addCatalogBody(): HTMLElement {
@@ -71,13 +78,14 @@ export default class CatalogView extends View {
       filterQuery = `categories.id:subtree("${this.categoryId}")`;
     }
 
+    const searchParams: IProductSearch = {
+      filterSearch: this.queryString.getSearchList(),
+      orderSearch: this.queryString.getSearchOrder(),
+      searchText: this.queryString.getSearchText(),
+      filterQuery,
+    };
     products
-      .getProductsWithSearch(
-        this.queryString.getSearchList(),
-        this.queryString.getSearchOrder(),
-        this.queryString.getSearchText(),
-        filterQuery
-      )
+      .getProductsWithSearch(searchParams)
       .then((response) => {
         const results = response.body?.results as ProductProjection[];
         results.forEach((product: ProductProjection) => {
