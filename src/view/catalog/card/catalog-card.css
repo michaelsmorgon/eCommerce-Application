@@ -13,3 +13,19 @@
   position: absolute;
   padding-left: 10px;
 }
+
+.catalog-section__in-cart {
+  background-color: #FFFFFF;
+  color: #FF0000;
+  padding: 0px 30px 0px 30px;
+  cursor: auto;
+}
+
+.catalog-section__in-cart:hover {
+  color: #FF0000;
+  transition: none;
+}
+
+.cart-hide {
+  display: none;
+}

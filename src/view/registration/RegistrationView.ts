@@ -1,4 +1,4 @@
-import { CustomerDraft, BaseAddress } from '@commercetools/platform-sdk';
+import { CustomerDraft, BaseAddress, CartResourceIdentifier } from '@commercetools/platform-sdk';
 import { RegInputClasses } from '../../data/registration-fields';
 import ElementCreator, { ElementConfig } from '../../util/ElementCreator';
 import View, { ViewParams } from '../View';
@@ -107,7 +107,7 @@ export class RegistrationView extends View {
         .then((response) => {
           setTimeout(() => {
             LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
-            LocaleStorage.saveLocalStorage(LocaleStorage.ID, response?.body.customer.id);
+            LocaleStorage.saveLocalStorage(LocaleStorage.CUSTOMER_ID, response?.body.customer.id);
             route(event as MouseEvent);
           }, 1000);
         })
@@ -160,6 +160,15 @@ export class RegistrationView extends View {
     billingIndexes: number[],
     shippingIndexes: number[]
   ): CustomerDraft {
+    const anonymousId = LocaleStorage.getValue(LocaleStorage.ANONYMOUS_ID);
+    const cartID = LocaleStorage.getValue(LocaleStorage.CART_ID);
+    let cartResource: CartResourceIdentifier | undefined;
+    if (cartID !== null) {
+      cartResource = {
+        typeId: 'cart',
+        id: cartID,
+      };
+    }
     return {
       email: this.getFieldValue(RegInputClasses.REG_EMAIL),
       password: this.getFieldValue(RegInputClasses.REG_PASS),
@@ -171,6 +180,8 @@ export class RegistrationView extends View {
       defaultShippingAddress: defaultShippingIndex,
       billingAddresses: billingIndexes,
       shippingAddresses: shippingIndexes,
+      anonymousId: anonymousId !== null ? anonymousId : undefined,
+      anonymousCart: cartResource,
     };
   }
 
