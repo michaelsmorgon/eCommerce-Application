@@ -11,14 +11,6 @@ import { BuilderClient } from './BuilderClient';
 import { TokenCacheStore } from './TokenCacheStore';
 import { MessageView } from '../view/message/MessageView';
 
-export interface IProductSearch {
-  filterSearch: string[];
-  orderSearch: string | null;
-  searchText: string;
-  filterQuery: string;
-  offset?: number;
-}
-
 export class ProductAPI {
   private ctpClient;
 
@@ -45,7 +37,10 @@ export class ProductAPI {
   }
 
   public async getProductsWithSearch(
-    searchParams: IProductSearch
+    filterSearch: string[],
+    orderSearch: string | null = null,
+    searchText: string = '',
+    filterQuery: string = ''
   ): Promise<ClientResponse<ProductProjectionPagedQueryResponse | null>> {
     try {
       const response = await this.apiRoot
@@ -53,12 +48,11 @@ export class ProductAPI {
         .search()
         .get({
           queryArgs: {
-            limit: 6,
-            offset: searchParams.offset ? searchParams.offset : 1,
-            'text.en': searchParams.searchText,
-            sort: searchParams.orderSearch ? [searchParams.orderSearch] : [],
-            filter: searchParams.filterSearch,
-            'filter.query': searchParams.filterQuery !== '' ? searchParams.filterQuery : undefined,
+            limit: 100,
+            'text.en': searchText,
+            sort: orderSearch ? [orderSearch] : [],
+            filter: filterSearch,
+            'filter.query': filterQuery !== '' ? filterQuery : undefined,
           },
         })
         .execute();

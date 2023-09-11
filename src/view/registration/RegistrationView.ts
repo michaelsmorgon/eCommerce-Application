@@ -162,8 +162,8 @@ export class RegistrationView extends View {
   ): CustomerDraft {
     const anonymousId = LocaleStorage.getValue(LocaleStorage.ANONYMOUS_ID);
     const cartID = LocaleStorage.getValue(LocaleStorage.CART_ID);
-    let cartResource: CartResourceIdentifier | null = null;
-    if (cartID) {
+    let cartResource: CartResourceIdentifier | undefined;
+    if (cartID !== null) {
       cartResource = {
         typeId: 'cart',
         id: cartID,
@@ -181,7 +181,7 @@ export class RegistrationView extends View {
       billingAddresses: billingIndexes,
       shippingAddresses: shippingIndexes,
       anonymousId: anonymousId !== null ? anonymousId : undefined,
-      anonymousCart: cartResource !== null ? cartResource : undefined,
+      anonymousCart: cartResource,
     };
   }
 
