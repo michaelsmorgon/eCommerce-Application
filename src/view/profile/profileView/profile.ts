@@ -6,6 +6,7 @@ import { BuilderClient } from '../../../api/BuilderClient';
 
 import { TokenCacheStore } from '../../../api/TokenCacheStore';
 import { route } from '../../../router/router';
+import { LocaleStorage } from '../../../api/LocaleStorage';
 
 export interface Address {
   key: string;
@@ -56,7 +57,7 @@ export default class ProfileView extends ElementCreator {
     const builderClient: BuilderClient = new BuilderClient(this.tokenCacheStore);
     const ctpClient = builderClient.httpMiddleware();
     const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({ projectKey });
-    const id = localStorage.getItem('id');
+    const id = localStorage.getItem(LocaleStorage.CUSTOMER_ID);
 
     if (id !== null) {
       try {

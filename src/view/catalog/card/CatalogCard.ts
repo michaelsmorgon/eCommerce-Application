@@ -192,7 +192,6 @@ export class CatalogCard extends View {
     const cartResponse = this.isProductInCart();
     if (cartResponse !== null) {
       cartResponse.then((cartInfo) => {
-        console.log(cartInfo, this.productData.id);
         const res = cartInfo.body.lineItems.find((lineItem) => lineItem.productId === this.productData.id);
         const cartBtn = this.addCartBtn(res !== undefined);
         priceContainer.addInnerElement(cartBtn);
@@ -233,7 +232,6 @@ export class CatalogCard extends View {
     const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
     const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
     if (cartId) {
-      console.log('CART_ID:', cartId);
       const cart = new CartAPI(new TokenCacheStore());
       if (customerId) {
         cart.getCartByCustomerId(customerId).then((cartInfo) => {
@@ -245,17 +243,13 @@ export class CatalogCard extends View {
         });
       }
     } else {
-      console.log('CREATE CART_ID');
       const token = new TokenCacheStore();
       const cart = new CartAPI(token);
       if (customerId) {
-        const customerToken = LocaleStorage.getValue(LocaleStorage.TOKEN);
-        if (customerToken) {
-          cart.createCustomerCart(customerToken).then((cartInfo) => {
-            LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, cartInfo.body.id);
-            this.addProduct(event, cart, cartInfo, productId);
-          });
-        }
+        cart.createCustomerCart(customerId).then((cartInfo) => {
+          LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, cartInfo.body.id);
+          this.addProduct(event, cart, cartInfo, productId);
+        });
       } else {
         cart.createAnonymousCart().then((cartInfo) => {
           LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, cartInfo.body.id);
@@ -290,7 +284,7 @@ export class CatalogCard extends View {
   private isProductInCart(): Promise<ClientResponse<Cart>> | null {
     const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
     const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
-    if (customerId) {
+    if (customerId && cartId) {
       const cart = new CartAPI(new TokenCacheStore());
       return cart.getCartByCustomerId(customerId);
     }

@@ -27,17 +27,16 @@ export class CartAPI {
     }
   }
 
-  public async createCustomerCart(customerToken: string): Promise<ClientResponse> {
+  public async createCustomerCart(customerId: string): Promise<ClientResponse> {
     const builderClient: BuilderClient = new BuilderClient(this.tokenCacheStore);
-    const ctpClient = builderClient.authWithExistingTokenFlow(customerToken);
+    const ctpClient = builderClient.httpMiddleware();
     const apiRoot: ByProjectKeyRequestBuilder = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
       projectKey: builderClient.PROJECT_KEY,
     });
     try {
       return await apiRoot
-        .me()
         .carts()
-        .post({ body: { currency: 'USD', country: 'US' } })
+        .post({ body: { currency: 'USD', country: 'US', customerId } })
         .execute();
     } catch (error: unknown) {
       throw new Error();
