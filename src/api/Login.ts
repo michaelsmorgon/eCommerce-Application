@@ -7,14 +7,21 @@ export class Login {
   constructor(
     private tokenCacheStore: TokenCacheStore,
     private email: string,
-    private password: string
+    private password: string,
+    private anonymousId?: string
   ) {}
 
   private async login(apiRoot: ByProjectKeyRequestBuilder): Promise<ClientResponse<CustomerSignInResult> | null> {
     try {
       return await apiRoot
         .login()
-        .post({ body: { email: this.email, password: this.password } })
+        .post({
+          body: {
+            email: this.email,
+            password: this.password,
+            anonymousId: this.anonymousId,
+          },
+        })
         .execute();
     } catch (error: unknown) {
       throw new Error();

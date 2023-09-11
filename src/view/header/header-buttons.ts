@@ -58,6 +58,8 @@ export default class AuthButtons {
         const mouseEvent = event as MouseEvent;
         LocaleStorage.clearLocalStorage(LocaleStorage.TOKEN);
         LocaleStorage.clearLocalStorage(LocaleStorage.CUSTOMER_ID);
+        LocaleStorage.clearLocalStorage(LocaleStorage.ANONYMOUS_ID);
+        LocaleStorage.clearLocalStorage(LocaleStorage.CART_ID);
         route(mouseEvent);
       },
     });
