@@ -1,5 +1,181 @@
-.about-section {
-  background-color: aqua;
-  width: 100%;
-  height: 87vh;
+
+.about-us-section {
+  padding: 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+  color: var(--color-four);
+  line-height: 1.5em;
+}
+
+.top-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-text {
+  width: 90%;
+  font-size: 19px;
+  line-height: 1.5em;
+  text-align: center;
+  margin-bottom: 30px;
+
+}
+
+.top-image {
+  width: 400px;
+  margin-bottom: 15px;
+}
+
+.about-us-centr {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.developer-container {
+  min-width: 380px;
+  max-width: 565px;
+  background-color: #fff;
+  flex: 1;
+  padding: 0 2%;
+  border: 1px solid #fce253;
+  border-radius: 5px;
+  margin: 0 auto;
+}
+
+.developer-name {
+  text-align: center;
+  height: 50px;
+  margin-top: 30px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.developer-image__wrapper {
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0 auto;
+width: 200px;
+height: 200px;
+overflow: hidden;
+border-radius: 50%;
+}
+
+.developer-image {
+  height: 100%;
+  opacity: 0.2;
+}
+
+.developer-info {
+  min-height: max-content;
+  line-height: 1.6em;
+  text-indent: 30px; 
+  font-size: 16px;
+  margin-top: 25px;
+}
+
+.github-link {
+  color: #0881b9;
+  text-decoration: none;
+  font-weight: bold;
+  line-height: 35px;
+}
+
+.github-link:hover {
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.contributions {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.contribution {
+  font-style: italic;
+  list-style-type: disc;
+  margin-bottom: 3px;
+  font-weight: normal;
+}
+
+ul.contributions li {
+margin-left: 25px;
+}
+
+.collaboration-content {
+  margin-top: 20px;
+}
+
+.success-story {
+  text-indent: 30px; 
+  font-size: 18px;
+  margin-bottom: 20px;
+  line-height: 1.6em;
+}
+
+.methodologies {
+  margin: 10px 20px;
+}
+
+.methodologie {
+  font-weight: bold;
+}
+
+.end-content {
+  max-width: 1060px;
+  line-height: 1.6em;
+  font-size: 18px;
+  margin: 30px auto 0 auto;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+}
+
+@media (max-width: 820px) {
+  .success-story {
+    font-size: 16px;
+    padding: 5px;
+  }
+
+  .methodologies {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 460px) {
+  .about-us-section {
+    padding: 5px;
+  }
+
+  .top-image {
+    width: 300px;
+  }
+
+  .about-us-centr {
+    gap: 5px 0px;
+  }
+
+  .developer-container {
+    min-width: 310px;
+    padding: 0 2%;
+    margin: 0;
+  }
+}
+
+@media (max-width: 330px) {
+  .top-text {
+    font-size: 16px;
+  }
+
+  .methodologies {
+    font-size: 15px;
+  }
+
+  .end-content {
+    font-size: 15px;
+  }
 }

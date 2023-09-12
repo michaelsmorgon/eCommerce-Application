@@ -76,7 +76,7 @@ export default class Main {
   }
 
   private static createAboutUsButton(): ElementCreator {
-    return this.createButton('About Us', '/about_us', 'about-us-link');
+    return this.createButton('About Us', '/aboutus', 'about-us-link');
   }
 
   private static createLoginButton(): ElementCreator {
