@@ -18,6 +18,7 @@ import { BuilderClient } from '../../../api/BuilderClient';
 import { TokenCacheStore } from '../../../api/TokenCacheStore';
 import { CUSTOMER_UPDATE_ACTIONS } from '../../../data/Actions';
 import { MessageView } from '../../message/MessageView';
+import { LocaleStorage } from '../../../api/LocaleStorage';
 
 const CssClassesForm = {
   REGISTRATION_CONTAINER: 'registration__container',
@@ -87,12 +88,11 @@ export class RegistrationView extends View {
     const isValid = fieldChecker.validateFields();
     if (isValid) {
       const params = this.getCustomerParams();
-      console.log(params);
       const projectKey = 'dumians';
       const builderClient: BuilderClient = new BuilderClient(this.tokenCacheStore);
       const ctpClient = builderClient.httpMiddleware();
       const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({ projectKey });
-      const id = localStorage.getItem('id');
+      const id = localStorage.getItem(LocaleStorage.CUSTOMER_ID);
 
       if (id !== null) {
         try {
@@ -316,7 +316,6 @@ export class RegistrationView extends View {
       customerResponse.body.shippingAddressIds?.includes(customerResponse.body.billingAddressIds[0]) &&
       !includeBilling.checked
     ) {
-      console.log(customerResponse);
       customerUpdate.actions.push({
         action: CUSTOMER_UPDATE_ACTIONS.REMOVE_SHIPPING_ADRESS_ID,
         addressKey: 'billing',

@@ -1,4 +1,5 @@
 // app.ts
+import { LocaleStorage } from '../api/LocaleStorage';
 import ElementCreator from '../util/ElementCreator';
 import AboutUsApp from '../view/about-us/aboutUsApp';
 import CatalogApp from '../view/catalog/CatalogApp';
@@ -55,7 +56,7 @@ export class App {
     | typeof CatalogApp
     | typeof ProductApp
     | typeof AboutUsApp {
-    const token = localStorage.getItem('token');
+    const token = LocaleStorage.getValue('token');
     const { pathname } = document.location;
     if (token && (pathname === '/login' || pathname === '/registration')) {
       window.history.pushState({}, '', '/');

@@ -102,7 +102,7 @@ export default class AuthButtons {
   }
 
   handleStorageChange(): void {
-    const tokenFlag = localStorage.getItem('token');
+    const tokenFlag = LocaleStorage.getValue('token');
 
     const registrationButton = document.querySelector('.registration-button') as HTMLElement;
     const loginButton = document.querySelector('.login-button') as HTMLElement;

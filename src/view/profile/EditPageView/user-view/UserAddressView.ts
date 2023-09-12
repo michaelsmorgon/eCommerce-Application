@@ -10,6 +10,7 @@ import './user-view.css';
 import { BuilderClient } from '../../../../api/BuilderClient';
 import { TokenCacheStore } from '../../../../api/TokenCacheStore';
 import { Address } from '../../profileView/profile';
+import { LocaleStorage } from '../../../../api/LocaleStorage';
 
 type CheckboxConfig = {
   className: string;
@@ -89,7 +90,7 @@ export class UserAddressView extends View {
     const builderClient: BuilderClient = new BuilderClient(this.tokenCacheStore);
     const ctpClient = builderClient.httpMiddleware();
     const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({ projectKey });
-    const id = localStorage.getItem('id');
+    const id = localStorage.getItem(LocaleStorage.CUSTOMER_ID);
 
     if (id !== null) {
       try {
@@ -325,8 +326,6 @@ export class UserAddressView extends View {
     ShippingInclude.checked = true;
 
     const shippingAddress = response.body.addresses.find((address: Address) => address.key === 'shipping');
-
-    console.log(shippingAddress);
 
     selectbilling.value = shippingAddress.country;
     postalCodeInput.value = shippingAddress.postalCode;
