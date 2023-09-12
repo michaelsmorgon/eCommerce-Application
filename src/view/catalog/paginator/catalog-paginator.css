@@ -1,117 +1,55 @@
 .paginator {
-  max-width: 340px;
+  max-width: 280px;
   display: flex;
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
+  margin: 10px auto;
 }
 
-@media (max-width: 730px) {
-  .paginator {
-      max-width: 300px;
-  }
-}
 .paginator__button {
+  background-color: #ffffff;
   border-radius: 100px;
   width: 48px;
   height: 48px;
   cursor: pointer;
-  border: 2px solid var(--color-primary);
-  background-position: center;
-  background-repeat: no-repeat;
+  border: 2px solid #333333;
+  text-align: center;
+  font-size: 20px;
+  padding: 10px;
+  color: #333333;
 }
 
-.paginator__button:not(.paginator__disabled):hover {
-  border: 2px solid var(--color-primary-light);
-  background: var(--color-primary-light);
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background 0.5s, border-color 0.5s ease-in-out;
+.paginator__button:not(.paginator__disabled):not(.paginator__current):hover {
+  color: #333333;
+  background-color: #CCCCCC;
+  transition: color 0.5s ease-in-out;
 }
 
-.paginator__button:has(.paginator__current):hover {
-  border: 2px solid var(--color-primary);
-  background: var(--color-primary);
-  cursor: default;
-  transition:none;
-}
-
-
-.paginator__prev {
-  margin-left: 20px;
-}
-
-@media (max-width: 730px) {
-  .paginator__prev {
-      margin-left: 10px;
-  }
+.paginator__prev,
+.paginator__next {
+  margin: 0 auto;
 }
 
 .paginator__current {
+  width: 100px;
   border: 2px solid var(--color-primary);
-  background: var(--color-primary);   
-  margin-left: 20px;
-}
-
-@media (max-width: 730px) {
-  .paginator__current {
-      margin-left: 10px;
-  }
-}
-
-.paginator__number, .paginator_arrow {
-  font-family: var(--font-family-georgia);
-  text-align: center;
-  padding-top: 11px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 23px;
-  letter-spacing: 0.06em;
-}
-
-.paginator__next {
-  margin-left: 20px;
-}
-
-@media (max-width: 730px) {
-  .paginator__next {
-      margin-left: 10px;
-  }
-}
-
-.paginator__next:hover {
-  margin-left: 20px;
-}
-
-@media (max-width: 730px) {
-  .paginator__next:hover {
-      margin-left: 10px;
-  }
-}
-
-.paginator__to-finish {
-  margin-left: 20px;
-}
-
-@media (max-width: 730px) {
-  .paginator__to-finish {
-      margin-left: 10px;
-  }
-}
-
-.paginator__to-finish:hover {
-  margin-left: 20px;
-}
-
-@media (max-width: 730px) {
-  .paginator__to-finish:hover {
-      margin-left: 10px;
-  }
+  background: var(--color-primary);  
+  margin: 0 auto; 
+  cursor: default;
 }
 
 .paginator__disabled {
   cursor: default;
-  border: 2px solid var(--color-dark-s);
-  color: var(--color-dark-s);
+  border: 2px solid #AAAAAA;
+  color: #AAAAAA;
+}
+
+.paginator__disabled:hover {
+  cursor: default;
+  border: 2px solid #AAAAAA;
+  color: #AAAAAA;
+}
+.paginator__disabled:active {
+  background-color: #ffffff;
 }

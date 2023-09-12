@@ -6,6 +6,7 @@ export const QueryStringNames = {
   MATERIAL: 'material',
   ORDER: 'order',
   SEARCH_PRODUCT: 'search',
+  OFFSET: 'offset',
 };
 
 export class QueryString {
@@ -24,6 +25,8 @@ export class QueryString {
   private order: string | null = null;
 
   private searchText: string = '';
+
+  private offset: number = 0;
 
   constructor(private str: string) {
     this.parseString();
@@ -53,6 +56,9 @@ export class QueryString {
           break;
         case QueryStringNames.SEARCH_PRODUCT:
           this.searchText = strParsed[1] ? strParsed[1] : '';
+          break;
+        case QueryStringNames.OFFSET:
+          this.offset = strParsed[1] ? +strParsed[1] : 0;
           break;
         default:
           break;
@@ -86,6 +92,10 @@ export class QueryString {
 
   public getSearchText(): string {
     return this.searchText;
+  }
+
+  public getOffset(): number {
+    return this.offset;
   }
 
   public getSearchList(): string[] {
