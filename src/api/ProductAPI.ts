@@ -54,7 +54,7 @@ export class ProductAPI {
         .get({
           queryArgs: {
             limit: 6,
-            offset: searchParams.offset ? searchParams.offset : 1,
+            offset: searchParams.offset ? searchParams.offset : 0,
             'text.en': searchParams.searchText,
             sort: searchParams.orderSearch ? [searchParams.orderSearch] : [],
             filter: searchParams.filterSearch,

@@ -19,6 +19,10 @@ const CssClassesCatalog = {
 export default class CatalogView extends View {
   private queryString: QueryString;
 
+  private offsetProduct: number = 0;
+
+  private totalProduct: number = 0;
+
   constructor(private categoryId: string | null = null) {
     const params: ViewParams = {
       tag: 'section',
@@ -47,8 +51,7 @@ export default class CatalogView extends View {
     const catalogContainer = new ElementCreator(params);
 
     catalogContainer.addInnerElement(this.addCatalogHeader());
-    catalogContainer.addInnerElement(this.addCatalogBody());
-    catalogContainer.addInnerElement(this.addCatalogPaginator());
+    this.addCatalogBody(catalogContainer);
 
     this.viewElementCreator.addInnerElement(catalogContainer.getElement());
   }
@@ -58,12 +61,7 @@ export default class CatalogView extends View {
     return catalogHeaderView.getHtmlElement();
   }
 
-  private addCatalogPaginator(): HTMLElement {
-    const catalogPaginatorView = new CatalogPaginatorView();
-    return catalogPaginatorView.getHtmlElement();
-  }
-
-  private addCatalogBody(): HTMLElement {
+  private addCatalogBody(parentContainer: ElementCreator): HTMLElement {
     const params: ElementConfig = {
       tag: 'div',
       classNames: [CssClassesCatalog.CATALOG_SECTION_BODY],
@@ -83,18 +81,28 @@ export default class CatalogView extends View {
       orderSearch: this.queryString.getSearchOrder(),
       searchText: this.queryString.getSearchText(),
       filterQuery,
+      offset: this.queryString.getOffset(),
     };
     products
       .getProductsWithSearch(searchParams)
       .then((response) => {
+        this.totalProduct = response.body?.total ? Number(response.body?.total) : 0;
+        this.offsetProduct = response.body?.offset ? Number(response.body?.offset) : 0;
         const results = response.body?.results as ProductProjection[];
         results.forEach((product: ProductProjection) => {
           const catalogCard = new CatalogCard(product, product.key);
           catalogContainer.addInnerElement(catalogCard.getHtmlElement());
         });
+        parentContainer.addInnerElement(catalogContainer);
+        parentContainer.addInnerElement(this.addCatalogPaginator());
       })
       .catch(() => {});
 
     return catalogContainer.getElement();
+  }
+
+  private addCatalogPaginator(): HTMLElement {
+    const catalogPaginatorView = new CatalogPaginatorView(this.offsetProduct, this.totalProduct);
+    return catalogPaginatorView.getHtmlElement();
   }
 }
