@@ -1,6 +1,7 @@
 // app.ts
 import ElementCreator from '../util/ElementCreator';
 import AboutUsApp from '../view/about-us/aboutUsApp';
+import BasketView from '../view/BasketPage/BasketView';
 import CatalogApp from '../view/catalog/CatalogApp';
 import ProductApp from '../view/display-produkt/productApp';
 import Footer from '../view/footer/footer-view';
@@ -92,6 +93,8 @@ export class App {
         return ChangePassword;
       case '/aboutus':
         return AboutUsApp;
+      case '/basket':
+        return BasketView;
       default:
         return NotFoundPageApp;
     }
