@@ -77,111 +77,110 @@ export default class BasketContent extends ElementCreator {
   cartItems(products: LineItem[]): void {
     const Basketdiv = document.querySelector('.Cart-Container') as HTMLElement;
     console.log(products);
-  
+
     products.forEach((product) => {
       const Productdiv = this.createProductDiv(product);
       Basketdiv.appendChild(Productdiv);
     });
-  
+
     this.cartFotter(products);
   }
-  
+
   private createProductDiv(product: LineItem): HTMLElement {
     const ProductView = {
       tag: 'div',
       classNames: ['Cart-product'],
     };
-  
+
     const Productdiv = new ElementCreator(ProductView).getElement();
     Productdiv.appendChild(this.createProductImage(product));
     Productdiv.appendChild(this.createProductTitle(product));
     Productdiv.appendChild(this.createProductCounter(product));
     Productdiv.appendChild(this.createProductPrice(product));
-  
+
     return Productdiv;
   }
-  
+
   private createProductImage(product: LineItem): HTMLElement {
-    const productImage =
-      product.variant.images && product.variant.images.length > 0 ? product.variant.images[0] : null;
-  
+    const productImage = product.variant.images && product.variant.images.length > 0 ? product.variant.images[0] : null;
+
     const ProductPhoto = {
       tag: 'img',
       classNames: ['Cart-img'],
       attributes: [{ name: 'src', value: `${productImage?.url}` }],
     };
-  
+
     return new ElementCreator(ProductPhoto).getElement();
   }
-  
+
   private createProductTitle(product: LineItem): HTMLElement {
     const ProductTitleparams = {
       tag: 'h1',
       classNames: ['ProductTitle'],
       textContent: product.name.en,
     };
-  
+
     return new ElementCreator(ProductTitleparams).getElement();
   }
-  
+
   private createProductCounter(product: LineItem): HTMLElement {
     const CounterView = {
       tag: 'div',
       classNames: ['Cart-counter'],
     };
-  
+
     const ProductCounter = new ElementCreator(CounterView).getElement();
     ProductCounter.appendChild(this.createProductCounterButtons());
     ProductCounter.appendChild(this.createProductCounterNumber(product));
-  
+
     return ProductCounter;
   }
-  
+
   private createProductCounterButtons(): HTMLElement {
     const BtnView = {
       tag: 'div',
       classNames: ['Cart-counter-container'],
     };
-  
+
     const ProductBtnView = new ElementCreator(BtnView).getElement();
     ProductBtnView.appendChild(this.createCounterButton('icono-caretUp'));
     ProductBtnView.appendChild(this.createCounterButton('icono-caretDown'));
-  
+
     return ProductBtnView;
   }
-  
+
   private createCounterButton(className: string): HTMLElement {
     const BtnView = {
       tag: 'div',
       classNames: [className],
     };
-  
+
     return new ElementCreator(BtnView).getElement();
   }
-  
+
   private createProductCounterNumber(product: LineItem): HTMLElement {
     const CounterNumberView = {
       tag: 'div',
       classNames: ['Cart-count'],
       textContent: `${product.quantity}`,
     };
-  
+
     return new ElementCreator(CounterNumberView).getElement();
   }
-  
+
   private createProductPrice(product: LineItem): HTMLElement {
     const PriceView = {
       tag: 'div',
       classNames: ['Cart-Price-container'],
     };
-  
+
     const ProductPriceContainer = new ElementCreator(PriceView).getElement();
     ProductPriceContainer.appendChild(this.createPriceAmount(product));
     ProductPriceContainer.appendChild(this.createRemoveProductButton());
-  
+
     return ProductPriceContainer;
   }
-  
+
   private createPriceAmount(product: LineItem): HTMLElement {
     const PriceAmountView = {
       tag: 'div',
@@ -190,20 +189,19 @@ export default class BasketContent extends ElementCreator {
         (product.totalPrice.centAmount * product.quantity) / 100
       }`,
     };
-  
+
     return new ElementCreator(PriceAmountView).getElement();
   }
-  
+
   private createRemoveProductButton(): HTMLElement {
     const RemoveProductView = {
       tag: 'div',
       classNames: ['Cart-Product-remove'],
       textContent: 'Remove',
     };
-  
+
     return new ElementCreator(RemoveProductView).getElement();
   }
-  
 
   cartFotter(products: LineItem[]): void {
     const Basketdiv = document.querySelector('.Cart-Container') as HTMLElement;
