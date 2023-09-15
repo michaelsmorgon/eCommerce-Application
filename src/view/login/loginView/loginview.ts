@@ -157,8 +157,8 @@ export default class LoginView extends ElementCreator {
         if (response?.body.cart) {
           LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, response?.body.cart.id);
         }
+        LocaleStorage.clearLocalStorage(LocaleStorage.ANONYMOUS_ID);
         route(mouseEvent);
-        console.log(response);
       })
       .catch(() => {
         errorMessageSpan.textContent = 'There is no user with such an email and password';

@@ -92,6 +92,9 @@ export default class Main {
       callback: (event: Event): void => {
         const mouseEvent = event as MouseEvent;
         LocaleStorage.clearLocalStorage(LocaleStorage.TOKEN);
+        LocaleStorage.clearLocalStorage(LocaleStorage.ANONYMOUS_ID);
+        LocaleStorage.clearLocalStorage(LocaleStorage.CART_ID);
+        LocaleStorage.clearLocalStorage(LocaleStorage.CUSTOMER_ID);
         route(mouseEvent);
       },
     });
