@@ -97,6 +97,7 @@ export default class AboutUsView extends View {
 
     this.createDeveloperNameElement(developerInfo);
     this.createDeveloperImage(developerInfo);
+    this.createDeveloperInfoElements();
     this.createDeveloperInfoElement(developerInfo);
     this.createDeveloperGitHubElement(developerInfo);
     this.createDeveloperContributionsElement(developerInfo);
@@ -141,14 +142,33 @@ export default class AboutUsView extends View {
     this.developerContainer?.addInnerElement(developerImageWrapper);
   }
 
-  private createDeveloperInfoElement(developerInfo: DeveloperInfo): void {
+  private createDeveloperInfoElements(): void {
     const developerInfoElementParams: ElementConfig = {
       tag: 'div',
-      textContent: developerInfo.info,
       classNames: ['developer-info'],
     };
     const developerInfoElement = this.createElementWithConfig(developerInfoElementParams);
     this.developerContainer?.addInnerElement(developerInfoElement);
+  }
+
+  private createDeveloperInfoElement(developerInfo: DeveloperInfo): void {
+    const developerInfoElementsParams: ElementConfig = {
+      tag: 'ul',
+      classNames: ['info-list'],
+    };
+    const developerInfoElements = this.createElementWithConfig(developerInfoElementsParams);
+
+    Object.keys(developerInfo.info).forEach((key) => {
+      const infoItemParams: ElementConfig = {
+        tag: 'ol',
+        textContent: developerInfo.info[key as keyof typeof developerInfo.info] as string,
+        classNames: ['contribution'],
+      };
+      const infoItem = this.createElementWithConfig(infoItemParams);
+      developerInfoElements.addInnerElement(infoItem);
+    });
+
+    this.developerContainer?.addInnerElement(developerInfoElements);
   }
 
   private createDeveloperGitHubElement(developerInfo: DeveloperInfo): void {
