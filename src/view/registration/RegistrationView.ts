@@ -108,6 +108,7 @@ export class RegistrationView extends View {
           setTimeout(() => {
             LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
             LocaleStorage.saveLocalStorage(LocaleStorage.CUSTOMER_ID, response?.body.customer.id);
+            LocaleStorage.clearLocalStorage(LocaleStorage.ANONYMOUS_ID);
             route(event as MouseEvent);
           }, 1000);
         })
