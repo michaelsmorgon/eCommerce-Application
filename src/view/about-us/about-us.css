@@ -133,6 +133,35 @@ margin-left: 25px;
   text-align: center;
 }
 
+.rss-logo {
+  width: 80px;
+  height: 80px;
+  margin: 15px auto 0 auto;
+  border-radius: 50%;
+  background: url(/src/assets/icons/rss-logo.png) no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.8;
+}
+
+.rss-link {
+  display: block;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+}
+
+.rss-logo:hover {
+  box-shadow: 0px 0px 20px #b3dbf3;
+  transition: 0.3s ease;
+
+}
+
+.rss-logo:active {
+  transition: 0.3s ease;
+  opacity: 1;
+  }
+
 @media (max-width: 820px) {
   .success-story {
     font-size: 16px;
