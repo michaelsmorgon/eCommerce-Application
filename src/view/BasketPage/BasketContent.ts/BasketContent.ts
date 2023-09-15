@@ -1,4 +1,4 @@
-import { LineItem } from '@commercetools/platform-sdk';
+import { Cart, ClientResponse, LineItem } from '@commercetools/platform-sdk';
 import ElementCreator from '../../../util/ElementCreator';
 import './BasketContent.css';
 
@@ -58,14 +58,12 @@ export default class BasketContent extends ElementCreator {
 
   async getCart(): Promise<void> {
     const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
-    console.log(customerId);
     if (customerId) {
       try {
         const cartAPI = new CartAPI(new TokenCacheStore());
         const cart = await cartAPI.getCartByCustomerId(customerId);
-
-        const CartProducts = cart.body.lineItems;
-        this.cartItems(CartProducts);
+        console.log(cart);
+        this.cartItems(cart);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -74,22 +72,22 @@ export default class BasketContent extends ElementCreator {
     }
   }
 
-  cartItems(products: LineItem[]): void {
+  cartItems(products: ClientResponse<Cart>): void {
     const Basketdiv = document.querySelector('.Cart-Container') as HTMLElement;
-    console.log(products);
-
-    products.forEach((product) => {
+    const LineItems = products.body.lineItems;
+    LineItems.forEach((product) => {
       const Productdiv = this.createProductDiv(product);
       Basketdiv.appendChild(Productdiv);
     });
 
-    this.cartFotter(products);
+    this.cartFotter(LineItems);
   }
 
   private createProductDiv(product: LineItem): HTMLElement {
     const ProductView = {
       tag: 'div',
       classNames: ['Cart-product'],
+      attributes: [{ name: 'id', value: `${product.name.en}` }],
     };
 
     const Productdiv = new ElementCreator(ProductView).getElement();
@@ -130,29 +128,38 @@ export default class BasketContent extends ElementCreator {
     };
 
     const ProductCounter = new ElementCreator(CounterView).getElement();
-    ProductCounter.appendChild(this.createProductCounterButtons());
+    ProductCounter.appendChild(this.createProductCounterButtons(product));
     ProductCounter.appendChild(this.createProductCounterNumber(product));
 
     return ProductCounter;
   }
 
-  private createProductCounterButtons(): HTMLElement {
+  private createProductCounterButtons(product: LineItem): HTMLElement {
     const BtnView = {
       tag: 'div',
       classNames: ['Cart-counter-container'],
     };
 
     const ProductBtnView = new ElementCreator(BtnView).getElement();
-    ProductBtnView.appendChild(this.createCounterButton('icono-caretUp'));
-    ProductBtnView.appendChild(this.createCounterButton('icono-caretDown'));
+    ProductBtnView.appendChild(
+      this.createCounterButton('icono-caretUp', (): void => {
+        this.UpbuttonCount(product);
+      })
+    );
+    ProductBtnView.appendChild(
+      this.createCounterButton('icono-caretDown', (): void => {
+        this.DownbuttonCount(product);
+      })
+    );
 
     return ProductBtnView;
   }
 
-  private createCounterButton(className: string): HTMLElement {
+  private createCounterButton(className: string, callback: () => void): HTMLElement {
     const BtnView = {
       tag: 'div',
       classNames: [className],
+      callback,
     };
 
     return new ElementCreator(BtnView).getElement();
@@ -176,7 +183,7 @@ export default class BasketContent extends ElementCreator {
 
     const ProductPriceContainer = new ElementCreator(PriceView).getElement();
     ProductPriceContainer.appendChild(this.createPriceAmount(product));
-    ProductPriceContainer.appendChild(this.createRemoveProductButton());
+    ProductPriceContainer.appendChild(this.createRemoveProductButton(product));
 
     return ProductPriceContainer;
   }
@@ -185,19 +192,20 @@ export default class BasketContent extends ElementCreator {
     const PriceAmountView = {
       tag: 'div',
       classNames: ['Cart-Price'],
-      textContent: `$${product.totalPrice.centAmount / 100}-$${
-        (product.totalPrice.centAmount * product.quantity) / 100
-      }`,
+      textContent: `$${product.price.value.centAmount / 100}-$${product.totalPrice.centAmount / 100}`,
     };
 
     return new ElementCreator(PriceAmountView).getElement();
   }
 
-  private createRemoveProductButton(): HTMLElement {
+  private createRemoveProductButton(product: LineItem): HTMLElement {
     const RemoveProductView = {
       tag: 'div',
       classNames: ['Cart-Product-remove'],
       textContent: 'Remove',
+      callback: (): void => {
+        this.delateProduct(product);
+      },
     };
 
     return new ElementCreator(RemoveProductView).getElement();
@@ -232,5 +240,89 @@ export default class BasketContent extends ElementCreator {
     };
     const ProductOrder = new ElementCreator(ProductOrderButtonView).getElement();
     Productdiv.appendChild(ProductOrder);
+  }
+
+  async delateProduct(products: LineItem): Promise<void> {
+    const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
+    const RemoveProduct = document.getElementById(products.name.en);
+
+    const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
+    if (customerId) {
+      try {
+        const cartAPI = new CartAPI(new TokenCacheStore());
+        const carts = await cartAPI.getCartByCustomerId(customerId);
+        if (RemoveProduct && cartId) {
+          const cart = await cartAPI.removeProduct(cartId, products.id, carts.body.version);
+          RemoveProduct.remove();
+
+          const totalPriceCentAmount = cart.body.lineItems.reduce((total: number, product: LineItem) => {
+            return total + product.price.value.centAmount * product.quantity;
+          }, 0);
+          const TotalPrice = document.getElementsByClassName('Cart-TotalPrice')[0] as HTMLElement;
+          if (TotalPrice) {
+            TotalPrice.textContent = `Total Price: ${totalPriceCentAmount / 100} USD`;
+          }
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  }
+
+  UpbuttonCount(product: LineItem): void {
+    const CurrentProduct = document.getElementById(product.name.en);
+    const CurrentValue = CurrentProduct?.getElementsByClassName('Cart-count')[0];
+    if (CurrentValue) {
+      const currentValue = parseInt(CurrentValue.textContent || '0', 10);
+      CurrentValue.textContent = (currentValue + 1).toString();
+      this.ChangeQuantyty(currentValue + 1, product);
+    }
+  }
+
+  DownbuttonCount(product: LineItem): void {
+    const CurrentProduct = document.getElementById(product.name.en);
+    const CurrentValue = CurrentProduct?.getElementsByClassName('Cart-count')[0];
+
+    if (CurrentValue) {
+      const currentValue = parseInt(CurrentValue.textContent || '0', 10);
+      if (currentValue > 1) {
+        CurrentValue.textContent = (currentValue - 1).toString();
+        this.ChangeQuantyty(currentValue - 1, product);
+      }
+    }
+  }
+
+  async ChangeQuantyty(currentValue: number, products: LineItem): Promise<void> {
+    const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
+    const ChangeProduct = document.getElementById(products.name.en);
+
+    const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
+    if (customerId) {
+      try {
+        const cartAPI = new CartAPI(new TokenCacheStore());
+        const carts = await cartAPI.getCartByCustomerId(customerId);
+        if (ChangeProduct && cartId) {
+          const cart = await cartAPI.changeQuantityProduct(cartId, products.id, carts.body.version, currentValue);
+
+          const CurrentChangeMoney = cart.body.lineItems.find((lineItem: LineItem) => lineItem.id === products.id);
+          const CurrentProduct = document.getElementById(products.name.en);
+          const PriceElement = CurrentProduct?.getElementsByClassName('Cart-Price')[0] as HTMLElement;
+          if (PriceElement) {
+            PriceElement.textContent = `$${CurrentChangeMoney.price.value.centAmount / 100}-$${
+              CurrentChangeMoney.totalPrice.centAmount / 100
+            }`;
+          }
+          const totalPriceCentAmount = cart.body.lineItems.reduce((total: number, product: LineItem) => {
+            return total + product.price.value.centAmount * product.quantity;
+          }, 0);
+          const TotalPrice = document.getElementsByClassName('Cart-TotalPrice')[0] as HTMLElement;
+          if (TotalPrice) {
+            TotalPrice.textContent = `Total Price: ${totalPriceCentAmount / 100} USD`;
+          }
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
   }
 }
