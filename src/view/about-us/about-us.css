@@ -66,10 +66,9 @@ border-radius: 50%;
 
 .developer-image {
   height: 100%;
-  opacity: 0.2;
 }
 
-.developer-info {
+.info-list {
   min-height: max-content;
   line-height: 1.6em;
   text-indent: 30px; 
