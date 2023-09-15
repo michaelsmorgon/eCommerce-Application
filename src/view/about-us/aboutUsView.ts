@@ -220,6 +220,7 @@ export default class AboutUsView extends View {
 
     collaborationContent.addInnerElement(this.createSuccessStory());
     collaborationContent.addInnerElement(this.createEndContent());
+    collaborationContent.addInnerElement(this.createRssLogo());
 
     return collaborationContent;
   }
@@ -283,6 +284,24 @@ export default class AboutUsView extends View {
     });
 
     return end;
+  }
+
+  private createRssLogo(): ElementCreator {
+    const rssContainer = this.createElementWithConfig({
+      tag: 'div',
+      classNames: ['rss-logo'],
+    });
+    const rssLogoLink = this.createElementWithConfig({
+      tag: 'a',
+      classNames: ['rss-link'],
+      attributes: [
+        { name: 'href', value: 'https://rs.school/js/' },
+        { name: 'target', value: '_blank' },
+      ],
+    });
+
+    rssContainer.addInnerElement(rssLogoLink);
+    return rssContainer;
   }
 
   private addContent(): void {
