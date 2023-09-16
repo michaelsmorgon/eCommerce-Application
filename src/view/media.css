@@ -101,10 +101,6 @@
     display: block;
   }
 
-  .product-categories {
-    display: none;
-  }
-
   .baners {
     height: 185px;
     margin-bottom: 10px;
@@ -135,42 +131,6 @@
 
   .img-cards {
     margin-bottom: 5px;
-  }
-
-  .sale-section {
-    height: auto;
-  }
-
-  .sale-section__header {
-    text-align: center;
-    font-size: 18px;
-    color: #fe7b5a;
-    padding: 10px 0;
-    background-color: var(--color-five);
-    margin: 10px 0;
-  }
-
-  .sale-section__container {
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-
-  .sale-section__product {
-    width: 30%;
-    padding: 0;
-  }
-
-  .sale-section__name-produkt {
-    font-size: 12px;
-    height: 30px;
-    padding-top: 0px;
-    text-align: center;
-    color: var(--color-four);
-    transition: 0.3s ease;
-  }
-
-  .discount {
-    top: -92px;
   }
 
   .benefit {
@@ -237,6 +197,13 @@
 }
 
 @media (max-width: 550px) {
+
+  .button__container a {
+    width: max-content;
+    padding: 0 5px;
+    height: 30px;
+}
+
   .baners {
     height: 160px;
     margin-bottom: 10px;
@@ -302,6 +269,11 @@
     min-height: calc(100vh - 90px);
   }
 
+  .button__container a {
+    height: 25px;
+    font-size: 12px;
+}
+
   .baners {
     height: 100px;
     margin-bottom: 10px;
@@ -323,19 +295,6 @@
   }
 
   .card-link {
-    font-size: 11px;
-  }
-
-  .sale-section__header {
-    font-size: 16px;
-  }
-
-  .sale-section__product {
-    width: 45%;
-    padding: 0;
-  }
-
-  .sale-section__name-produkt {
     font-size: 11px;
   }
 }
@@ -368,18 +327,7 @@
   }
 
   .baners {
-    height: 100px;
-    margin-bottom: 10px;
-  }
-
-  .baners__content {
-    height: 100px;
-    padding: 10px;
-  }
-
-  .baners__content span {
-    font-size: 16px;
-    padding: 0;
+display: none;
   }
 
   .burger-menu {
@@ -391,5 +339,10 @@
   .burger-menu::before,
   .burger-menu::after {
     height: 10%;
+  }
+
+  .product-cards {
+    width: 90%;
+    margin: 10px 5px;
   }
 }

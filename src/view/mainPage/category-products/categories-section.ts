@@ -30,7 +30,7 @@ export default class CategoriesMainSektion {
         classNames: ['card-link'],
         textContent: category.name,
         attributes: [
-          { name: 'href', value: `/${category.name}` },
+          { name: 'href', value: `/${category.id}` },
           { name: 'index', value: `${index + 1}` },
         ],
         callback: (event: Event): void => route(event as MouseEvent),
