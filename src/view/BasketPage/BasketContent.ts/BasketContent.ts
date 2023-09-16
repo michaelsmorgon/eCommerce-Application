@@ -27,21 +27,21 @@ export default class BasketContent extends ElementCreator {
   basketView(): void {
     const BasketView = {
       tag: 'div',
-      classNames: ['Cart-Container'],
+      classNames: ['cart-container'],
     };
     const Basketdiv = new ElementCreator(BasketView);
     this.addInnerElement(Basketdiv);
 
     const BasketHeader = {
       tag: 'div',
-      classNames: ['Header'],
+      classNames: ['header-cart'],
     };
     const BasketHead = new ElementCreator(BasketHeader);
     Basketdiv.addInnerElement(BasketHead);
 
     const BasketHeadind = {
       tag: 'h3',
-      classNames: ['Heading'],
+      classNames: ['heading'],
       textContent: 'Shopping Cart',
     };
     const BasketTitle = new ElementCreator(BasketHeadind);
@@ -49,7 +49,7 @@ export default class BasketContent extends ElementCreator {
 
     const BasketAction = {
       tag: 'h3',
-      classNames: ['Action'],
+      classNames: ['action'],
       textContent: 'Remove all',
     };
     const BasketRemoveItems = new ElementCreator(BasketAction);
@@ -73,7 +73,7 @@ export default class BasketContent extends ElementCreator {
   }
 
   cartItems(products: ClientResponse<Cart>): void {
-    const Basketdiv = document.querySelector('.Cart-Container') as HTMLElement;
+    const Basketdiv = document.querySelector('.cart-container') as HTMLElement;
     const LineItems = products.body.lineItems;
     LineItems.forEach((product) => {
       const Productdiv = this.createProductDiv(product);
@@ -86,7 +86,7 @@ export default class BasketContent extends ElementCreator {
   private createProductDiv(product: LineItem): HTMLElement {
     const ProductView = {
       tag: 'div',
-      classNames: ['Cart-product'],
+      classNames: ['cart-product'],
       attributes: [{ name: 'id', value: `${product.name.en}` }],
     };
 
@@ -104,7 +104,7 @@ export default class BasketContent extends ElementCreator {
 
     const ProductPhoto = {
       tag: 'img',
-      classNames: ['Cart-img'],
+      classNames: ['cart-img'],
       attributes: [{ name: 'src', value: `${productImage?.url}` }],
     };
 
@@ -113,8 +113,8 @@ export default class BasketContent extends ElementCreator {
 
   private createProductTitle(product: LineItem): HTMLElement {
     const ProductTitleparams = {
-      tag: 'h1',
-      classNames: ['ProductTitle'],
+      tag: 'div',
+      classNames: ['product-title'],
       textContent: product.name.en,
     };
 
@@ -124,7 +124,7 @@ export default class BasketContent extends ElementCreator {
   private createProductCounter(product: LineItem): HTMLElement {
     const CounterView = {
       tag: 'div',
-      classNames: ['Cart-counter'],
+      classNames: ['cart-counter'],
     };
 
     const ProductCounter = new ElementCreator(CounterView).getElement();
@@ -137,7 +137,7 @@ export default class BasketContent extends ElementCreator {
   private createProductCounterButtons(product: LineItem): HTMLElement {
     const BtnView = {
       tag: 'div',
-      classNames: ['Cart-counter-container'],
+      classNames: ['cart-counter-container'],
     };
 
     const ProductBtnView = new ElementCreator(BtnView).getElement();
@@ -168,7 +168,7 @@ export default class BasketContent extends ElementCreator {
   private createProductCounterNumber(product: LineItem): HTMLElement {
     const CounterNumberView = {
       tag: 'div',
-      classNames: ['Cart-count'],
+      classNames: ['cart-count'],
       textContent: `${product.quantity}`,
     };
 
@@ -178,7 +178,7 @@ export default class BasketContent extends ElementCreator {
   private createProductPrice(product: LineItem): HTMLElement {
     const PriceView = {
       tag: 'div',
-      classNames: ['Cart-Price-container'],
+      classNames: ['cart-price-container'],
     };
 
     const ProductPriceContainer = new ElementCreator(PriceView).getElement();
@@ -191,17 +191,33 @@ export default class BasketContent extends ElementCreator {
   private createPriceAmount(product: LineItem): HTMLElement {
     const PriceAmountView = {
       tag: 'div',
-      classNames: ['Cart-Price'],
-      textContent: `$${product.price.value.centAmount / 100}-$${product.totalPrice.centAmount / 100}`,
+      classNames: ['cart-price'],
     };
 
-    return new ElementCreator(PriceAmountView).getElement();
+    const UnitPiece = {
+      tag: 'div',
+      classNames: ['unit-price'],
+      textContent: `$${(product.price.value.centAmount / 100).toFixed(2)}`,
+    };
+
+    const EverythingPrice = {
+      tag: 'div',
+      classNames: ['everything-price'],
+      textContent: `$${(product.totalPrice.centAmount / 100).toFixed(2)}`,
+    };
+
+    const priceAmount = new ElementCreator(PriceAmountView).getElement();
+
+    priceAmount.appendChild(new ElementCreator(UnitPiece).getElement());
+    priceAmount.appendChild(new ElementCreator(EverythingPrice).getElement());
+
+    return priceAmount;
   }
 
   private createRemoveProductButton(product: LineItem): HTMLElement {
     const RemoveProductView = {
       tag: 'div',
-      classNames: ['Cart-Product-remove'],
+      classNames: ['cart-product-remove'],
       textContent: 'Remove',
       callback: (): void => {
         this.delateProduct(product);
@@ -212,11 +228,11 @@ export default class BasketContent extends ElementCreator {
   }
 
   cartFotter(products: LineItem[]): void {
-    const Basketdiv = document.querySelector('.Cart-Container') as HTMLElement;
+    const Basketdiv = document.querySelector('.cart-container') as HTMLElement;
     console.log(products);
     const ProductView = {
       tag: 'div',
-      classNames: ['Cart-footer'],
+      classNames: ['cart-footer'],
     };
     const Productdiv = new ElementCreator(ProductView).getElement();
     Basketdiv.appendChild(Productdiv);
@@ -227,15 +243,15 @@ export default class BasketContent extends ElementCreator {
 
     const ProductTotalPriceView = {
       tag: 'div',
-      classNames: ['Cart-TotalPrice'],
-      textContent: `Total Price: ${totalPriceCentAmount / 100} USD`,
+      classNames: ['cart-total-price'],
+      textContent: `Total Price: ${(totalPriceCentAmount / 100).toFixed(2)} USD`,
     };
     const ProductsTotalPrice = new ElementCreator(ProductTotalPriceView).getElement();
     Productdiv.appendChild(ProductsTotalPrice);
 
     const ProductOrderButtonView = {
       tag: 'button',
-      classNames: ['Cart-footer-button'],
+      classNames: ['cart-footer-button'],
       textContent: 'Checkout',
     };
     const ProductOrder = new ElementCreator(ProductOrderButtonView).getElement();
@@ -258,9 +274,9 @@ export default class BasketContent extends ElementCreator {
           const totalPriceCentAmount = cart.body.lineItems.reduce((total: number, product: LineItem) => {
             return total + product.price.value.centAmount * product.quantity;
           }, 0);
-          const TotalPrice = document.getElementsByClassName('Cart-TotalPrice')[0] as HTMLElement;
+          const TotalPrice = document.getElementsByClassName('cart-total-price')[0] as HTMLElement;
           if (TotalPrice) {
-            TotalPrice.textContent = `Total Price: ${totalPriceCentAmount / 100} USD`;
+            TotalPrice.textContent = `Total Price: ${(totalPriceCentAmount / 100).toFixed(2)} USD`;
           }
         }
       } catch (error) {
@@ -271,7 +287,7 @@ export default class BasketContent extends ElementCreator {
 
   UpbuttonCount(product: LineItem): void {
     const CurrentProduct = document.getElementById(product.name.en);
-    const CurrentValue = CurrentProduct?.getElementsByClassName('Cart-count')[0];
+    const CurrentValue = CurrentProduct?.getElementsByClassName('cart-count')[0];
     if (CurrentValue) {
       const currentValue = parseInt(CurrentValue.textContent || '0', 10);
       CurrentValue.textContent = (currentValue + 1).toString();
@@ -281,7 +297,7 @@ export default class BasketContent extends ElementCreator {
 
   DownbuttonCount(product: LineItem): void {
     const CurrentProduct = document.getElementById(product.name.en);
-    const CurrentValue = CurrentProduct?.getElementsByClassName('Cart-count')[0];
+    const CurrentValue = CurrentProduct?.getElementsByClassName('cart-count')[0];
 
     if (CurrentValue) {
       const currentValue = parseInt(CurrentValue.textContent || '0', 10);
@@ -306,18 +322,16 @@ export default class BasketContent extends ElementCreator {
 
           const CurrentChangeMoney = cart.body.lineItems.find((lineItem: LineItem) => lineItem.id === products.id);
           const CurrentProduct = document.getElementById(products.name.en);
-          const PriceElement = CurrentProduct?.getElementsByClassName('Cart-Price')[0] as HTMLElement;
+          const PriceElement = CurrentProduct?.getElementsByClassName('everything-price')[0] as HTMLElement;
           if (PriceElement) {
-            PriceElement.textContent = `$${CurrentChangeMoney.price.value.centAmount / 100}-$${
-              CurrentChangeMoney.totalPrice.centAmount / 100
-            }`;
+            PriceElement.textContent = `$${(CurrentChangeMoney.totalPrice.centAmount / 100).toFixed(2)}`;
           }
           const totalPriceCentAmount = cart.body.lineItems.reduce((total: number, product: LineItem) => {
             return total + product.price.value.centAmount * product.quantity;
           }, 0);
-          const TotalPrice = document.getElementsByClassName('Cart-TotalPrice')[0] as HTMLElement;
+          const TotalPrice = document.getElementsByClassName('cart-total-price')[0] as HTMLElement;
           if (TotalPrice) {
-            TotalPrice.textContent = `Total Price: ${totalPriceCentAmount / 100} USD`;
+            TotalPrice.textContent = `Total Price: $${(totalPriceCentAmount / 100).toFixed(2)} USD`;
           }
         }
       } catch (error) {
