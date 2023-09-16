@@ -229,34 +229,49 @@ export class CatalogCard extends View {
   }
 
   private cartBtnHandler(event: Event, productId: string): void {
+    const target = event.target as HTMLButtonElement;
+    const elem = new ElementCreator({
+      tag: 'span',
+      classNames: ['preloader'],
+    });
+    target.insertAdjacentElement('afterbegin', elem.getElement());
     const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
     const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
     if (cartId) {
-      const cart = new CartAPI(new TokenCacheStore());
-      if (customerId) {
-        cart.getCartByCustomerId(customerId).then((cartInfo) => {
-          this.addProduct(event, cart, cartInfo, productId);
-        });
-      } else {
-        cart.getAnonymousCartById(cartId).then((cartInfo) => {
-          this.addProduct(event, cart, cartInfo, productId);
-        });
-      }
+      this.addProductToCart(customerId, cartId, productId, event);
     } else {
-      const token = new TokenCacheStore();
-      const cart = new CartAPI(token);
+      const preloader = document.querySelector('.preloader');
+      const cart = new CartAPI(new TokenCacheStore());
       if (customerId) {
         cart.createCustomerCart(customerId).then((cartInfo) => {
           LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, cartInfo.body.id);
           this.addProduct(event, cart, cartInfo, productId);
+          preloader?.parentNode?.removeChild(preloader);
         });
       } else {
         cart.createAnonymousCart().then((cartInfo) => {
           LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, cartInfo.body.id);
           LocaleStorage.saveLocalStorage(LocaleStorage.ANONYMOUS_ID, cartInfo.body.anonymousId);
           this.addProduct(event, cart, cartInfo, productId);
+          preloader?.parentNode?.removeChild(preloader);
         });
       }
+    }
+  }
+
+  private addProductToCart(customerId: string | undefined, cartId: string, productId: string, event: Event): void {
+    const cart = new CartAPI(new TokenCacheStore());
+    const preloader = document.querySelector('.preloader');
+    if (customerId) {
+      cart.getCartByCustomerId(customerId).then((cartInfo) => {
+        this.addProduct(event, cart, cartInfo, productId);
+        preloader?.parentNode?.removeChild(preloader);
+      });
+    } else {
+      cart.getAnonymousCartById(cartId).then((cartInfo) => {
+        this.addProduct(event, cart, cartInfo, productId);
+        preloader?.parentNode?.removeChild(preloader);
+      });
     }
   }
 
