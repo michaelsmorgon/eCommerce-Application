@@ -43,11 +43,33 @@ export default class PromoCode {
     if (!promoCodesContainer) {
       return;
     }
-
     promocodes.forEach((promo) => {
       const promoElement = document.createElement('div');
       promoElement.classList.add('your-code');
-      promoElement.textContent = `${promo.key}`;
+      promoElement.textContent = promo.key ?? '';
+      const copyButton = document.createElement('button');
+      copyButton.textContent = 'Copy';
+      promoCodesContainer.appendChild(copyButton);
+      copyButton.addEventListener('click', () => {
+        const textToCopy = promoElement.textContent;
+        if (textToCopy) {
+          const textWithoutCopy = textToCopy.substring(0, textToCopy.length);
+          navigator.clipboard
+            .writeText(textWithoutCopy)
+            .then(() => {
+              const notification = document.createElement('div');
+              notification.classList.add('copy-notification');
+              notification.textContent = `Text copied to clipboard: ${textWithoutCopy}`;
+              document.body.appendChild(notification);
+              setTimeout(() => {
+                notification.remove();
+              }, 2000);
+            })
+            .catch((error) => {
+              console.error('Copy failed:', error);
+            });
+        }
+      });
 
       promoCodesContainer.appendChild(promoElement);
     });
