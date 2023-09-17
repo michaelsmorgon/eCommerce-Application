@@ -83,6 +83,7 @@ export default class PromoCode {
 
     promocodes.forEach((promo) => {
       const promoElement = document.createElement('div');
+      promoElement.classList.add('your-code');
       promoElement.textContent = `${promo.name.en}`;
 
       promoCodesContainer.appendChild(promoElement);
