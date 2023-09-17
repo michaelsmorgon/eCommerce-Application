@@ -74,7 +74,7 @@ export default class BasketContent extends ElementCreator {
     }
   }
 
-  async getAnonymousCart(): Promise<void>  {
+  async getAnonymousCart(): Promise<void> {
     const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
     if (cartId) {
       try {
@@ -103,7 +103,7 @@ export default class BasketContent extends ElementCreator {
     }
   }
 
-  emptyCart():void {
+  emptyCart(): void {
     const Basketdiv = document.querySelector('.cart-container') as HTMLElement;
     Basketdiv.innerHTML = '';
     const emptyCartConfig = {
