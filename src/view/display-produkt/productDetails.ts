@@ -1,8 +1,12 @@
-import { ProductData } from '@commercetools/platform-sdk';
+import { Cart, ClientResponse, ProductData } from '@commercetools/platform-sdk';
 import ElementCreator, { ElementConfig, IAttribute } from '../../util/ElementCreator';
 import View, { ViewParams } from '../View';
 import ImageSlider from './product-slider';
-import ShoppingCartManager from './productInCart/productInCart';
+import ShoppingCartManager from './productInCart/addRemoveProduct';
+import { LocaleStorage } from '../../api/LocaleStorage';
+import { CartAPI } from '../../api/CartAPI';
+import { TokenCacheStore } from '../../api/TokenCacheStore';
+import { ProductAPI } from '../../api/ProductAPI';
 
 const CssClassesProduct = {
   PRODUCT_DETAILS: 'product-details',
@@ -43,7 +47,7 @@ export default class ProductDetails extends View {
 
   constructor(
     private productData: ProductData,
-    private produktKey: string
+    private productKey: string
   ) {
     const params: ViewParams = {
       tag: 'div',
@@ -52,6 +56,8 @@ export default class ProductDetails extends View {
     super(params);
     this.viewElementCreator.addInnerElement(this.addTopContainer());
     this.viewElementCreator.addInnerElement(this.addBottomContainer());
+
+    this.updateCartButtons();
   }
 
   private attr: IAttribute[] = [];
@@ -418,43 +424,96 @@ export default class ProductDetails extends View {
     return aboutOrder;
   }
 
-  private createCartButton(isAddToCart: boolean): ElementCreator {
-    const buttonParams: ElementConfig = {
-      tag: 'button',
-      classNames: isAddToCart ? ['add-cart'] : ['remove-cart'],
-      textContent: isAddToCart ? 'Add to Cart' : 'Remove from Cart',
-    };
+  private createCartButton(isAddToCart: boolean): HTMLElement {
+    const button = document.createElement('button');
+    button.classList.add(isAddToCart ? 'add-cart' : 'remove-cart');
+    button.textContent = isAddToCart ? 'Add to Cart' : 'Remove from Cart';
 
-    const button = new ElementCreator(buttonParams);
-    const shoppingCartManager = new ShoppingCartManager();
+    const shoppingCartManager = new ShoppingCartManager(this.productKey);
+    shoppingCartManager.create();
 
-    button.getElement().addEventListener('click', () => {
+    button.addEventListener('click', () => {
       if (isAddToCart) {
-        shoppingCartManager.handleAddToCartClick(this.produktKey);
-        if (this.addCartButton) {
-          this.addCartButton.style.display = 'none';
-        }
-        if (this.removeCartButton) {
-          this.removeCartButton.style.display = 'block';
-        }
+        shoppingCartManager.handleAddToCartClick();
       } else {
-        shoppingCartManager.handleRemoveToCartClick();
-        if (this.addCartButton) {
-          this.addCartButton.style.display = 'block';
-        }
-        if (this.removeCartButton) {
-          this.removeCartButton.style.display = 'none';
-        }
+        shoppingCartManager.handleRemoveFromCartClick();
       }
+      this.updateCartButtons();
     });
 
-    if (isAddToCart) {
-      this.addCartButton = button.getElement();
-    } else {
-      this.removeCartButton = button.getElement();
-    }
-
     return button;
+  }
+
+  public async getProduktId(): Promise<string | null> {
+    const tokenCacheStore = new TokenCacheStore();
+    const products = new ProductAPI(tokenCacheStore);
+
+    try {
+      const product = await products.getProductByKey(this.productKey);
+      if (product) {
+        const productId = product.body.id;
+        return productId;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching product ID:', error);
+      return null;
+    }
+  }
+
+  private async updateCartButtons(): Promise<void> {
+    try {
+      const productId = await this.getProduktId();
+      if (productId) {
+        const cartResponse = this.isProductInCart();
+        if (cartResponse !== null) {
+          cartResponse.then((cartInfo) => {
+            const res = cartInfo.body.lineItems.find((lineItem) => lineItem.productId === productId);
+
+            if (res !== undefined) {
+              if (this.addCartButton) {
+                this.addCartButton.style.display = 'none';
+              }
+              if (this.removeCartButton) {
+                this.removeCartButton.style.display = 'block';
+              }
+            } else {
+              if (this.addCartButton) {
+                this.addCartButton.style.display = 'block';
+              }
+              if (this.removeCartButton) {
+                this.removeCartButton.style.display = 'none';
+              }
+            }
+          });
+        } else {
+          if (this.addCartButton) {
+            this.addCartButton.style.display = 'block';
+          }
+          if (this.removeCartButton) {
+            this.removeCartButton.style.display = 'none';
+          }
+        }
+      } else {
+        console.error('Product ID is not available.');
+      }
+    } catch (error) {
+      console.error('Error updating cart buttons:', error);
+    }
+  }
+
+  private isProductInCart(): Promise<ClientResponse<Cart>> | null {
+    const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
+    const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
+    if (customerId && cartId) {
+      const cart = new CartAPI(new TokenCacheStore());
+      return cart.getCartByCustomerId(customerId);
+    }
+    if (cartId) {
+      const cart = new CartAPI(new TokenCacheStore());
+      return cart.getAnonymousCartById(cartId);
+    }
+    return null;
   }
 
   private addProductInfoBottom(): ElementCreator {
@@ -469,11 +528,15 @@ export default class ProductDetails extends View {
     productInfoBottom.addInnerElement(this.createMaterialOption());
     productInfoBottom.addInnerElement(this.createAboutOrder());
 
-    const addCartButton = this.createCartButton(true);
-    const removeCartButton = this.createCartButton(false);
-    productInfoBottom.addInnerElement(addCartButton);
-    productInfoBottom.addInnerElement(removeCartButton);
+    this.addCartButton = this.createCartButton(true);
+    this.removeCartButton = this.createCartButton(false);
 
+    if (this.addCartButton) {
+      productInfoBottom.addInnerElement(this.addCartButton);
+    }
+    if (this.removeCartButton) {
+      productInfoBottom.addInnerElement(this.removeCartButton);
+    }
     return productInfoBottom;
   }
 
