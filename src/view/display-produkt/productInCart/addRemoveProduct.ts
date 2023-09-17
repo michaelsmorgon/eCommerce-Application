@@ -21,14 +21,12 @@ export default class ShoppingCartManager {
       if (product) {
         const productId = product.body.id;
         this.productId = productId;
-        console.log(`create: ${product.body.id}`);
       }
     });
   }
 
   handleAddToCartClick(): void {
     if (this.productId !== undefined) {
-      console.log(`click: ${this.productId}`);
       const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
       const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
       if (cartId) {
@@ -110,7 +108,6 @@ export default class ShoppingCartManager {
 
         if (lineItem) {
           await cart.removeProduct(cartInfo.body.id, lineItem.id, cartInfo.body.version);
-          console.log('Product removed from cart.');
         } else {
           console.error('Product not found in cart.');
         }

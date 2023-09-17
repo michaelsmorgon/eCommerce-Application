@@ -36,7 +36,6 @@ export class ProductAPI {
     try {
       const response = await this.apiRoot.products().get().execute();
 
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);
@@ -63,7 +62,6 @@ export class ProductAPI {
         })
         .execute();
 
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);
@@ -75,7 +73,6 @@ export class ProductAPI {
     try {
       const response = await this.apiRoot.products().withKey({ key }).get().execute();
 
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);
@@ -87,7 +84,6 @@ export class ProductAPI {
     try {
       const response = await this.apiRoot.products().withId({ ID: id }).get().execute();
 
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);

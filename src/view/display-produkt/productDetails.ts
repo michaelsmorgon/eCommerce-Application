@@ -452,7 +452,6 @@ export default class ProductDetails extends View {
       const product = await products.getProductByKey(this.productKey);
       if (product) {
         const productId = product.body.id;
-        console.log(`getProduktId: ${productId}`);
         return productId;
       }
       return null;
@@ -462,15 +461,11 @@ export default class ProductDetails extends View {
     }
   }
 
-  // eslint-disable-next-line max-lines-per-function
   private async updateCartButtons(): Promise<void> {
     try {
       const productId = await this.getProduktId();
-
       if (productId) {
         const cartResponse = this.isProductInCart();
-        console.log(cartResponse);
-
         if (cartResponse !== null) {
           cartResponse.then((cartInfo) => {
             const res = cartInfo.body.lineItems.find((lineItem) => lineItem.productId === productId);

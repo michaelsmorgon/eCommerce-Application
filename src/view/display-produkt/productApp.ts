@@ -3,7 +3,6 @@ import ProductView from './productView';
 export default class ProductApp {
   static create(productKey: string | null = null): void {
     let view: ProductView | null = null;
-    console.log(productKey);
     if (productKey !== null) {
       view = new ProductView(productKey);
     } else {
