@@ -5,6 +5,7 @@ import './BasketContent.css';
 import { CartAPI } from '../../../api/CartAPI';
 import { TokenCacheStore } from '../../../api/TokenCacheStore';
 import { LocaleStorage } from '../../../api/LocaleStorage';
+import { route } from '../../../router/router';
 
 export default class BasketContent extends ElementCreator {
   private tokenCacheStore: TokenCacheStore;
@@ -20,8 +21,14 @@ export default class BasketContent extends ElementCreator {
   }
 
   async callMethods(): Promise<void> {
+    const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
+    const anonymousId = LocaleStorage.getValue(LocaleStorage.ANONYMOUS_ID);
     this.basketView();
-    this.getCart();
+    if (customerId) {
+      this.getCart(customerId);
+    } else if (anonymousId) {
+      this.getAnonymousCart();
+    }
   }
 
   basketView(): void {
@@ -56,31 +63,70 @@ export default class BasketContent extends ElementCreator {
     BasketHead.addInnerElement(BasketRemoveItems);
   }
 
-  async getCart(): Promise<void> {
-    const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
-    if (customerId) {
+  async getCart(customerId: string): Promise<void> {
+    try {
+      const cartAPI = new CartAPI(new TokenCacheStore());
+      const cart = await cartAPI.getCartByCustomerId(customerId);
+      console.log(cart);
+      this.cartItems(cart);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  async getAnonymousCart(): Promise<void> {
+    const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
+    if (cartId) {
       try {
         const cartAPI = new CartAPI(new TokenCacheStore());
-        const cart = await cartAPI.getCartByCustomerId(customerId);
+        const cart = await cartAPI.getAnonymousCartById(cartId);
         console.log(cart);
         this.cartItems(cart);
       } catch (error) {
         console.error('Error:', error);
       }
-    } else {
-      console.error('Customer ID is undefined.');
     }
   }
 
   cartItems(products: ClientResponse<Cart>): void {
     const Basketdiv = document.querySelector('.cart-container') as HTMLElement;
     const LineItems = products.body.lineItems;
-    LineItems.forEach((product) => {
-      const Productdiv = this.createProductDiv(product);
-      Basketdiv.appendChild(Productdiv);
-    });
+    if (LineItems.length === 0) {
+      this.emptyCart();
+    } else {
+      LineItems.forEach((product) => {
+        const Productdiv = this.createProductDiv(product);
+        Basketdiv.appendChild(Productdiv);
+      });
 
-    this.cartFotter(LineItems);
+      this.cartFotter(LineItems);
+    }
+  }
+
+  emptyCart(): void {
+    const Basketdiv = document.querySelector('.cart-container') as HTMLElement;
+    Basketdiv.innerHTML = '';
+    const emptyCartConfig = {
+      tag: 'div',
+      classNames: ['cart-empty'],
+      textContent: 'Your Cart is Empty',
+    };
+    const emptyCartButton = {
+      tag: 'button',
+      classNames: ['cart-empty-Button'],
+      textContent: 'Catalog page',
+      attributes: [{ name: 'href', value: '/catalog' }],
+      callback: (event: Event): void => {
+        const mouseEvent = event as MouseEvent;
+        LocaleStorage.clearLocalStorage(LocaleStorage.TOKEN);
+        route(mouseEvent);
+      },
+    };
+
+    const Productdiv = new ElementCreator(emptyCartConfig).getElement();
+    const Productbutton = new ElementCreator(emptyCartButton).getElement();
+    Basketdiv.appendChild(Productdiv);
+    Productdiv.appendChild(Productbutton);
   }
 
   private createProductDiv(product: LineItem): HTMLElement {
@@ -220,7 +266,7 @@ export default class BasketContent extends ElementCreator {
       classNames: ['cart-product-remove'],
       textContent: 'Remove',
       callback: (): void => {
-        this.delateProduct(product);
+        this.deleteProduct(product);
       },
     };
 
@@ -229,7 +275,6 @@ export default class BasketContent extends ElementCreator {
 
   cartFotter(products: LineItem[]): void {
     const Basketdiv = document.querySelector('.cart-container') as HTMLElement;
-    console.log(products);
     const ProductView = {
       tag: 'div',
       classNames: ['cart-footer'],
@@ -258,30 +303,43 @@ export default class BasketContent extends ElementCreator {
     Productdiv.appendChild(ProductOrder);
   }
 
-  async delateProduct(products: LineItem): Promise<void> {
+  async deleteProduct(products: LineItem): Promise<void> {
+    const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
+    const anonymousId = LocaleStorage.getValue(LocaleStorage.ANONYMOUS_ID);
+    const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
+
+    if (customerId) {
+      const cartAPI = new CartAPI(new TokenCacheStore());
+      const carts = await cartAPI.getCartByCustomerId(customerId);
+      await this.deleteThis(products, carts, cartAPI);
+    } else if (anonymousId && cartId) {
+      const cartAPI = new CartAPI(new TokenCacheStore());
+      const carts = await cartAPI.getAnonymousCartById(cartId);
+      await this.deleteThis(products, carts, cartAPI);
+    }
+  }
+
+  async deleteThis(products: LineItem, carts: ClientResponse<Cart>, cartAPI: CartAPI): Promise<void> {
     const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
     const RemoveProduct = document.getElementById(products.name.en);
+    try {
+      if (RemoveProduct && cartId) {
+        const cart = await cartAPI.removeProduct(cartId, products.id, carts.body.version);
+        RemoveProduct.remove();
+        const totalPriceCentAmount = cart.body.lineItems.reduce((total: number, product: LineItem) => {
+          return total + product.price.value.centAmount * product.quantity;
+        }, 0);
 
-    const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
-    if (customerId) {
-      try {
-        const cartAPI = new CartAPI(new TokenCacheStore());
-        const carts = await cartAPI.getCartByCustomerId(customerId);
-        if (RemoveProduct && cartId) {
-          const cart = await cartAPI.removeProduct(cartId, products.id, carts.body.version);
-          RemoveProduct.remove();
-
-          const totalPriceCentAmount = cart.body.lineItems.reduce((total: number, product: LineItem) => {
-            return total + product.price.value.centAmount * product.quantity;
-          }, 0);
-          const TotalPrice = document.getElementsByClassName('cart-total-price')[0] as HTMLElement;
-          if (TotalPrice) {
-            TotalPrice.textContent = `Total Price: ${(totalPriceCentAmount / 100).toFixed(2)} USD`;
-          }
+        const TotalPrice = document.getElementsByClassName('cart-total-price')[0] as HTMLElement;
+        if (TotalPrice) {
+          TotalPrice.textContent = `Total Price: ${(totalPriceCentAmount / 100).toFixed(2)} USD`;
         }
-      } catch (error) {
-        console.error('Error:', error);
+        if (cart.body.lineItems.length === 0) {
+          this.emptyCart();
+        }
       }
+    } catch (error) {
+      console.error('Error:', error);
     }
   }
 
