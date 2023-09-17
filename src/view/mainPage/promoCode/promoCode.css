@@ -12,8 +12,19 @@
   text-align: center;
  
 }
-.promo-code-container {
 
+.promo-code-container {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.promo-code-container button {
+  font-style: italic;
+  height: 18px;
+  text-align: center;
+  position: relative;
+  background: #ffffff00;
+  color: rgb(184, 179, 179);
+  border: 0px;
 }
 
 .your-code {
@@ -30,6 +41,22 @@
   color: #fff;
   animation: pulse 1s infinite alternate;
 }
+
+.copy-notification {
+  border-radius: 10px;
+  text-align: center;
+  margin: 0 auto;
+  width: 30%;
+  position: fixed;
+  top: 80%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.61);
+  color: white;
+  padding: 15px;
+  z-index: 2;
+}
+
 
 @keyframes pulse {
   0% {
