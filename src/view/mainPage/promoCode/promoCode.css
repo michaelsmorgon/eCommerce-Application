@@ -1,0 +1,42 @@
+.promo-code-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px auto;
+}
+.promo-code-text {
+  font-size: 18px;
+  font-weight: bold;
+  font-style: italic;
+  color: var(--color-two);
+  text-align: center;
+ 
+}
+.promo-code-container {
+
+}
+
+.your-code {
+  width: 150px;
+  height: 48px;
+  border-radius: 0px;
+  text-align: center;
+  margin-top: 10px;
+  padding: 11px;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Open Sans';
+  box-shadow: inset 0px 0px 6px 7px #fff;
+  color: #fff;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    background: #ff0303;
+    
+  }
+  100% {
+    background: #bd0101;
+  }
+}

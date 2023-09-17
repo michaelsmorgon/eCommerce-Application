@@ -5,6 +5,7 @@
 @import '../display-produkt/product-details.css';
 @import '../display-produkt/modalContainer/modal.css';
 @import '../about-us/about-us.css';
+@import '../mainPage/promoCode/promoCode.css';
 
 .not-found-container,
 .mainView {

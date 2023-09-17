@@ -3,9 +3,9 @@ import MainBanner from './main-banner';
 import CategoriesMainSektion from './category-products/categories-section';
 import BenefitsSectionCreator from './benefits/benefits-creator';
 import MetodsSectionCreator from './benefits/metods-creator';
-
 import { route } from '../../router/router';
 import { LocaleStorage } from '../../api/LocaleStorage';
+import PromoCode from './promoCode/promoCode';
 
 export default class Main {
   static create(): void {
@@ -19,10 +19,12 @@ export default class Main {
     const categoriesSektion = new CategoriesMainSektion().create();
     const benefitsSectionCreator = new BenefitsSectionCreator().create();
     const metodsSectionCreator = new MetodsSectionCreator().create();
+    const promoCode = new PromoCode().create();
 
     benefitsSectionCreator.addInnerElement(metodsSectionCreator);
     section.addInnerElement(mainBanner);
     section.addInnerElement(categoriesSektion);
+    section.addInnerElement(promoCode);
     section.addInnerElement(benefitsSectionCreator);
 
     const mainView = document.querySelector('.mainView');
@@ -38,6 +40,7 @@ export default class Main {
       tag: 'div',
       classNames: ['button__container'],
     });
+
     buttonContainer.addInnerElement(this.createCatalogButton());
     buttonContainer.addInnerElement(this.createAboutUsButton());
     buttonContainer.addInnerElement(this.createLoginButton());
