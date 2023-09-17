@@ -233,6 +233,7 @@
   width: 80%;
   max-width: 200px;
   border: var(--color-one);
+  display: none;
 }
 
 .remove-cart:hover,

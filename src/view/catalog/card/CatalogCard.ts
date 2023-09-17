@@ -108,7 +108,7 @@ export class CatalogCard extends View {
     const name = new ElementCreator(nameParams);
     const nameElem = name.getElement();
     const pattern = new RegExp(searchText, 'gi');
-    nameElem.innerHTML = this.productData.name.en.replace(pattern, `<span class='select_text'>${searchText}</span>`);
+    nameElem.innerHTML = this.productData.name.en.replace(pattern, `<span class='select__text'>${searchText}</span>`);
     container.addInnerElement(name);
     container.addInnerElement(this.addDescription());
 
