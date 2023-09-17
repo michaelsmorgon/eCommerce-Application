@@ -161,4 +161,31 @@ export class CartAPI {
       throw new Error();
     }
   }
+
+  public async addDiscountCodeToCart(cartId: string, code: string, version: number): Promise<ClientResponse> {
+    const builderClient: BuilderClient = new BuilderClient(this.tokenCacheStore);
+    const ctpClient = builderClient.authWithAnonymousSessionFlow();
+    const apiRoot: ByProjectKeyRequestBuilder = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
+      projectKey: builderClient.PROJECT_KEY,
+    });
+    try {
+      return await apiRoot
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version,
+            actions: [
+              {
+                action: 'addDiscountCode',
+                code,
+              },
+            ],
+          },
+        })
+        .execute();
+    } catch (error: unknown) {
+      throw new Error();
+    }
+  }
 }
