@@ -150,8 +150,10 @@ export class CatalogCard extends View {
     );
     priceContainer.addInnerElement(newPrice);
 
-    const oldPrice = this.addElementPrice(CssClassesCard.PRICE_OLD, productPrice);
-    priceContainer.addInnerElement(oldPrice);
+    if (discount !== null) {
+      const oldPrice = this.addElementPrice(CssClassesCard.PRICE_OLD, productPrice);
+      priceContainer.addInnerElement(oldPrice);
+    }
 
     this.createCartBtn(priceContainer);
 

@@ -5,11 +5,9 @@ export default class LoginApp {
     const view = new LoginView();
     const main = document.querySelector('.mainView');
     if (!main) {
-      console.log();
       return;
     }
     main.innerHTML = '';
-    // main.innerHTML = view.getElement().outerHTML;
     main.appendChild(view.getElement());
   }
 }

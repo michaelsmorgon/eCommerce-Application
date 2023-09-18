@@ -20,7 +20,6 @@ export class CatalogPaginatorApp {
   ) {
     this.totalPages = Math.ceil(this.totalProduct / this.LIMIT);
     this.currentPage = this.offsetProduct / this.LIMIT + 1;
-    console.log('=====', this.totalPages, this.currentPage);
   }
 
   public create(): void {
@@ -59,7 +58,6 @@ export class CatalogPaginatorApp {
     const pages = document.querySelector(`.${CssClasses.PAGINATOR_CURRENT}`) as HTMLDivElement;
     const res = pages?.textContent?.split('/');
     if (res?.length && res?.length > 0) {
-      console.log('++++', this.currentPage, this.totalPages);
       if (target.classList.contains(CssClasses.PAGINATOR_NEXT) && +res[0] < this.totalPages) {
         this.changePageNumeration(+res[0] * this.LIMIT);
       }
