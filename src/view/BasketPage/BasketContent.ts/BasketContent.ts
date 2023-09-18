@@ -6,6 +6,7 @@ import { CartAPI } from '../../../api/CartAPI';
 import { TokenCacheStore } from '../../../api/TokenCacheStore';
 import { LocaleStorage } from '../../../api/LocaleStorage';
 import { route } from '../../../router/router';
+import { InputField } from '../../../util/input_field/InputField';
 
 export default class BasketContent extends ElementCreator {
   private tokenCacheStore: TokenCacheStore;
@@ -38,14 +39,12 @@ export default class BasketContent extends ElementCreator {
     };
     const Basketdiv = new ElementCreator(BasketView);
     this.addInnerElement(Basketdiv);
-
     const BasketHeader = {
       tag: 'div',
       classNames: ['header-cart'],
     };
     const BasketHead = new ElementCreator(BasketHeader);
     Basketdiv.addInnerElement(BasketHead);
-
     const BasketHeadind = {
       tag: 'h3',
       classNames: ['heading'],
@@ -53,14 +52,23 @@ export default class BasketContent extends ElementCreator {
     };
     const BasketTitle = new ElementCreator(BasketHeadind);
     BasketHead.addInnerElement(BasketTitle);
-
     const BasketAction = {
       tag: 'h3',
       classNames: ['action'],
       textContent: 'Remove all',
+      callback: (): void => {
+        this.deleteCart();
+      },
     };
     const BasketRemoveItems = new ElementCreator(BasketAction);
     BasketHead.addInnerElement(BasketRemoveItems);
+    document.addEventListener('DOMContentLoaded', () => {
+      const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
+      const anonymousId = LocaleStorage.getValue(LocaleStorage.ANONYMOUS_ID);
+      if (!customerId && !anonymousId) {
+        this.emptyCart();
+      }
+    });
   }
 
   async getCart(customerId: string): Promise<void> {
@@ -99,7 +107,7 @@ export default class BasketContent extends ElementCreator {
         Basketdiv.appendChild(Productdiv);
       });
 
-      this.cartFotter(LineItems);
+      this.cartFotter(products);
     }
   }
 
@@ -273,7 +281,7 @@ export default class BasketContent extends ElementCreator {
     return new ElementCreator(RemoveProductView).getElement();
   }
 
-  cartFotter(products: LineItem[]): void {
+  cartFotter(products: ClientResponse<Cart>): void {
     const Basketdiv = document.querySelector('.cart-container') as HTMLElement;
     const ProductView = {
       tag: 'div',
@@ -281,19 +289,37 @@ export default class BasketContent extends ElementCreator {
     };
     const Productdiv = new ElementCreator(ProductView).getElement();
     Basketdiv.appendChild(Productdiv);
-
-    const totalPriceCentAmount = products.reduce((total, product) => {
-      return total + product.price.value.centAmount * product.quantity;
-    }, 0);
-
+    const ProductPromo = {
+      tag: 'input',
+      classNames: ['cart-Promo'],
+      placeholderText: 'Apply Promo Code',
+    };
+    const ProductdivPromo = new InputField(ProductPromo).getElement();
+    Productdiv.appendChild(ProductdivPromo);
+    const ProductPromoButton = {
+      tag: 'button',
+      classNames: ['cart-Promo-button'],
+      placeholderText: 'Apply Promo Code',
+      textContent: 'Apply',
+      callback: (): void => {
+        this.checkPromo();
+      },
+    };
+    const ProductdivPromoButton = new ElementCreator(ProductPromoButton).getElement();
+    Productdiv.appendChild(ProductdivPromoButton);
     const ProductTotalPriceView = {
       tag: 'div',
       classNames: ['cart-total-price'],
-      textContent: `Total Price: ${(totalPriceCentAmount / 100).toFixed(2)} USD`,
+      textContent: `Total Price: ${(products.body.totalPrice.centAmount / 100).toFixed(2)} USD`,
     };
     const ProductsTotalPrice = new ElementCreator(ProductTotalPriceView).getElement();
     Productdiv.appendChild(ProductsTotalPrice);
-
+    const ProductPromoTotalPriceView = {
+      tag: 'div',
+      classNames: ['cart-total-price'],
+    };
+    const ProductsPromoTotalPrice = new ElementCreator(ProductPromoTotalPriceView).getElement();
+    Productdiv.appendChild(ProductsPromoTotalPrice);
     const ProductOrderButtonView = {
       tag: 'button',
       classNames: ['cart-footer-button'],
@@ -326,14 +352,7 @@ export default class BasketContent extends ElementCreator {
       if (RemoveProduct && cartId) {
         const cart = await cartAPI.removeProduct(cartId, products.id, carts.body.version);
         RemoveProduct.remove();
-        const totalPriceCentAmount = cart.body.lineItems.reduce((total: number, product: LineItem) => {
-          return total + product.price.value.centAmount * product.quantity;
-        }, 0);
-
-        const TotalPrice = document.getElementsByClassName('cart-total-price')[0] as HTMLElement;
-        if (TotalPrice) {
-          TotalPrice.textContent = `Total Price: ${(totalPriceCentAmount / 100).toFixed(2)} USD`;
-        }
+        this.totalPriceCalc(cart);
         if (cart.body.lineItems.length === 0) {
           this.emptyCart();
         }
@@ -368,33 +387,105 @@ export default class BasketContent extends ElementCreator {
 
   async ChangeQuantyty(currentValue: number, products: LineItem): Promise<void> {
     const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
-    const ChangeProduct = document.getElementById(products.name.en);
-
+    const anonymousId = LocaleStorage.getValue(LocaleStorage.ANONYMOUS_ID);
     const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
-    if (customerId) {
-      try {
-        const cartAPI = new CartAPI(new TokenCacheStore());
-        const carts = await cartAPI.getCartByCustomerId(customerId);
-        if (ChangeProduct && cartId) {
-          const cart = await cartAPI.changeQuantityProduct(cartId, products.id, carts.body.version, currentValue);
 
-          const CurrentChangeMoney = cart.body.lineItems.find((lineItem: LineItem) => lineItem.id === products.id);
-          const CurrentProduct = document.getElementById(products.name.en);
-          const PriceElement = CurrentProduct?.getElementsByClassName('everything-price')[0] as HTMLElement;
-          if (PriceElement) {
-            PriceElement.textContent = `$${(CurrentChangeMoney.totalPrice.centAmount / 100).toFixed(2)}`;
-          }
-          const totalPriceCentAmount = cart.body.lineItems.reduce((total: number, product: LineItem) => {
-            return total + product.price.value.centAmount * product.quantity;
-          }, 0);
-          const TotalPrice = document.getElementsByClassName('cart-total-price')[0] as HTMLElement;
-          if (TotalPrice) {
-            TotalPrice.textContent = `Total Price: $${(totalPriceCentAmount / 100).toFixed(2)} USD`;
-          }
-        }
-      } catch (error) {
-        console.error('Error:', error);
+    if (customerId && cartId) {
+      const cartAPI = new CartAPI(new TokenCacheStore());
+      const carts = await cartAPI.getCartByCustomerId(customerId);
+      this.ChangeQuantytyAPI(currentValue, products, carts, cartAPI, cartId);
+    } else if (anonymousId && cartId) {
+      const cartAPI = new CartAPI(new TokenCacheStore());
+      const carts = await cartAPI.getAnonymousCartById(cartId);
+      await this.ChangeQuantytyAPI(currentValue, products, carts, cartAPI, cartId);
+    }
+  }
+
+  async ChangeQuantytyAPI(
+    currentValue: number,
+    products: LineItem,
+    carts: ClientResponse<Cart>,
+    cartAPI: CartAPI,
+    cartId: string
+  ): Promise<void> {
+    // const ChangeProduct = document.getElementById(products.name.en);
+    try {
+      const cart = await cartAPI.changeQuantityProduct(cartId, products.id, carts.body.version, currentValue);
+      const CurrentChangeMoney = cart.body.lineItems.find((lineItem: LineItem) => lineItem.id === products.id);
+      const CurrentProduct = document.getElementById(products.name.en);
+      const PriceElement = CurrentProduct?.getElementsByClassName('everything-price')[0] as HTMLElement;
+      if (PriceElement) {
+        PriceElement.textContent = `$${(CurrentChangeMoney.totalPrice.centAmount / 100).toFixed(2)}`;
       }
+      this.totalPriceCalc(cart);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  async deleteCart(): Promise<void> {
+    const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
+    const anonymousId = LocaleStorage.getValue(LocaleStorage.ANONYMOUS_ID);
+    const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
+
+    if (customerId && cartId) {
+      const cartAPI = new CartAPI(new TokenCacheStore());
+      const carts = await cartAPI.getCartByCustomerId(customerId);
+      this.deleteThisCart(cartId, carts, cartAPI);
+    } else if (anonymousId && cartId) {
+      const cartAPI = new CartAPI(new TokenCacheStore());
+      const carts = await cartAPI.getAnonymousCartById(cartId);
+      this.deleteThisCart(cartId, carts, cartAPI);
+    }
+  }
+
+  async deleteThisCart(cartId: string, carts: ClientResponse<Cart>, cartAPI: CartAPI): Promise<void> {
+    try {
+      await cartAPI.DeleteCartApi(cartId, carts.body.version);
+      LocaleStorage.clearLocalStorage(LocaleStorage.ANONYMOUS_ID);
+      LocaleStorage.clearLocalStorage(LocaleStorage.CART_ID);
+      LocaleStorage.clearLocalStorage(LocaleStorage.CUSTOMER_ID);
+      this.emptyCart();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  totalPriceCalc(cart: ClientResponse<Cart>) {
+    const TotalPrice = document.getElementsByClassName('cart-total-price')[0] as HTMLElement;
+    if (TotalPrice) {
+      TotalPrice.textContent = `Total Price: $${(cart.body.totalPrice.centAmount / 100).toFixed(2)} USD`;
+    }
+  }
+
+  async checkPromo(): Promise<void> {
+    const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
+    const anonymousId = LocaleStorage.getValue(LocaleStorage.ANONYMOUS_ID);
+    const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
+
+    if (customerId && cartId) {
+      const cartAPI = new CartAPI(new TokenCacheStore());
+      const carts = await cartAPI.getCartByCustomerId(customerId);
+      this.addPromoToCart(cartId, carts);
+    } else if (anonymousId && cartId) {
+      const cartAPI = new CartAPI(new TokenCacheStore());
+      const carts = await cartAPI.getAnonymousCartById(cartId);
+      this.addPromoToCart(cartId, carts);
+    }
+  }
+
+  async addPromoToCart(cartId: string, carts: ClientResponse<Cart>): Promise<void> {
+    const InputPromo = document.querySelector('.cart-Promo>input') as HTMLInputElement;
+    console.log(InputPromo.value);
+    const cartAPI = new CartAPI(new TokenCacheStore());
+
+    try {
+      const cart = await cartAPI.addDiscountCodeToCart(cartId, InputPromo.value, carts.body.version);
+      this.totalPriceCalc(cart);
+      InputPromo.style.border = '1px solid #d012ff';
+    } catch (error) {
+      InputPromo.style.border = '1px solid red';
+      console.error('Error:', error);
     }
   }
 }

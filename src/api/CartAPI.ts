@@ -188,4 +188,29 @@ export class CartAPI {
       throw new Error();
     }
   }
+
+  public async DeleteCartApi(cartId: string, version: number): Promise<ClientResponse> {
+    const builderClient: BuilderClient = new BuilderClient(this.tokenCacheStore);
+    const ctpClient = builderClient.authWithAnonymousSessionFlow();
+    const apiRoot: ByProjectKeyRequestBuilder = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
+      projectKey: builderClient.PROJECT_KEY,
+    });
+    try {
+      return await apiRoot.carts().withId({ ID: cartId }).delete({ queryArgs: { version } }).execute();
+    } catch (error: unknown) {
+      throw new Error();
+    }
+  }
+
+  public async getDiscountCodeById(id: string): Promise<ClientResponse> {
+    const builderClient = new BuilderClient(this.tokenCacheStore);
+    const ctpClient = builderClient.authWithAnonymousSessionFlow();
+    const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({ projectKey: builderClient.PROJECT_KEY });
+
+    try {
+      return await apiRoot.discountCodes().withId({ ID: id }).get().execute();
+    } catch (error: unknown) {
+      throw new Error();
+    }
+  }
 }
