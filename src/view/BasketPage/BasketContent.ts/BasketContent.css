@@ -146,8 +146,21 @@
   flex-direction: column;
   row-gap: 50px;
   padding-top: 30px;
-  padding-bottom: 30px
+  padding-bottom: 30px;
 }
+
+.cart-Promo-button {
+  height: 25px;
+  width: 15%;
+  border: none;
+  background: linear-gradient(to bottom right, #b8d7ff, #8eb7eb);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-two);
+}
+
 @media (max-width: 768px) {
   .cart-container {
     width: 90%;
