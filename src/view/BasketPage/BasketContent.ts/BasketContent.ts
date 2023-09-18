@@ -283,49 +283,39 @@ export default class BasketContent extends ElementCreator {
 
   cartFotter(products: ClientResponse<Cart>): void {
     const Basketdiv = document.querySelector('.cart-container') as HTMLElement;
-    const ProductView = {
-      tag: 'div',
-      classNames: ['cart-footer'],
-    };
-    const Productdiv = new ElementCreator(ProductView).getElement();
+
+    const Productdiv = new ElementCreator({ tag: 'div', classNames: ['cart-footer'] }).getElement();
     Basketdiv.appendChild(Productdiv);
-    const ProductPromo = {
+
+    const ProductdivPromo = new InputField({
       tag: 'input',
       classNames: ['cart-Promo'],
       placeholderText: 'Apply Promo Code',
-    };
-    const ProductdivPromo = new InputField(ProductPromo).getElement();
-    Productdiv.appendChild(ProductdivPromo);
-    const ProductPromoButton = {
+    }).getElement();
+    const ProductdivPromoButton = new ElementCreator({
       tag: 'button',
       classNames: ['cart-Promo-button'],
-      placeholderText: 'Apply Promo Code',
       textContent: 'Apply',
       callback: (): void => {
         this.checkPromo();
       },
-    };
-    const ProductdivPromoButton = new ElementCreator(ProductPromoButton).getElement();
+    }).getElement();
+    Productdiv.appendChild(ProductdivPromo);
     Productdiv.appendChild(ProductdivPromoButton);
-    const ProductTotalPriceView = {
+
+    const totalCentAmount = products.body.totalPrice.centAmount;
+    const ProductsTotalPrice = new ElementCreator({
       tag: 'div',
       classNames: ['cart-total-price'],
-      textContent: `Total Price: ${(products.body.totalPrice.centAmount / 100).toFixed(2)} USD`,
-    };
-    const ProductsTotalPrice = new ElementCreator(ProductTotalPriceView).getElement();
+      textContent: `Total Price: ${(totalCentAmount / 100).toFixed(2)} USD`,
+    }).getElement();
     Productdiv.appendChild(ProductsTotalPrice);
-    const ProductPromoTotalPriceView = {
-      tag: 'div',
-      classNames: ['cart-total-price'],
-    };
-    const ProductsPromoTotalPrice = new ElementCreator(ProductPromoTotalPriceView).getElement();
-    Productdiv.appendChild(ProductsPromoTotalPrice);
-    const ProductOrderButtonView = {
+
+    const ProductOrder = new ElementCreator({
       tag: 'button',
       classNames: ['cart-footer-button'],
       textContent: 'Checkout',
-    };
-    const ProductOrder = new ElementCreator(ProductOrderButtonView).getElement();
+    }).getElement();
     Productdiv.appendChild(ProductOrder);
   }
 
@@ -451,7 +441,7 @@ export default class BasketContent extends ElementCreator {
     }
   }
 
-  totalPriceCalc(cart: ClientResponse<Cart>) {
+  totalPriceCalc(cart: ClientResponse<Cart>): void {
     const TotalPrice = document.getElementsByClassName('cart-total-price')[0] as HTMLElement;
     if (TotalPrice) {
       TotalPrice.textContent = `Total Price: $${(cart.body.totalPrice.centAmount / 100).toFixed(2)} USD`;
