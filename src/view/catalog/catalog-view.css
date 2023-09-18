@@ -99,6 +99,7 @@
 
 .catalog-section__name-container {
   padding: 10px 5px 5px;
+  min-height: 135px;
 }
 
 .catalog-section__name {
@@ -113,6 +114,7 @@
 .catalog-section__price {
   display: flex;
   padding: 10px;
+  justify-content: space-between;
 }
 
 .price__new,
@@ -140,4 +142,12 @@
   padding: 3px;
   margin-left: 70px;
   border-radius: 5px;
+}
+
+.catalog-section__in-cart:hover {
+  cursor: pointer;
+}
+
+.catalog-section__in-cart:active {
+  background-color: #ffffff;
 }
