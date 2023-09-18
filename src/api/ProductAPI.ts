@@ -55,7 +55,7 @@ export class ProductAPI {
             limit: 6,
             offset: searchParams.offset ? searchParams.offset : 0,
             'text.en': searchParams.searchText,
-            sort: searchParams.orderSearch ? [searchParams.orderSearch] : [],
+            sort: searchParams.orderSearch ? [searchParams.orderSearch] : ['name.en asc'],
             filter: searchParams.filterSearch,
             'filter.query': searchParams.filterQuery !== '' ? searchParams.filterQuery : undefined,
           },
