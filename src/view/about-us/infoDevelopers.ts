@@ -41,7 +41,16 @@ export const developersData: Developers = {
   },
   developer2: {
     name: 'Nazar',
-    info: ['Nazar is a diligent developer with a knack for finding solutions to any problem.', '', '', '', ''],
+    info: [
+      'Nazar is a diligent developer with a knack for finding solutions to any problem.',
+      'Location: Lviv, Ukraine',
+      'University: Ivan Franko National University of Lviv',
+      'Work Experience: none',
+      'Languages:',
+      '* Ukrainian: native',
+      '* English: B2',
+      '* Belarusian: working with team)',
+    ],
     gitHub: 'https://github.com/dumik121',
     foto: 'assets/images/nazar.jpg',
     contributions: [
