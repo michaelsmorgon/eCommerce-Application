@@ -5,7 +5,6 @@ export default class NotFoundPageApp {
     const notFoundPage = new NotFoundPage();
     const main = document.querySelector('.mainView');
     if (!main) {
-      console.log();
       return;
     }
     main.innerHTML = notFoundPage.getContainer().outerHTML;

@@ -102,8 +102,6 @@ export class ProductAPI {
           },
         })
         .execute();
-
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);

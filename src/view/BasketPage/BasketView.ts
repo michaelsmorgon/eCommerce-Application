@@ -13,7 +13,6 @@ export default class BasketView {
     const view = new BasketContent(app.tokenCacheStore);
     const main = document.querySelector('.mainView');
     if (!main) {
-      console.log();
       return;
     }
     main.innerHTML = '';

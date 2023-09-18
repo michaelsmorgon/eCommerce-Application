@@ -13,7 +13,6 @@ export default class ProfileApp {
     const view = new ProfileView(app.tokenCacheStore);
     const main = document.querySelector('.mainView');
     if (!main) {
-      console.log();
       return;
     }
     main.innerHTML = '';

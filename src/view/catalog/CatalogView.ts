@@ -130,7 +130,6 @@ export default class CatalogView extends View {
       .then((response) => {
         const totalProduct = response.body?.total ? Number(response.body?.total) : 0;
         const offsetProduct = response.body?.offset ? Number(response.body?.offset) : 0;
-        console.log('----', totalProduct, offsetProduct);
         const results = response.body?.results as ProductProjection[];
         results.forEach((product: ProductProjection) => {
           const catalogCard = new CatalogCard(product, product.key);
