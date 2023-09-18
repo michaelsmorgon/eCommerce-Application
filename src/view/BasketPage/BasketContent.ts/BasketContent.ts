@@ -473,6 +473,15 @@ export default class BasketContent extends ElementCreator {
       const cart = await cartAPI.addDiscountCodeToCart(cartId, InputPromo.value, carts.body.version);
       this.totalPriceCalc(cart);
       InputPromo.style.border = '1px solid #d012ff';
+      const cartProductDivs = document.querySelectorAll('.everything-price');
+      console.log(cart);
+      cart.body.lineItems.forEach((lineItem: LineItem, index: number) => {
+        const div = cartProductDivs[index];
+        if (div) {
+          const priceInUSD = (lineItem.totalPrice.centAmount / 100).toFixed(2);
+          div.textContent = `$${priceInUSD} `;
+        }
+      });
     } catch (error) {
       InputPromo.style.border = '1px solid red';
       console.error('Error:', error);
