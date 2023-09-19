@@ -387,10 +387,12 @@ export default class BasketContent extends ElementCreator {
       const cartAPI = new CartAPI(new TokenCacheStore());
       const carts = await cartAPI.getCartByCustomerId(customerId);
       this.ChangeQuantytyAPI(currentValue, products, carts, cartAPI, cartId);
+      this.updateBasketCounter();
     } else if (anonymousId && cartId) {
       const cartAPI = new CartAPI(new TokenCacheStore());
       const carts = await cartAPI.getAnonymousCartById(cartId);
       await this.ChangeQuantytyAPI(currentValue, products, carts, cartAPI, cartId);
+      this.updateBasketCounter();
     }
   }
 

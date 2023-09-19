@@ -41,7 +41,7 @@ export class BasketCounter {
   private async updateItemCount(products: ClientResponse<Cart>): Promise<void> {
     if (this.container) {
       this.container.innerHTML = '';
-      const itemCount = products.body.lineItems.length;
+      const itemCount = products.body.totalLineItemQuantity;
       const itemCountElement = document.createElement('div');
       itemCountElement.classList.add('shopping-cart-quantity');
       itemCountElement.innerHTML = '';
