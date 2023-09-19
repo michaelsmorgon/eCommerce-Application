@@ -47,7 +47,7 @@ export class BasketCounter {
       itemCountElement.innerHTML = '';
       itemCountElement.textContent = `${itemCount}`;
       this.container.style.display = 'flex';
-      if (itemCount === 0) {
+      if (!itemCount) {
         this.container.style.display = 'none';
       }
 
