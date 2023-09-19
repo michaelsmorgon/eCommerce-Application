@@ -3,6 +3,7 @@ import { CartAPI } from '../../../api/CartAPI';
 import { LocaleStorage } from '../../../api/LocaleStorage';
 import { TokenCacheStore } from '../../../api/TokenCacheStore';
 import { ProductAPI } from '../../../api/ProductAPI';
+import { BasketCounter } from '../../header/basket-counter';
 
 export default class ShoppingCartManager {
   private productKey: string;
@@ -25,26 +26,49 @@ export default class ShoppingCartManager {
     });
   }
 
-  handleAddToCartClick(): void {
+  private showWaitingIndicator(): void {
+    const waitingIndicator = document.querySelector('.indicator');
+    if (waitingIndicator) {
+      waitingIndicator.classList.add('show-waiting');
+    }
+  }
+
+  private hideWaitingIndicator(): void {
+    const waitingIndicator = document.querySelector('.indicator');
+    if (waitingIndicator) {
+      waitingIndicator.classList.remove('show-waiting');
+    }
+  }
+
+  async handleAddToCartClick(): Promise<void> {
     if (this.productId !== undefined) {
       const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
       const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
-      if (cartId) {
-        this.addProductToCart(customerId, cartId, this.productId);
-      } else {
-        const cart = new CartAPI(new TokenCacheStore());
-        if (customerId) {
-          cart.createCustomerCart(customerId).then((cartInfo) => {
-            LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, cartInfo.body.id);
-            this.addProduct(cart, cartInfo, this.productId || '');
-          });
+
+      this.showWaitingIndicator();
+
+      try {
+        if (cartId) {
+          await this.addProductToCart(customerId, cartId, this.productId);
         } else {
-          cart.createAnonymousCart().then((cartInfo) => {
+          const cart = new CartAPI(new TokenCacheStore());
+
+          if (customerId) {
+            const cartInfo = await cart.createCustomerCart(customerId);
+            LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, cartInfo.body.id);
+            await this.addProduct(cart, cartInfo, this.productId || '');
+          } else {
+            const cartInfo = await cart.createAnonymousCart();
             LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, cartInfo.body.id);
             LocaleStorage.saveLocalStorage(LocaleStorage.ANONYMOUS_ID, cartInfo.body.anonymousId);
-            this.addProduct(cart, cartInfo, this.productId || '');
-          });
+            await this.addProduct(cart, cartInfo, this.productId || '');
+          }
         }
+        this.updateBasketCounter();
+      } catch (error) {
+        console.error('Error adding product to cart:', error);
+      } finally {
+        this.hideWaitingIndicator();
       }
     } else {
       console.error('productId is undefined');
@@ -63,6 +87,9 @@ export default class ShoppingCartManager {
       }
 
       this.addProduct(cart, cartInfo, productId);
+
+      const basketCounter = new BasketCounter('.basket-counter-container');
+      basketCounter.render();
     } catch (error) {
       console.error('Error adding product to cart:', error);
     }
@@ -72,19 +99,33 @@ export default class ShoppingCartManager {
     await cart.addProductToAnonymousCart(cartInfo.body.id, productId, cartInfo.body.version, 1);
   }
 
-  handleRemoveFromCartClick(): void {
+  async handleRemoveFromCartClick(): Promise<void> {
     if (this.productId !== undefined) {
       const customerId = LocaleStorage.getValue(LocaleStorage.CUSTOMER_ID);
       const cartId = LocaleStorage.getValue(LocaleStorage.CART_ID);
 
-      if (cartId) {
-        this.removeProductFromCart(customerId, cartId, this.productId);
-      } else {
-        console.error('Cart ID is not available.');
+      this.showWaitingIndicator();
+
+      try {
+        if (cartId) {
+          await this.removeProductFromCart(customerId, cartId, this.productId);
+        } else {
+          console.error('Cart ID is not available.');
+        }
+        this.updateBasketCounter();
+      } catch (error) {
+        console.error('Error removing product from cart:', error);
+      } finally {
+        this.hideWaitingIndicator();
       }
     } else {
       console.error('Product ID is undefined.');
     }
+  }
+
+  private async updateBasketCounter(): Promise<void> {
+    const basketCounter = new BasketCounter('.basket-counter-container');
+    basketCounter.render();
   }
 
   private async removeProductFromCart(
@@ -108,6 +149,8 @@ export default class ShoppingCartManager {
 
         if (lineItem) {
           await cart.removeProduct(cartInfo.body.id, lineItem.id, cartInfo.body.version);
+
+          this.updateBasketCounter();
         } else {
           console.error('Product not found in cart.');
         }

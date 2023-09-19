@@ -7,6 +7,7 @@ import { TokenCacheStore } from '../../../api/TokenCacheStore';
 import { LocaleStorage } from '../../../api/LocaleStorage';
 import { route } from '../../../router/router';
 import { InputField } from '../../../util/input_field/InputField';
+import { BasketCounter } from '../../header/basket-counter';
 
 export default class BasketContent extends ElementCreator {
   private tokenCacheStore: TokenCacheStore;
@@ -328,10 +329,12 @@ export default class BasketContent extends ElementCreator {
       const cartAPI = new CartAPI(new TokenCacheStore());
       const carts = await cartAPI.getCartByCustomerId(customerId);
       await this.deleteThis(products, carts, cartAPI);
+      this.updateBasketCounter();
     } else if (anonymousId && cartId) {
       const cartAPI = new CartAPI(new TokenCacheStore());
       const carts = await cartAPI.getAnonymousCartById(cartId);
       await this.deleteThis(products, carts, cartAPI);
+      this.updateBasketCounter();
     }
   }
 
@@ -422,10 +425,14 @@ export default class BasketContent extends ElementCreator {
       const cartAPI = new CartAPI(new TokenCacheStore());
       const carts = await cartAPI.getCartByCustomerId(customerId);
       this.deleteThisCart(cartId, carts, cartAPI);
+      const cartCounter = new BasketCounter('.basket-counter-container');
+      cartCounter.deleteCounter();
     } else if (anonymousId && cartId) {
       const cartAPI = new CartAPI(new TokenCacheStore());
       const carts = await cartAPI.getAnonymousCartById(cartId);
       this.deleteThisCart(cartId, carts, cartAPI);
+      const cartCounter = new BasketCounter('.basket-counter-container');
+      cartCounter.deleteCounter();
     }
   }
 
@@ -486,5 +493,10 @@ export default class BasketContent extends ElementCreator {
       InputPromo.style.border = '1px solid red';
       console.error('Error:', error);
     }
+  }
+
+  private async updateBasketCounter(): Promise<void> {
+    const basketCounter = new BasketCounter('.basket-counter-container');
+    basketCounter.render();
   }
 }

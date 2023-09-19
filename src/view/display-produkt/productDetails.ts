@@ -432,13 +432,27 @@ export default class ProductDetails extends View {
     const shoppingCartManager = new ShoppingCartManager(this.productKey);
     shoppingCartManager.create();
 
-    button.addEventListener('click', () => {
+    const waitingIndicator = document.createElement('div');
+    waitingIndicator.classList.add('indicator');
+    button.appendChild(waitingIndicator);
+
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      button.classList.add('disabled');
+
       if (isAddToCart) {
-        shoppingCartManager.handleAddToCartClick();
+        waitingIndicator.classList.add('show-waiting');
+        await shoppingCartManager.handleAddToCartClick();
       } else {
-        shoppingCartManager.handleRemoveFromCartClick();
+        waitingIndicator.classList.add('show-waiting');
+        await shoppingCartManager.handleRemoveFromCartClick();
       }
       this.updateCartButtons();
+
+      waitingIndicator.classList.remove('show-waiting');
+
+      button.disabled = false;
+      button.classList.remove('disabled');
     });
 
     return button;
