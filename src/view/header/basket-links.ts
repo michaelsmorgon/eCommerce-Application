@@ -12,7 +12,6 @@ export default class BasketLink {
         route(mouseEvent);
       },
     });
-
     const basketImage = new ElementCreator({
       tag: 'img',
       classNames: ['basket-logo'],
@@ -27,15 +26,18 @@ export default class BasketLink {
         },
       ],
     });
-
     basketLink.addInnerElement(basketImage);
-
     const basketDiv = new ElementCreator({
       tag: 'div',
       classNames: ['basket'],
     });
+    const basketCounterContainer = new ElementCreator({
+      tag: 'div',
+      classNames: ['basket-counter-container'],
+    });
 
     basketDiv.addInnerElement(basketLink);
+    basketDiv.addInnerElement(basketCounterContainer);
 
     return basketDiv;
   }

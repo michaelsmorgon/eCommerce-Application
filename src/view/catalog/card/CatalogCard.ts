@@ -7,6 +7,7 @@ import './catalog-card.css';
 import { LocaleStorage } from '../../../api/LocaleStorage';
 import { CartAPI } from '../../../api/CartAPI';
 import { TokenCacheStore } from '../../../api/TokenCacheStore';
+import { BasketCounter } from '../../header/basket-counter';
 
 const CssClassesCard = {
   CATALOG_SECTION_PRODUCT: 'catalog-section__product',
@@ -294,6 +295,9 @@ export class CatalogCard extends View {
         target.classList.add(CssClassesCard.CART_HIDE);
 
         target.nextElementSibling?.classList.remove(CssClassesCard.CART_HIDE);
+
+        const basketCounter = new BasketCounter('.basket-counter-container');
+        basketCounter.render();
       })
       .catch((error) => console.error(error));
   }
