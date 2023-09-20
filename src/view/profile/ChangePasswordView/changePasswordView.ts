@@ -5,10 +5,8 @@ export default class ChangePassword {
     const view = new PasswordChangeView();
     const main = document.querySelector('.mainView');
     if (!main) {
-      console.log();
       return;
     }
-    // main.innerHTML = view.getHtmlElement().outerHTML;
 
     main.innerHTML = '';
     main.appendChild(view.getElement());

@@ -11,6 +11,14 @@ import { BuilderClient } from './BuilderClient';
 import { TokenCacheStore } from './TokenCacheStore';
 import { MessageView } from '../view/message/MessageView';
 
+export interface IProductSearch {
+  filterSearch: string[];
+  orderSearch: string | null;
+  searchText: string;
+  filterQuery: string;
+  offset?: number;
+}
+
 export class ProductAPI {
   private ctpClient;
 
@@ -28,7 +36,6 @@ export class ProductAPI {
     try {
       const response = await this.apiRoot.products().get().execute();
 
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);
@@ -37,10 +44,7 @@ export class ProductAPI {
   }
 
   public async getProductsWithSearch(
-    filterSearch: string[],
-    orderSearch: string | null = null,
-    searchText: string = '',
-    filterQuery: string = ''
+    searchParams: IProductSearch
   ): Promise<ClientResponse<ProductProjectionPagedQueryResponse | null>> {
     try {
       const response = await this.apiRoot
@@ -48,16 +52,16 @@ export class ProductAPI {
         .search()
         .get({
           queryArgs: {
-            limit: 100,
-            'text.en': searchText,
-            sort: orderSearch ? [orderSearch] : [],
-            filter: filterSearch,
-            'filter.query': filterQuery !== '' ? filterQuery : undefined,
+            limit: 6,
+            offset: searchParams.offset ? searchParams.offset : 0,
+            'text.en': searchParams.searchText,
+            sort: searchParams.orderSearch ? [searchParams.orderSearch] : ['name.en asc'],
+            filter: searchParams.filterSearch,
+            'filter.query': searchParams.filterQuery !== '' ? searchParams.filterQuery : undefined,
           },
         })
         .execute();
 
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);
@@ -69,7 +73,6 @@ export class ProductAPI {
     try {
       const response = await this.apiRoot.products().withKey({ key }).get().execute();
 
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);
@@ -81,7 +84,6 @@ export class ProductAPI {
     try {
       const response = await this.apiRoot.products().withId({ ID: id }).get().execute();
 
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);
@@ -100,8 +102,6 @@ export class ProductAPI {
           },
         })
         .execute();
-
-      console.log(response);
       return response;
     } catch (error: unknown) {
       this.showError(error);

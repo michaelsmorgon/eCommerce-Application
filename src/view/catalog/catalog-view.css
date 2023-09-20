@@ -45,7 +45,7 @@
 .catalog-section__product {
   width: 320px;
   margin: 0 5px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   text-align: left;
   color: var(--color-four);
   transition: 0.3s ease;
@@ -55,7 +55,7 @@
 .catalog-section__product-link {
   position: relative;
   width: 100%;
-  height: 425px;
+  height: 390px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -71,7 +71,7 @@
 
 .catalog-section__product-link:hover .catalog-section__image {
   width: 100%;
-  height: 225px;
+  height: 190px;
   transition: 0.3s ease-in-out;
   color: var(--color-two);
   color: #ffffff;
@@ -79,8 +79,8 @@
 }
 
 .catalog-section__image-container {
-  width: 70%;
-  min-height: 235px;
+  width: 60%;
+  min-height: 200px;
   display: flex;
   align-items: center;
   align-self: center;
@@ -92,13 +92,14 @@
   }
 
 .catalog-section__image {
-  width: 90%;
-  height: 205px;
+  width: 80%;
+  height: 170px;
   border-radius: 5px;
 }
 
 .catalog-section__name-container {
   padding: 10px 5px 5px;
+  min-height: 135px;
 }
 
 .catalog-section__name {
@@ -113,6 +114,12 @@
 .catalog-section__price {
   display: flex;
   padding: 10px;
+  justify-content: space-between;
+}
+
+.price__new,
+.price__old {
+  padding: 5px;
 }
 
 .price__new {
@@ -121,18 +128,26 @@
 }
 
 .price__old {
-  text-decoration: line-through ;
+  text-decoration: line-through;
   color: rgb(159, 162, 164);
 }
 
 .catalog-section__discount {
   color: aliceblue;
   position: absolute;
-  top: 215px;
+  top: 185px;
   background-color: #fe7b5a;
   width: 50px;
   text-align: center;
   padding: 3px;
-  margin-left: 65px;
+  margin-left: 70px;
   border-radius: 5px;
+}
+
+.catalog-section__in-cart:hover {
+  cursor: pointer;
+}
+
+.catalog-section__in-cart:active {
+  background-color: #ffffff;
 }

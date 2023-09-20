@@ -143,14 +143,22 @@ export default class LoginView extends ElementCreator {
     const errorMessageSpan = document.getElementById('login-content-Error') as HTMLInputElement;
 
     const tokenCacheStore = new TokenCacheStore();
-    const login = new Login(tokenCacheStore, emailInput.value, passwordInput.value);
+    const login = new Login(
+      tokenCacheStore,
+      emailInput.value,
+      passwordInput.value,
+      LocaleStorage.getValue(LocaleStorage.ANONYMOUS_ID)
+    );
     login
       .loginUseCredentials()
       .then((response) => {
         LocaleStorage.saveLocalStorage(LocaleStorage.TOKEN, tokenCacheStore.get().token);
-        LocaleStorage.saveLocalStorage(LocaleStorage.ID, `${response?.body.customer.id}`);
+        LocaleStorage.saveLocalStorage(LocaleStorage.CUSTOMER_ID, `${response?.body.customer.id}`);
+        if (response?.body.cart) {
+          LocaleStorage.saveLocalStorage(LocaleStorage.CART_ID, response?.body.cart.id);
+        }
+        LocaleStorage.clearLocalStorage(LocaleStorage.ANONYMOUS_ID);
         route(mouseEvent);
-        console.log(response);
       })
       .catch(() => {
         errorMessageSpan.textContent = 'There is no user with such an email and password';

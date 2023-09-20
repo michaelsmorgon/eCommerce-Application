@@ -8,6 +8,7 @@ import {
   AnonymousAuthMiddlewareOptions,
   RefreshAuthMiddlewareOptions,
   TokenCache,
+  ExistingTokenMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import { TokenCacheStore } from './TokenCacheStore';
 
@@ -66,12 +67,13 @@ export class BuilderClient {
       },
       scopes: this.SCOPES,
       fetch,
+      tokenCache: this.tokenCacheStore,
     };
 
     return new ClientBuilder().withPasswordFlow(options).withHttpMiddleware(this.httpMiddlewareOptions).build();
   }
 
-  public authWithAnonymousSessionFlow(anonymousId: string): Client {
+  public authWithAnonymousSessionFlow(anonymousId?: string): Client {
     const options: AnonymousAuthMiddlewareOptions = {
       host: this.AUTH_URL,
       projectKey: this.PROJECT_KEY,
@@ -82,9 +84,18 @@ export class BuilderClient {
       },
       scopes: this.SCOPES,
       fetch,
+      tokenCache: this.tokenCacheStore,
     };
 
     return new ClientBuilder().withAnonymousSessionFlow(options).withHttpMiddleware(this.httpMiddlewareOptions).build();
+  }
+
+  public authWithExistingTokenFlow(token: string): Client {
+    const options: ExistingTokenMiddlewareOptions = {
+      force: true,
+    };
+
+    return new ClientBuilder().withExistingTokenFlow(token, options).build();
   }
 
   public authWithRefreshTokenFlow(refreshToken: string, tokenCache: TokenCache): Client {

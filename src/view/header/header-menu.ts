@@ -27,7 +27,7 @@ export default class Menu {
     });
     const menuLinks = [
       { text: 'Catalog', href: '/catalog' },
-      { text: 'About Us', href: '/about_as' },
+      { text: 'About Us', href: '/aboutus' },
     ];
     menuLinks.forEach((linkInfo) => {
       const link = new ElementCreator({

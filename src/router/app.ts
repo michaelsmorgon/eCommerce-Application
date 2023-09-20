@@ -1,5 +1,7 @@
 // app.ts
 import ElementCreator from '../util/ElementCreator';
+import AboutUsApp from '../view/about-us/aboutUsApp';
+import BasketView from '../view/BasketPage/BasketView';
 import CatalogApp from '../view/catalog/CatalogApp';
 import ProductApp from '../view/display-produkt/productApp';
 import Footer from '../view/footer/footer-view';
@@ -15,7 +17,13 @@ import RegistrationApp from '../view/registration/displayRegistration';
 export class App {
   footer: Footer;
 
-  main: typeof Main | typeof LoginApp | typeof RegistrationApp | typeof CatalogApp | typeof ProductApp;
+  main:
+    | typeof Main
+    | typeof LoginApp
+    | typeof RegistrationApp
+    | typeof CatalogApp
+    | typeof ProductApp
+    | typeof AboutUsApp;
 
   header: Header;
 
@@ -40,7 +48,14 @@ export class App {
     }
   }
 
-  getBody(): typeof Main | typeof LoginApp | typeof RegistrationApp | typeof CatalogApp | typeof ProductApp {
+  // eslint-disable-next-line max-lines-per-function
+  getBody():
+    | typeof Main
+    | typeof LoginApp
+    | typeof RegistrationApp
+    | typeof CatalogApp
+    | typeof ProductApp
+    | typeof AboutUsApp {
     const token = localStorage.getItem('token');
     const { pathname } = document.location;
     if (token && (pathname === '/login' || pathname === '/registration')) {
@@ -76,6 +91,10 @@ export class App {
         return EditPage;
       case '/ChangePassword':
         return ChangePassword;
+      case '/aboutus':
+        return AboutUsApp;
+      case '/basket':
+        return BasketView;
       default:
         return NotFoundPageApp;
     }

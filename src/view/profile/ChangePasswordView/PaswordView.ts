@@ -8,6 +8,7 @@ import { Warning } from '../EditPageView/input-field-warning/Warning';
 import { WarningMessage } from '../EditPageView/validation-fields/FieldValidator';
 import './passwords.css';
 import { MessageView } from '../../message/MessageView';
+import { LocaleStorage } from '../../../api/LocaleStorage';
 
 export default class PasswordChangeView extends ElementCreator {
   private PATH_MIN_LENGTH = 8;
@@ -189,7 +190,7 @@ export default class PasswordChangeView extends ElementCreator {
     const builderClient: BuilderClient = new BuilderClient(this.tokenCacheStore);
     const ctpClient = builderClient.httpMiddleware();
     const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({ projectKey });
-    const customerId = localStorage.getItem('id');
+    const customerId = localStorage.getItem(LocaleStorage.CUSTOMER_ID);
     if (customerId !== null) {
       const customerResponse = await apiRoot.customers().withId({ ID: customerId }).get().execute();
 

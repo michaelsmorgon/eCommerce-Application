@@ -1,10 +1,11 @@
 @import '../color.css';
 @import '../mainPage/category-products/category.css';
 @import '../mainPage/benefits/benefits.css';
-@import '../mainPage/sale/sale.css';
 @import '../page-404/page404.css';
 @import '../display-produkt/product-details.css';
 @import '../display-produkt/modalContainer/modal.css';
+@import '../about-us/about-us.css';
+@import '../mainPage/promoCode/promoCode.css';
 
 .not-found-container,
 .mainView {
@@ -13,7 +14,7 @@
 
 .baners {
   max-width: 1280px;
-  height: auto;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -23,7 +24,7 @@
   background-size: 100%;
   background-position-x: left;
   width: 100%;
-  height: 380px;
+  height: auto;
   color: aliceblue;
   font-weight: 900;
   display: flex;
@@ -41,17 +42,14 @@
 }
 
 .main-page {
-  width: 120px;
+  max-width: 1280px;
   margin: 0px auto;
-  padding-top: 40px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 260px;
  }
 
 
-.main-page a {
+.button__container a {
   width: 120px;
   height: 30px;
   margin: 5px 5px;
@@ -67,7 +65,7 @@
   justify-content: space-around;
 }
 
-.main-page a:hover {
+.button__container a:hover {
   color: #ffffff;
   transition: 0.3s ease;
 }
@@ -75,6 +73,14 @@
 .main-page a:active {
   background-color: var(--color-three);
   border: var(--color-three) 1px solid;
+}
+
+.button__container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 10px 0;
+  justify-content: center;
 }
 
 .login {

@@ -10,6 +10,7 @@
 }
 
 .header__container {
+  height: 100%;
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
@@ -72,6 +73,10 @@
 
 .burger-menu {
   display: none;
+}
+
+.basket {
+  position: relative;
 }
 
 .account-icon,
@@ -172,8 +177,20 @@ button:active {
   width: 18px;
   height: 18px;
 }
-
-/* .auth-buttons a:nth-child(2),
-.account-icon {
+.basket-counter-container {
+  position: absolute;
   display: none;
-} */
+  top: 7px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: rgb(250, 57, 57);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+}
+.shopping-cart-quantity {
+  color: rgb(255, 255, 255);
+  font-size: 10px;
+  font-weight: bold;
+}
