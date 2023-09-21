@@ -1,0 +1,168 @@
+.modal-container {
+  display: inline-flex;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(196, 176, 67, 0.904);
+  z-index: 5;
+}
+.close-button {
+  position: absolute;
+  right: 1%;
+  top: 2%;
+  position: absolute;
+  cursor: pointer;
+  background-color: #fcd706;
+  color: var(--color-two);
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+  width: 70px;
+  border-radius: 5px;
+  border: var(--color-two) 3px solid;
+  z-index: 9;
+}
+
+.modal-slider {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  justify-content: space-between;
+  border: 3px solid var(--color-two);
+  border-radius: 5px;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 700px;
+  align-items: center;
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
+  z-index: 6;
+}
+
+.modal-slider .product-img {
+  width: 600px;
+  height: 600px;
+  max-width: 90vh;
+  padding: 30px;
+  left: 0;
+  display: none;
+}
+
+.modal-slider > .product-img.active {
+  display: block;
+}
+
+.prev-button, .next-button {
+  position: absolute;
+  margin: 0 5px 0 5px;
+  top: 85%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: url(/src/assets/icons/arrow.png);
+  background-position: center;
+  background-size: cover;
+  z-index: 10;
+}
+
+.prev-button:hover, .next-button:hover {
+  opacity: 0.8;
+  background-color: var(--color-two);
+}
+
+.prev-button:active, .next-button:active {
+  background-color: var(--color-one);
+  opacity: 1;
+}
+
+.prev-button {
+  left: 3%;
+}
+
+.next-button {
+  right: 3%;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.dots-container {
+  position: absolute;
+  text-align: center;
+  z-index: 9;
+  margin: 10px auto;
+}
+
+@media (max-width: 767px) {
+
+  .modal-slider {
+    width: 500px;
+    height: 500px;
+  }
+  
+  .modal-slider .product-img {
+    width: 500px;
+    height: 500px;
+  }
+}
+
+@media (max-width: 670px) {
+
+  .modal-slider {
+    width: 450px;
+    height: 450px;
+  }
+  
+  .modal-slider .product-img {
+    width: 450px;
+    height: 450px;
+  }
+
+  .prev-button, .next-button {
+    top: 95%;
+    width: 40px;
+    height: 40px;
+  }
+
+  .prev-button {
+    left: 35%;
+  }
+  
+  .next-button {
+    right: 35%;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .modal-slider {
+    width: 400px;
+    height: 400px;
+  }
+  
+  .modal-slider .product-img {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+
+@media (max-width: 405px) {
+  
+  .modal-slider {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .modal-slider .product-img {
+    width: 300px;
+    height: 300px;
+  }
+}

@@ -1,0 +1,26 @@
+@import '../color.css';
+
+.registration__container {
+  margin: 10px auto;
+  padding: 10px 10px 10px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fee772;;
+  border-radius: 5px;
+  border: 2px solid #fee772;
+}
+
+.registration-btn {
+  width: 150px;
+  height: 30px;
+  margin: 10px auto 15px auto;
+}
+
+.reg-input:invalid {
+  border-color: #ff5c5c;
+}
+
+.reg-input:valid {
+  border-color: var(--color-three);
+}

@@ -1,0 +1,72 @@
+.main-profile-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  min-height: 90vh;
+  background-color: #f5f5f5;
+}
+.user-information-content {
+  width: 60%;
+  height: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  font-size: 20px;
+  background-color: rgba(15, 145, 244, 0.126);
+  border-radius: 6px;
+  margin: 20px auto;
+  color: var(--color-four);
+  font-style: italic;
+}
+
+.user-information-content > * {
+  margin: 10px;
+}
+
+.user-content {
+  height: 225px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: 25px;
+}
+.user-userEditButton {
+  margin: 15px 0 0 0;
+  align-items: center;
+  width: 20%;
+  min-width: max-content;
+  height: 30px;
+}
+.user-userEdiuserEditButtonContainertButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.user-defoultshipping,
+.user-UsedAsBilling {
+font-size: 14px;  
+margin: 5px;
+}
+
+.user-UsedAsBilling > * {
+  font-size: 18px; 
+  margin: 5px;
+}
+
+@media (max-width:575px) {
+  .user-information-content{
+    width: 315px;
+    font-size: 16px;
+  }
+  .user-userEditButton{
+    width: 150px;
+  }
+  .user-UsedAsBilling > * {
+    font-size: 16px; 
+  }
+}

@@ -1,0 +1,33 @@
+@import '../color.css';
+
+.not-found-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(0deg, rgba(0,74,173,0.5691526610644257) 0%, rgba(254,208,0,0.5775560224089635) 100%);
+}
+
+.not-found-icon {
+  width: 20%;
+  height: 200px;
+  background: url(/src/assets/icons/404.png) no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.not-found-title {
+  font-size: 42px;
+  font-weight: bold;
+  color: var(--color-two);
+  padding: 30px;
+  text-align: center;
+}
+
+.not-found-message {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--color-two);
+  text-align: center;
+}
